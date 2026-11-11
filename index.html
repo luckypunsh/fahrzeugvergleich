@@ -233,7 +233,7 @@ details.more[open] summary::after{content:"−"}
     </div>
     <div class="note">
       <h2>Voll ausgestattet</h2>
-      <p>Head-up-Display, Massagesitze und Panoramadach gibt es nur bei Polestar, Zeekr und Enyaq zusammen. Tesla, XPeng und Volvo bieten kein Head-up-Display an, der Elroq kein Panoramadach. Beim Volvo EX60 gibt es auch keine Massagesitze, nur Sitzbelüftung. Der XPeng G9 hat als einziger auch hinten Massage, ob er ein Head-up-Display hat, ist widersprüchlich. Der Leapmotor C10 hat keine Massagesitze.</p>
+      <p>Head-up-Display, Massagesitze und Panoramadach gibt es nur bei Polestar, Zeekr und Enyaq zusammen. Tesla, XPeng und Volvo bieten kein Head-up-Display an, der Elroq kein Panoramadach. Beim Volvo EX60 gibt es auch keine Massagesitze, nur Sitzbelüftung. Der XPeng G9 hat als einziger auch hinten Massage, ob er ein Head-up-Display hat, ist widersprüchlich. Der Leapmotor C10 und der smart #5 haben keine Massagesitze, beim smart gibt es sie nur in China.</p>
       <p>Beim Polestar fehlt der offizielle Schweizer Preis für das Nappa-Paket, beim Zeekr die Schweizer Paketpreise. Diese Werte sind geschätzt und mit ca. markiert.</p>
     </div>
     <div class="note">
@@ -248,7 +248,7 @@ details.more[open] summary::after{content:"−"}
   </section>
 
   <footer>
-    <span>Quellen: Hersteller und Schweizer Händler (Polestar, Zeekr Schweiz, Škoda Preisliste Elroq ab 21.09.2026, XPeng Preisliste Schweiz, Volkswagen Schweiz, Volvo Preisliste MY27), EV Database, ADAC Autokatalog, Automobil Revue, Blick, blue News und Tsüri zur Parkkarte. Leasing: Aktionsseiten von Polestar, Volvo, Škoda, AMAG Leasing, Volkswagen, XPeng und Tesla Schweiz sowie Emil-Frey-Inserate, Stand 11.11.2026. Preise sind Listenpreise ohne Rabatte, Händleraktionen und Überführung. Ausstattung und Preise können sich ändern, vor dem Entscheid im Konfigurator prüfen.</span>
+    <span>Quellen: Hersteller und Schweizer Händler (Polestar, Zeekr Schweiz, Škoda Preisliste Elroq ab 21.09.2026, XPeng Preisliste Schweiz, Volkswagen Schweiz, Volvo Preisliste MY27, Merbag für smart), EV Database, ADAC Autokatalog, Automobil Revue, Blick, blue News und Tsüri zur Parkkarte. Leasing: Aktionsseiten von Polestar, Volvo, Škoda, AMAG Leasing, Volkswagen, XPeng und Tesla Schweiz sowie Emil-Frey-Inserate, Stand 11.11.2026. Preise sind Listenpreise ohne Rabatte, Händleraktionen und Überführung. Ausstattung und Preise können sich ändern, vor dem Entscheid im Konfigurator prüfen.</span>
     <span>Fotos: Die Galerie zeigt pro Auto Front, Seite, Heck und zwei Innenraumbilder, sobald die Bilddateien im Ordner «images» liegen. «Mehr Fotos» öffnet eine Bildersuche in einem neuen Tab.</span>
   </footer>
 </div>
@@ -385,7 +385,17 @@ const CARS = [
     len:4153, wid:1794, hei:1581, wb:2601, turn:10.8,
     boot:475, bootMax:1345, weight:1632,
     screen:12.9, screenNote:"+ 10,25\" Cockpit",
-    massage:"opt", massageNote:"12-Wege-Sitze", hud:"open", hudNote:"im Konfigurator prüfen", roof:"opt", tail:"open", tailNote:"im Konfigurator prüfen" }
+    massage:"opt", massageNote:"12-Wege-Sitze", hud:"open", hudNote:"im Konfigurator prüfen", roof:"opt", tail:"open", tailNote:"im Konfigurator prüfen" },
+  { id:"smart5", name:"smart #5", ref:"Pulse AWD", cls:"Mittelklasse",
+    priceFrom:54000, priceFromNote:"Heckantrieb Pro ab 44'500 · BRABUS 646 PS ab 59'500",
+    priceFull:null, priceFullNote:"keine Massagesitze in Europa, HUD und Glasdach Serie",
+    batt:94, battNote:"100 brutto · NMC · 800 V", wltp:540, real:450, realNote:"EV Database · ADAC Test Premium 515",
+    dc:400, ac:22, t1080:18, t1080Note:"Herstellerangabe", acc:4.9,
+    ps:587, psNote:"BRABUS 646 PS, 3,8 s",
+    len:4695, wid:1920, hei:1705, wb:2900, turn:11.2, turnNote:"ADAC Katalog, im Test 11,7",
+    boot:630, bootMax:1530, bootNote:"+ 47 l vorne", weight:2420,
+    screen:13, screenNote:"+ 10,25\" Cockpit + Beifahrer-Display",
+    massage:"no", massageNote:"nur in China erhältlich", hud:"yes", hudNote:"AR, ab Premium", roof:"yes", roofNote:"nicht zu öffnen, abdunkelbar", tail:"yes" }
 ];
 const AIR = {
   polestar:["no","Stahlfedern, adaptive Dämpfer mit Performance-Paket"],
@@ -399,10 +409,11 @@ const AIR = {
   enyaq:["no","adaptive Dämpfer optional"],
   elroq:["no","adaptive Dämpfer optional"],
   idcross:["no",""],
+  smart5:["no","Stahlfedern"],
   idtiguan:["no",""]
 };
 CARS.forEach(c => { const a = AIR[c.id] || ["open",""]; c.air = a[0]; c.airNote = a[1]; });
-const VOLT = { polestar:400, zeekr:800, volvo:800, xpengg9:800, leapmotor:800, zeekr7gt:800, idtiguan:400, tesla:400, xpeng:800, enyaq:400, elroq:400, idcross:400 };
+const VOLT = { polestar:400, zeekr:800, volvo:800, xpengg9:800, leapmotor:800, zeekr7gt:800, idtiguan:400, tesla:400, xpeng:800, enyaq:400, elroq:400, idcross:400, smart5:800 };
 CARS.forEach(c => { c.volt = VOLT[c.id] ?? null; });
 CARS.forEach(c => { c.park = Math.round(c.weight * 0.35); });
 // Leasing: [Zins in %, Anzeige, Details]. Stand 11.11.2026, Aktionen für Privatkunden, Firmenleasing kann abweichen.
@@ -418,6 +429,7 @@ const LEASE = {
   enyaq:[1.99, "1,99 %", "eff. 2,01 %, 48 Mt, 10'000 km/J., 20 % Anzahlung. 0 % nur für Enyaq 85 mit Heckantrieb und LeasingPLUS-Paket inkl. AMAG-Versicherung. Deine Offerte: CHF 923/Mt"],
   elroq:[1.99, "1,99 %", "eff. 2,01 %, 48 Mt, 10'000 km/J., 20 % Anzahlung. 0 % nur für Elroq 60 mit LeasingPLUS-Paket inkl. AMAG-Versicherung"],
   idtiguan:[1.9, "1,9 %", "VW-Aktion für Verträge 01.11. bis 31.12.2026. Auslieferung 4Motion erst ab Anfang 2027"],
+  smart5:[null, "Offen", "Keine offizielle Schweizer Zinsaktion gefunden. Ein Händlerinserat für den BRABUS wirbt mit 0 % Aktionsleasing, bitte bei Merbag oder smart direkt nachfragen"],
   idcross:[1.9, "1,9 %", "VW-Aktion für Verträge 01.11. bis 31.12.2026, 48 Mt, 10'000 km/J., 20 % Anzahlung"],
 };
 CARS.forEach(c => { const l = LEASE[c.id] || [null, "Offen", ""]; c.lease = l[0]; c.leaseLabel = l[1]; c.leaseNote = l[2]; });
