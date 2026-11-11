@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>img{max-width:100%}[hidden]{display:none!important}</style>
+<title>E-SUV Shortlist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: spec-sheet hero band, then one scrollable table box whose group and column headers stay pinned (top) together with the car column (left); photo gallery in a dialog; notes below */
+:root{
+  --bg:#eef0ee; --surface:#ffffff; --raised:#f7f8f7; --fg:#171c22; --muted:#5b646f; --line:#dfe2e4; --line-strong:#c9ced3;
+  --ink:#1c2733; --ink-fg:#f3f5f6; --ink-muted:#a9b4c0;
+  --accent:#1f5c8f; --accent-soft:#e2ebf4; --best-bg:#e2ebf4; --row-hover:#f2f6fa; --zebra:#fafbfa;
+  --g-preis:#f3ede1; --g-akku:#e3eef3; --g-fahren:#efe6ee; --g-masse:#e7ece2; --g-komfort:#ece8f3;
+  --g-preis-fg:#7a5a1e; --g-akku-fg:#1e5a72; --g-fahren-fg:#6f3466; --g-masse-fg:#3e5a24; --g-komfort-fg:#4f3f86;
+  --yes-bg:#ddefe3; --yes-fg:#1b6537;
+  --opt-bg:#e2eaf5; --opt-fg:#22517c;
+  --no-bg:#f5e1de; --no-fg:#97301f;
+  --open-bg:#eeebe3; --open-fg:#665f50;
+  --ph-a:#d9dee3; --ph-b:#c4ccd4;
+  --shadow:0 1px 2px rgba(20,30,40,.06),0 8px 24px rgba(20,30,40,.06);
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101419; --surface:#181d24; --raised:#1d232b; --fg:#e8ebee; --muted:#9aa4af; --line:#29313a; --line-strong:#3a444f;
+  --ink:#0b0f13; --ink-fg:#eef1f4; --ink-muted:#8f9ba8;
+  --accent:#86b9e4; --accent-soft:#1d2c3b; --best-bg:#1f3346; --row-hover:#1e2630; --zebra:#1a2027;
+  --g-preis:#2c2618; --g-akku:#172a33; --g-fahren:#2a1d29; --g-masse:#1f2a19; --g-komfort:#231f33;
+  --g-preis-fg:#e2c48b; --g-akku-fg:#8fcbe2; --g-fahren-fg:#dfa6d6; --g-masse-fg:#b3d38f; --g-komfort-fg:#bcb0ef;
+  --yes-bg:#16301f; --yes-fg:#8fd6a8; --opt-bg:#1a2a3b; --opt-fg:#9cc4ea;
+  --no-bg:#3a1f1c; --no-fg:#f0a197; --open-bg:#2a2823; --open-fg:#c2baa6;
+  --ph-a:#232a33; --ph-b:#2d3640;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101419; --surface:#181d24; --raised:#1d232b; --fg:#e8ebee; --muted:#9aa4af; --line:#29313a; --line-strong:#3a444f;
+  --ink:#0b0f13; --ink-fg:#eef1f4; --ink-muted:#8f9ba8;
+  --accent:#86b9e4; --accent-soft:#1d2c3b; --best-bg:#1f3346; --row-hover:#1e2630; --zebra:#1a2027;
+  --g-preis:#2c2618; --g-akku:#172a33; --g-fahren:#2a1d29; --g-masse:#1f2a19; --g-komfort:#231f33;
+  --g-preis-fg:#e2c48b; --g-akku-fg:#8fcbe2; --g-fahren-fg:#dfa6d6; --g-masse-fg:#b3d38f; --g-komfort-fg:#bcb0ef;
+  --yes-bg:#16301f; --yes-fg:#8fd6a8; --opt-bg:#1a2a3b; --opt-fg:#9cc4ea;
+  --no-bg:#3a1f1c; --no-fg:#f0a197; --open-bg:#2a2823; --open-fg:#c2baa6;
+  --ph-a:#232a33; --ph-b:#2d3640;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.hero{background:var(--ink);color:var(--ink-fg);border-radius:14px;padding:26px clamp(18px,3vw,32px);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px 28px;align-items:end;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:auto -10% -60% 40%;height:160%;background:radial-gradient(closest-side,rgba(134,185,228,.18),transparent);pointer-events:none}
+.hero > *{position:relative;z-index:1;min-width:0}
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted)}
+h1{font-family:var(--f-display);font-stretch:78%;font-weight:800;font-size:clamp(30px,5vw,46px);line-height:1;margin:6px 0 10px;text-wrap:balance;letter-spacing:-.01em}
+.lead{margin:0;color:var(--ink-muted);max-width:68ch;font-size:14.5px}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;min-width:96px}
+.stat b{display:block;font-family:var(--f-display);font-stretch:80%;font-size:26px;line-height:1;font-weight:800;color:var(--ink-fg)}
+.stat span{font-size:11.5px;color:var(--ink-muted);letter-spacing:.04em}
+.bar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between}
+.controls{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.controls label{font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:center}
+select,button.dir{font:inherit;font-size:14px;color:var(--fg);background:var(--surface);border:1px solid var(--line-strong);border-radius:8px;padding:6px 10px}
+button.dir{cursor:pointer}
+select:focus-visible,button:focus-visible,th button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 10px;font-size:12.5px;color:var(--muted);align-items:center}
+.scroller{overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;max-width:100%;max-height:min(80vh,calc(100dvh - 90px));box-shadow:var(--shadow);overscroll-behavior:contain}
+table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%}
+th,td{padding:11px 13px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+tbody tr:last-child td{border-bottom:0}
+tbody td{background:var(--surface)}
+tbody tr:nth-child(even) td{background:var(--zebra)}
+tbody tr:hover td{background:var(--row-hover)}
+thead th{background:var(--raised);vertical-align:bottom;padding:0;position:sticky;z-index:5}
+thead tr.grp th{top:0;height:30px;padding:7px 13px 5px;font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;vertical-align:middle;border-bottom:0}
+thead tr.hdr th{top:var(--grp-h,30px);border-bottom:1px solid var(--line-strong);box-shadow:0 1px 0 var(--line-strong)}
+.g-preis{background:var(--g-preis)!important;color:var(--g-preis-fg)}
+.g-akku{background:var(--g-akku)!important;color:var(--g-akku-fg)}
+.g-fahren{background:var(--g-fahren)!important;color:var(--g-fahren-fg)}
+.g-masse{background:var(--g-masse)!important;color:var(--g-masse-fg)}
+.g-komfort{background:var(--g-komfort)!important;color:var(--g-komfort-fg)}
+.gs{border-left:1px solid var(--line-strong)}
+.grp th span{position:sticky;left:244px}
+th button{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:2px;padding:10px 13px 9px;font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+th button:hover{color:var(--fg)}
+th button .unit{text-transform:none;letter-spacing:0;font-size:11px;opacity:.8}
+th.sorted button{color:var(--accent)}
+th .arrow{font-size:10px}
+.car{position:sticky;left:0;z-index:2;min-width:230px;max-width:250px;border-right:1px solid var(--line-strong)}
+thead th.car{z-index:8;left:0}
+thead tr.grp th.car{background:var(--raised)!important}
+.carcell{display:grid;grid-template-columns:92px minmax(0,1fr);gap:10px;align-items:start}
+.thumb{all:unset;cursor:pointer;display:block;width:92px;aspect-ratio:16/10;border-radius:8px;overflow:hidden;position:relative;background:linear-gradient(135deg,var(--ph-a),var(--ph-b))}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .ph{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-stretch:75%;font-weight:800;font-size:22px;color:var(--muted);letter-spacing:.02em}
+.thumb .cnt{position:absolute;right:4px;bottom:4px;background:rgba(10,15,20,.65);color:#fff;font-size:10px;font-family:var(--f-mono);padding:1px 5px;border-radius:4px}
+.name{font-family:var(--f-display);font-stretch:85%;font-weight:700;font-size:16.5px;line-height:1.15}
+.sub{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.35}
+.links{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap}
+.links a,.links button{all:unset;cursor:pointer;font-size:12px;color:var(--accent);border-bottom:1px solid currentColor;line-height:1.3}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:14px;white-space:nowrap}
+td.best .num{color:var(--accent);font-weight:600;background:var(--best-bg);padding:1px 6px;border-radius:5px;margin-left:-6px}
+.small{display:block;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.35;max-width:24ch;white-space:normal}
+.chip{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.yes{background:var(--yes-bg);color:var(--yes-fg)}
+.opt{background:var(--opt-bg);color:var(--opt-fg)}
+.no{background:var(--no-bg);color:var(--no-fg)}
+.open{background:var(--open-bg);color:var(--open-fg)}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+.note h2{font-family:var(--f-display);font-stretch:85%;font-size:16px;font-weight:700;margin:0 0 6px}
+.note p{margin:0;font-size:14px;color:var(--muted)}
+.note p + p{margin-top:6px}
+footer{font-size:12.5px;color:var(--muted);display:flex;flex-direction:column;gap:6px;max-width:90ch}
+footer a{color:var(--accent)}
+dialog{border:0;padding:0;border-radius:14px;max-width:min(920px,calc(100vw - 32px));width:100%;background:var(--surface);color:var(--fg);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(10,14,18,.6)}
+.gal{display:flex;flex-direction:column;gap:12px;padding:16px}
+.gal-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.gal-head h2{font-family:var(--f-display);font-stretch:85%;font-size:20px;margin:0}
+.gal-close{all:unset;cursor:pointer;font-size:13px;color:var(--accent);border-bottom:1px solid currentColor}
+.gal-main{aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,var(--ph-a),var(--ph-b));position:relative}
+.gal-main img{width:100%;height:100%;object-fit:cover;display:block}
+.gal-main .ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:13px;padding:16px}
+.gal-main .ph b{display:block;font-family:var(--f-display);font-stretch:80%;font-size:22px;color:var(--fg);margin-bottom:4px}
+.gal-thumbs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.gal-thumbs button{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:4px;font-size:11.5px;color:var(--muted)}
+.gal-thumbs .t{aspect-ratio:16/10;border-radius:7px;overflow:hidden;background:linear-gradient(135deg,var(--ph-a),var(--ph-b));outline:2px solid transparent;outline-offset:1px}
+.gal-thumbs .t img{width:100%;height:100%;object-fit:cover;display:block}
+.gal-thumbs button[aria-current="true"] .t{outline-color:var(--accent)}
+.gal-thumbs button[aria-current="true"]{color:var(--fg)}
+@media (max-width:640px){.hero{grid-template-columns:1fr}.car{min-width:190px}.carcell{grid-template-columns:64px minmax(0,1fr)}.thumb{width:64px}.gal-thumbs{grid-template-columns:repeat(5,minmax(48px,1fr))}}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <span class="eyebrow">Stand 11. November 2026 · Schweizer Preise in CHF · Allradversionen</span>
+      <h1>E-SUV Shortlist</h1>
+      <p class="lead">Alle Werte gelten für die Allradversion (4x4), nur der VW ID. Cross ist ausschliesslich mit Frontantrieb erhältlich. Den Preis mit Heckantrieb findest du jeweils darunter. Ein Klick auf eine Spaltenüberschrift sortiert, ein zweiter dreht die Reihenfolge. Der beste Wert jeder Spalte ist hervorgehoben.</p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="bar">
+    <div class="controls">
+      <label for="sortSel">Sortieren nach
+        <select id="sortSel"></select>
+      </label>
+      <button class="dir" id="dirBtn" type="button">Aufsteigend</button>
+    </div>
+    <div class="legend">
+      <span class="chip yes">Serie</span>
+      <span class="chip opt">Option</span>
+      <span class="chip open">Nicht bestätigt</span>
+      <span class="chip no">Nicht erhältlich</span>
+      <span>Bild antippen für Galerie</span>
+    </div>
+  </div>
+
+  <div class="scroller">
+    <table id="tbl">
+      <thead id="thead"></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <section class="notes">
+    <div class="note">
+      <h2>Parkkarte blaue Zone ab 2027</h2>
+      <p>Die Stadt Zürich verrechnet ab 1. Januar 2027 pro Kilo Leergewicht, für Elektroautos 35 Rappen pro Kilo und Jahr (Verbrenner 40 Rappen). Bisher waren es pauschal 300 Franken.</p>
+      <p>Gerechnet ist hier mit dem EU-Leergewicht der Referenzversion. Massgebend ist das Gewicht im Fahrzeugausweis, also können es ein paar Franken mehr oder weniger sein.</p>
+    </div>
+    <div class="note">
+      <h2>Voll ausgestattet</h2>
+      <p>Head-up-Display, Massagesitze und Panoramadach gibt es nur bei Polestar, Zeekr und Enyaq zusammen. Tesla, XPeng und Volvo bieten kein Head-up-Display an, der Elroq kein Panoramadach. Beim Volvo EX60 gibt es auch keine Massagesitze, nur Sitzbelüftung. Der XPeng G9 hat als einziger auch hinten Massage, ob er ein Head-up-Display hat, ist widersprüchlich. Der Leapmotor C10 hat keine Massagesitze.</p>
+      <p>Beim Polestar fehlt der offizielle Schweizer Preis für das Nappa-Paket, beim Zeekr die Schweizer Paketpreise. Diese Werte sind geschätzt und mit ca. markiert.</p>
+    </div>
+    <div class="note">
+      <h2>Reale Reichweite</h2>
+      <p>Beim Volvo EX60 stammt der Wert aus der ADAC-Messung, beim Zeekr 7GT aus dem Blick-Test. Die übrigen Werte sind für gemischtes Fahren bei mildem Wetter geschätzt. Im Winter auf der Autobahn sind 20 bis 30 % weniger normal.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>Quellen: Hersteller und Schweizer Händler (Polestar, Zeekr Schweiz, Škoda Preisliste Elroq ab 21.09.2026, XPeng Preisliste Schweiz, Volkswagen Schweiz, Volvo Preisliste MY27), EV Database, ADAC Autokatalog, Automobil Revue, Blick, blue News und Tsüri zur Parkkarte. Preise sind Listenpreise ohne Rabatte, Händleraktionen und Überführung. Ausstattung und Preise können sich ändern, vor dem Entscheid im Konfigurator prüfen.</span>
+    <span>Fotos: Die Galerie zeigt pro Auto Front, Seite, Heck und zwei Innenraumbilder, sobald die Bilddateien im Ordner «images» liegen. «Mehr Fotos» öffnet eine Bildersuche in einem neuen Tab.</span>
+  </footer>
+</div>
+
+<dialog id="gal" aria-labelledby="galTitle">
+  <div class="gal">
+    <div class="gal-head">
+      <h2 id="galTitle">Galerie</h2>
+      <button class="gal-close" id="galClose" type="button">Schliessen</button>
+    </div>
+    <div class="gal-main" id="galMain"></div>
+    <div class="gal-thumbs" id="galThumbs"></div>
+  </div>
+</dialog>
+
+<script>
+const CARS = [
+  { id:"polestar", name:"Polestar 4 SUV", ref:"Dual Motor", cls:"Mittelklasse",
+    priceFrom:67900, priceFromNote:"Heckantrieb ab 59'800",
+    priceFull:70700, priceFullNote:"ca., Dual Motor + Prime + Leder, mit Launch-Rabatt", priceFullEst:true,
+    batt:94, battNote:"100 brutto · NMC", wltp:600, real:470, realNote:"geschätzt · mit Performance-Paket 520 km WLTP",
+    dc:200, ac:11, acNote:"22 kW optional", t1080:30, acc:3.9,
+    ps:544, psNote:"Vordermotor abkoppelbar",
+    len:4840, wid:2010, widNote:"2'139 mit Spiegeln", hei:1556, wb:2999, turn:11.6,
+    boot:530, bootMax:1665, weight:2375,
+    screen:15.4, screenNote:"+ 10,2\" Cockpit + 14,7\" HUD",
+    massage:"opt", massageNote:"vermutlich mit Bridge-of-Weir-Leder, prüfen", hud:"yes", hudNote:"im Prime-Paket enthalten", roof:"yes", roofNote:"Glasdach bis zur Heckklappe", tail:"yes" },
+  { id:"zeekr", name:"Zeekr 7X", ref:"Privilege AWD", cls:"Mittelklasse",
+    priceFrom:66870, priceFromNote:"Heckantrieb ab 53'990",
+    priceFull:70200, priceFullNote:"ca., + Comfort- und Cockpit-Paket (EU-Paketpreise)", priceFullEst:true,
+    batt:94, battNote:"100 brutto · NMC · 800 V", wltp:543, real:430, realNote:"geschätzt",
+    dc:480, ac:22, t1080:15, acc:3.7,
+    ps:646, psNote:"Asynchronmotor vorne",
+    len:4787, wid:1930, widNote:"2'100 mit Spiegeln", hei:1650, wb:2900, turn:11.6,
+    boot:539, bootMax:1776, bootNote:"+ 42 l vorne", weight:2520, weightNote:"ca.",
+    screen:16, screenNote:"+ 13\" Cockpit",
+    massage:"opt", massageNote:"Comfort-Paket", hud:"opt", hudNote:"36\" AR-HUD im Cockpit-Paket", roof:"yes", roofNote:"Glasdach", tail:"yes" },
+  { id:"volvo", name:"Volvo EX60", ref:"P10 AWD Plus", cls:"Mittelklasse",
+    priceFrom:75000, priceFromNote:"Heckantrieb P6 ab 72'000",
+    priceFull:null, priceFullNote:"weder HUD noch Massage erhältlich",
+    batt:91, battNote:"95 brutto · 800 V", wltp:660, real:508, realNote:"ADAC-Messung",
+    dc:370, ac:22, acNote:"je nach Version Option", t1080:16, t1080Note:"ADAC-Test: 17 min", acc:4.6, accNote:"P12 3,9 s",
+    ps:510, psNote:"Asynchronmotor vorne",
+    len:4803, wid:1908, widNote:"2'067 mit Spiegeln", hei:1635, wb:2970, turn:11.0, turnNote:"ADAC nennt 11,8 m",
+    boot:523, bootMax:1647, bootNote:"+ 58 l vorne", weight:2350,
+    screen:15, screenNote:"+ 11,4\" Display unten an der Scheibe",
+    massage:"no", massageNote:"nur Belüftung", hud:"no", hudNote:"Display an der Scheibe als Ersatz", roof:"yes", roofNote:"Ultra elektrochrom", tail:"yes" },
+  { id:"xpengg9", name:"XPeng G9", ref:"AWD Performance", cls:"Obere Mittelklasse",
+    priceFrom:72600, priceFromNote:"Heckantrieb ab 59'600",
+    priceFull:null, priceFullNote:"HUD nicht bestätigt · mit Premium-Paket ca. 76'600",
+    batt:92.2, battNote:"93,1 brutto · LFP · Wert laut ADAC", wltp:540, real:440, realNote:"geschätzt",
+    dc:525, ac:11, t1080:12, t1080Note:"Herstellerangabe", acc:4.2,
+    ps:575, psNote:"Vordermotor laut Datenbank asynchron",
+    len:4891, wid:1937, hei:1670, wb:2998, turn:11.8,
+    boot:660, bootMax:1576, bootNote:"+ 71 l vorne", weight:2395,
+    screen:14.96, screenNote:"+ 10,25\" Cockpit + 14,96\" Beifahrer",
+    massage:"opt", massageNote:"Premium-Paket, vorne und hinten, in DE 3'960 €", hud:"open", hudNote:"Blick nennt eins, Preisliste nicht", roof:"yes", tail:"yes" },
+  { id:"leapmotor", name:"Leapmotor C10", ref:"BEV 4x4 Design", cls:"Mittelklasse",
+    priceFrom:39900, priceFromNote:"Heckantrieb ab 35'900",
+    priceFull:null, priceFullNote:"keine Massagesitze erhältlich",
+    batt:81.9, battNote:"Bruttowert · LFP · 800 V", wltp:437, real:360, realNote:"aus TCS-Verbrauch geschätzt, Autobahn im Winter ca. 300",
+    dc:180, dcNote:"im Test knapp 150 kW", ac:11, t1080:28, t1080Note:"ca., 30–80 % in 22 min", acc:4.1,
+    ps:598, psNote:"Permanentmagnet vorne, kein Disconnect bekannt",
+    len:4739, wid:1900, hei:1680, wb:2825, turn:null, turnNote:"nicht publiziert",
+    boot:370, bootMax:1410, bootNote:"TCS-Wert, + 32 l vorne", weight:2189,
+    screen:14.6, screenNote:"+ 10,25\" Cockpit, kein CarPlay",
+    massage:"no", massageNote:"nur Heizung und Belüftung", hud:"open", hudNote:"Angaben widersprüchlich", roof:"yes", roofNote:"großes Glasdach", tail:"yes" },
+  { id:"zeekr7gt", name:"Zeekr 7GT", ref:"Privilege AWD", cls:"Kombi im GT-Stil",
+    priceFrom:59990, priceFromNote:"Launch Edition · Heckantrieb ab 46'490",
+    priceFull:61900, priceFullNote:"ca., + Massage-Paket geschätzt", priceFullEst:true,
+    batt:94, battNote:"100 brutto · NMC · 800 V", wltp:558, real:540, realNote:"Blick-Test",
+    dc:480, dcNote:"EVKX nennt 424 kW", ac:22, acNote:"vermutlich wie 7X", t1080:16, acc:3.3,
+    ps:646, psNote:"vermutlich wie 7X",
+    len:4817, wid:1910, widNote:"2'070 mit Spiegeln", hei:1456, wb:2900, turn:11.6,
+    boot:456, bootMax:1390, bootNote:"+ 32 l vorne", weight:2500, weightNote:"ca.",
+    screen:15, screenNote:"OLED + 13\" Cockpit",
+    massage:"opt", massageNote:"vorne, hinten auf Wunsch", hud:"yes", hudNote:"35,5\" AR, nicht beim Core", roof:"yes", roofNote:"laut Zeekr, Version nicht bestätigt", tail:"open" },
+  { id:"idtiguan", name:"VW ID. Tiguan", ref:"Pro 4Motion, ab Anfang 2027", cls:"Mittelklasse",
+    priceFrom:54700, priceFromNote:"ca., Schweizer Preis 4Motion offen · Heckantrieb ab 52'200", priceFromEst:true,
+    priceFull:null, priceFullNote:"HUD nicht bestätigt",
+    batt:77, battNote:"NMC · 400 V", wltp:560, real:410, realNote:"beides geschätzt, 4Motion noch nicht publiziert",
+    dc:165, ac:11, t1080:29, t1080Note:"AMAG nennt ca. 21 min", acc:6.3,
+    ps:299, psNote:"Asynchronmotor vorne erwartet",
+    len:4618, wid:1855, hei:1619, wb:2765, turn:null, turnNote:"nicht publiziert",
+    boot:534, bootMax:1577, bootNote:"+ 32 l vorne", weight:2237, weightNote:"ca.",
+    screen:15, screenNote:"+ 10\" Cockpit, Beifahrerdisplay optional",
+    massage:"opt", massageNote:"R-Line, mit Belüftung", hud:"open", hudNote:"noch nicht bestätigt", roof:"opt", roofNote:"laut carwow, Details offen", tail:"open" },
+  { id:"tesla", name:"Tesla Model Y", ref:"Premium AWD", cls:"Mittelklasse",
+    priceFrom:53000, priceFromNote:"ca., Schweizer AWD-Preis nicht gefunden · Heckantrieb ab 39'990", priceFromEst:true,
+    priceFull:null, priceFullNote:"kein HUD, keine Massage erhältlich",
+    batt:79, battNote:"ca., Tesla nennt keine Werte", wltp:586, real:470, realNote:"geschätzt",
+    dc:250, ac:11, t1080:28, acc:4.8, accNote:"Performance 3,5 s",
+    ps:514, psNote:"Asynchronmotor vorne",
+    len:4790, wid:1982, widNote:"2'129 mit Spiegeln", hei:1624, wb:2890, turn:12.1,
+    boot:854, bootMax:2138, bootNote:"inkl. Unterboden, + 117 l vorne", weight:2030, weightNote:"ca.",
+    screen:15.4, screenNote:"Performance 16\", kein Cockpit-Display",
+    massage:"no", hud:"no", roof:"yes", roofNote:"ab Premium", tail:"yes" },
+  { id:"xpeng", name:"XPeng G6", ref:"AWD Performance", cls:"Mittelklasse",
+    priceFrom:51600, priceFromNote:"Heckantrieb ab 43'600",
+    priceFull:null, priceFullNote:"kein HUD erhältlich, Massage und Glasdach Serie",
+    batt:80, battNote:"80,8 brutto · LFP · 800 V", wltp:510, real:400, realNote:"geschätzt",
+    dc:451, ac:11, t1080:12, acc:4.1,
+    ps:487, psNote:"Vordermotor vermutlich asynchron",
+    len:4758, wid:1920, hei:1650, wb:2890, turn:11.6,
+    boot:571, bootMax:1374, weight:2220,
+    screen:15.6, screenNote:"+ 10,25\" Cockpit",
+    massage:"yes", massageNote:"ab Long Range", hud:"no", roof:"yes", roofNote:"Glasdach", tail:"yes" },
+  { id:"enyaq", name:"Škoda Enyaq", ref:"Enyaq 85x", cls:"Mittelklasse",
+    priceFrom:55750, priceFromNote:"Heckantrieb ab 52'850",
+    priceFull:61900, priceFullNote:"ca., 85x + Advanced-Paket + Panorama-Schiebedach", priceFullEst:true,
+    batt:77, battNote:"82 brutto · NMC", wltp:514, real:430, realNote:"geschätzt",
+    dc:175, ac:11, t1080:28, acc:6.5, accNote:"RS 5,4 s",
+    ps:299, psNote:"Asynchronmotor vorne",
+    len:4658, wid:1879, hei:1622, wb:2765, turn:null, turnNote:"Allrad nicht publiziert, Heckantrieb 9,3 m",
+    boot:585, bootMax:1710, weight:2250, weightNote:"ca.",
+    screen:13, screenNote:"+ 5\" Cockpit",
+    massage:"opt", massageNote:"Fahrersitz bzw. beide vorne", hud:"opt", hudNote:"mit Augmented Reality", roof:"opt", roofNote:"Panorama-Schiebedach", tail:"opt" },
+  { id:"elroq", name:"Škoda Elroq", ref:"Elroq 85x Selection", cls:"Kompakt",
+    priceFrom:45900, priceFromNote:"Heckantrieb ab 37'850",
+    priceFull:null, priceFullNote:"kein Panoramadach erhältlich, 85x mit HUD und Massage ca. 50'670",
+    batt:77, battNote:"82 brutto · NMC", wltp:574, real:440, realNote:"geschätzt",
+    dc:165, ac:11, t1080:29, acc:6.2, accNote:"RS 5,4 s",
+    ps:299, psNote:"Asynchronmotor vorne",
+    len:4488, wid:1884, widNote:"2'148 mit Spiegeln", hei:1625, wb:2765, turn:10.8, turnNote:"Wert Elroq RS",
+    boot:470, bootMax:1580, weight:2200, weightNote:"ca.",
+    screen:13, screenNote:"+ 5\" Cockpit",
+    massage:"opt", massageNote:"Paket Advanced, 4'770", hud:"opt", hudNote:"im Paket Advanced", roof:"no", tail:"opt", tailNote:"berührungslos im Paket Plus" },
+  { id:"idcross", name:"VW ID. Cross", ref:"52 kWh, nur Frontantrieb", cls:"Klein-SUV",
+    priceFrom:27600, priceFromNote:"Trend, 37 kWh",
+    priceFull:null, priceFullNote:"HUD nicht bestätigt · dein Konfig 45'640",
+    batt:51.7, battNote:"55 brutto · NMC", wltp:426, real:315,
+    dc:105, ac:11, t1080:24, acc:7.1,
+    ps:211, psNote:"auch 116 und 135 PS",
+    len:4153, wid:1794, hei:1581, wb:2601, turn:10.8,
+    boot:475, bootMax:1345, weight:1632,
+    screen:12.9, screenNote:"+ 10,25\" Cockpit",
+    massage:"opt", massageNote:"12-Wege-Sitze", hud:"open", hudNote:"im Konfigurator prüfen", roof:"opt", tail:"open", tailNote:"im Konfigurator prüfen" }
+];
+const AIR = {
+  polestar:["no","Stahlfedern, adaptive Dämpfer mit Performance-Paket"],
+  zeekr:["yes","−25 bis +45 mm"],
+  volvo:["opt","nur Cross Country gegen Aufpreis, +20 mm"],
+  xpengg9:["yes","Zweikammer-Luftfederung"],
+  zeekr7gt:["yes","beim Privilege AWD"],
+  leapmotor:["no",""],
+  tesla:["no",""],
+  xpeng:["no",""],
+  enyaq:["no","adaptive Dämpfer optional"],
+  elroq:["no","adaptive Dämpfer optional"],
+  idcross:["no",""],
+  idtiguan:["no",""]
+};
+CARS.forEach(c => { const a = AIR[c.id] || ["open",""]; c.air = a[0]; c.airNote = a[1]; });
+const VOLT = { polestar:400, zeekr:800, volvo:800, xpengg9:800, leapmotor:800, zeekr7gt:800, idtiguan:400, tesla:400, xpeng:800, enyaq:400, elroq:400, idcross:400 };
+CARS.forEach(c => { c.volt = VOLT[c.id] ?? null; });
+CARS.forEach(c => { c.park = Math.round(c.weight * 0.35); });
+
+const FEAT_LABEL = {yes:"Serie", opt:"Option", open:"Offen", no:"Nein"};
+const FEAT_RANK = {yes:3, opt:2, open:1, no:0};
+const chf = n => n.toLocaleString("de-CH").replace(/[’,]/g, "'");
+const dec = n => String(n).replace(".", ",");
+
+// key, label, unit, group, better: 'low'|'high'|null, render
+const COLS = [
+  {key:"priceFrom", label:"Preis 4x4 ab", unit:"CHF", grp:"Preis", better:"low", fmt:c=>(c.priceFromEst?"ca. ":"")+chf(c.priceFrom), note:"priceFromNote"},
+  {key:"priceFull", label:"Mit HUD, Massage, Panorama", unit:"CHF", grp:"Preis", better:"low", fmt:c=>c.priceFull==null?"Nicht möglich":(c.priceFullEst?"ca. ":"")+chf(c.priceFull), note:"priceFullNote"},
+  {key:"park", label:"Parkkarte ZH 2027", unit:"CHF/Jahr", grp:"Preis", better:"low", fmt:c=>chf(c.park)},
+  {key:"batt", label:"Batterie", unit:"kWh netto", grp:"Akku & Laden", better:"high", fmt:c=>dec(c.batt), note:"battNote"},
+  {key:"volt", label:"Spannung", unit:"Volt", grp:"Akku & Laden", better:"high", fmt:c=>c.volt==null?"k. A.":c.volt+" V"},
+  {key:"wltp", label:"Reichweite WLTP", unit:"km", grp:"Akku & Laden", better:"high", fmt:c=>c.wltp},
+  {key:"real", label:"Reichweite real", unit:"km", grp:"Akku & Laden", better:"high", fmt:c=>"ca. "+c.real, note:"realNote"},
+  {key:"dc", label:"Laden DC max", unit:"kW", grp:"Akku & Laden", better:"high", fmt:c=>c.dc, note:"dcNote"},
+  {key:"ac", label:"Laden AC", unit:"kW", grp:"Akku & Laden", better:"high", fmt:c=>c.ac, note:"acNote"},
+  {key:"t1080", label:"10–80 %", unit:"Minuten", grp:"Akku & Laden", better:"low", fmt:c=>c.t1080, note:"t1080Note"},
+  {key:"acc", label:"0–100", unit:"Sekunden", grp:"Fahren", better:"low", fmt:c=>dec(c.acc.toFixed(1)), note:"accNote"},
+  {key:"ps", label:"Leistung", unit:"PS", grp:"Fahren", better:"high", fmt:c=>c.ps, note:"psNote"},
+  {key:"turn", label:"Wendekreis", unit:"m", grp:"Fahren", better:"low", fmt:c=>c.turn==null?"k. A.":dec(c.turn.toFixed(1)), note:"turnNote"},
+  {key:"len", label:"Länge", unit:"mm", grp:"Masse", better:null, fmt:c=>chf(c.len)},
+  {key:"wid", label:"Breite", unit:"mm o. Spiegel", grp:"Masse", better:null, fmt:c=>chf(c.wid), note:"widNote"},
+  {key:"hei", label:"Höhe", unit:"mm", grp:"Masse", better:null, fmt:c=>chf(c.hei)},
+  {key:"wb", label:"Radstand", unit:"mm", grp:"Masse", better:null, fmt:c=>chf(c.wb)},
+  {key:"weight", label:"Gewicht", unit:"kg leer (EU)", grp:"Masse", better:"low", fmt:c=>chf(c.weight), note:"weightNote"},
+  {key:"boot", label:"Kofferraum", unit:"Liter", grp:"Masse", better:"high", fmt:c=>c.boot, note:"bootNote"},
+  {key:"bootMax", label:"Sitze umgeklappt", unit:"Liter", grp:"Masse", better:"high", fmt:c=>chf(c.bootMax)},
+  {key:"screen", label:"Bildschirm", unit:"Zoll, Mitte", grp:"Komfort", better:"high", fmt:c=>dec(c.screen)+"\"", note:"screenNote"},
+  {key:"massage", label:"Massagesitze", unit:"", grp:"Komfort", feat:true, note:"massageNote"},
+  {key:"hud", label:"Head-up-Display", unit:"", grp:"Komfort", feat:true, note:"hudNote"},
+  {key:"roof", label:"Panoramadach", unit:"", grp:"Komfort", feat:true, note:"roofNote"},
+  {key:"tail", label:"Elektr. Heckklappe", unit:"", grp:"Komfort", feat:true, note:"tailNote"},
+  {key:"air", label:"Luftfederung", unit:"höhenverstellbar", grp:"Komfort", feat:true, note:"airNote"},
+];
+
+let sortKey = "len", sortAsc = false;
+
+function sortVal(c, key){
+  if (key === "name") return c.name;
+  const col = COLS.find(x => x.key === key);
+  if (col && col.feat) return FEAT_RANK[c[key]];
+  return c[key];
+}
+
+// Photos: put files named <id>-<view>.jpg into the folder below, e.g. images/polestar-front.jpg
+const IMG_BASE = "images/";
+const VIEWS = [["front","Front"],["side","Seite"],["rear","Heck"],["interior-1","Innenraum 1"],["interior-2","Innenraum 2"]];
+const imgSrc = (c, v) => `${IMG_BASE}${c.id}-${v}.jpg`;
+const brand = c => c.name.split(" ")[0];
+const GRP_CLASS = {"Preis":"g-preis","Akku & Laden":"g-akku","Fahren":"g-fahren","Masse":"g-masse","Komfort":"g-komfort"};
+const GROUP_START = new Set(COLS.filter((c,i) => i === 0 || COLS[i-1].grp !== c.grp).map(c => c.key));
+
+let galCar = null, galView = 0;
+function openGallery(id){
+  galCar = CARS.find(c => c.id === id); galView = 0;
+  document.getElementById("galTitle").textContent = `${galCar.name} · ${galCar.ref}`;
+  renderGallery();
+  const d = document.getElementById("gal");
+  if (typeof d.showModal === "function") d.showModal(); else d.setAttribute("open", "");
+}
+function renderGallery(){
+  const c = galCar, [v, label] = VIEWS[galView];
+  document.getElementById("galMain").innerHTML =
+    `<div class="ph"><div><b>${label}</b>Foto folgt · Datei ${imgSrc(c, v)}</div></div>
+     <img src="${imgSrc(c, v)}" alt="${c.name}, ${label}" onerror="this.remove()">`;
+  document.getElementById("galThumbs").innerHTML = VIEWS.map(([vv, ll], i) =>
+    `<button type="button" data-i="${i}" aria-current="${i === galView}"><span class="t"><img src="${imgSrc(c, vv)}" alt="" onerror="this.remove()"></span>${ll}</button>`).join("");
+  document.querySelectorAll("#galThumbs button").forEach(b => b.addEventListener("click", () => { galView = +b.dataset.i; renderGallery(); }));
+}
+function closeGallery(){ const d = document.getElementById("gal"); if (d.open) d.close ? d.close() : d.removeAttribute("open"); }
+
+function renderStats(){
+  const awd = CARS.filter(c => c.id !== "idcross");
+  const cheapest = Math.min(...awd.map(c => c.priceFrom));
+  const fastest = Math.min(...CARS.map(c => c.t1080));
+  document.getElementById("stats").innerHTML = [
+    [CARS.length, "Autos"], [COLS.length, "Kriterien"], [chf(cheapest), "CHF, günstigster 4x4"], [fastest + " min", "schnellstes Laden 10–80 %"]
+  ].map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
+}
+
+function bestIds(col){
+  if (!col.better) return new Set();
+  const vals = CARS.map(c => c[col.key]).filter(v => v != null);
+  const target = col.better === "low" ? Math.min(...vals) : Math.max(...vals);
+  return new Set(CARS.filter(c => c[col.key] === target).map(c => c.id));
+}
+
+function renderHead(){
+  const groups = [];
+  COLS.forEach(c => { const g = groups[groups.length-1]; if (g && g.name === c.grp) g.n++; else groups.push({name:c.grp, n:1}); });
+  const grpRow = `<tr class="grp"><th class="car"></th>${groups.map(g=>`<th colspan="${g.n}" class="gs ${GRP_CLASS[g.name]||""}"><span>${g.name}</span></th>`).join("")}</tr>`;
+  const arrow = k => sortKey === k ? `<span class="arrow" aria-hidden="true">${sortAsc ? "▲" : "▼"}</span>` : "";
+  const aria = k => sortKey === k ? (sortAsc ? "ascending" : "descending") : "none";
+  const head = `<tr class="hdr">
+    <th class="car${sortKey==="name"?" sorted":""}" aria-sort="${aria("name")}"><button data-key="name">Auto ${arrow("name")}<span class="unit">Version mit Allrad</span></button></th>
+    ${COLS.map(c=>`<th class="${sortKey===c.key?"sorted":""}${GROUP_START.has(c.key)?" gs":""}" aria-sort="${aria(c.key)}"><button data-key="${c.key}">${c.label} ${arrow(c.key)}<span class="unit">${c.unit || "&nbsp;"}</span></button></th>`).join("")}
+  </tr>`;
+  document.getElementById("thead").innerHTML = grpRow + head;
+  document.querySelectorAll("th button").forEach(b => b.addEventListener("click", () => setSort(b.dataset.key, true)));
+  const g = document.querySelector("tr.grp");
+  if (g) document.getElementById("tbl").style.setProperty("--grp-h", Math.round(g.getBoundingClientRect().height || 30) + "px");
+}
+
+function renderBody(){
+  const rows = [...CARS].sort((a,b) => {
+    let va = sortVal(a, sortKey), vb = sortVal(b, sortKey);
+    if (va == null && vb == null) return 0;
+    if (va == null) return 1;           // missing values always last
+    if (vb == null) return -1;
+    const cmp = typeof va === "string" ? va.localeCompare(vb, "de") : va - vb;
+    return sortAsc ? cmp : -cmp;
+  });
+  const bests = Object.fromEntries(COLS.map(c => [c.key, bestIds(c)]));
+  document.getElementById("tbody").innerHTML = rows.map(c => `<tr>
+    <td class="car"><div class="carcell">
+      <button class="thumb" type="button" data-gal="${c.id}" aria-label="Galerie ${c.name} öffnen"><span class="ph" style="font-size:15px">${brand(c)}</span><img src="${imgSrc(c, "front")}" alt="" onerror="this.remove()"><span class="cnt">5</span></button>
+      <div><div class="name">${c.name}</div><div class="sub">${c.ref} · ${c.cls}</div>
+        <div class="links"><button type="button" data-gal="${c.id}">Galerie</button><a href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(c.name)}" target="_blank" rel="noopener">Mehr Fotos ↗</a></div></div>
+    </div></td>
+    ${COLS.map(col => {
+      const note = col.note && c[col.note] ? `<span class="small">${c[col.note]}</span>` : "";
+      const gs = GROUP_START.has(col.key) ? "gs" : "";
+      if (col.feat) return `<td class="${gs}"><span class="chip ${c[col.key]}">${FEAT_LABEL[c[col.key]]}</span>${note}</td>`;
+      const cls = [gs, bests[col.key].has(c.id) ? "best" : ""].filter(Boolean).join(" ");
+      return `<td class="${cls}"><span class="num">${col.fmt(c)}</span>${note}</td>`;
+    }).join("")}
+  </tr>`).join("");
+  document.querySelectorAll("#tbody [data-gal]").forEach(b => b.addEventListener("click", () => openGallery(b.dataset.gal)));
+}
+
+function syncControls(){
+  document.getElementById("sortSel").value = sortKey;
+  document.getElementById("dirBtn").textContent = sortAsc ? "Aufsteigend" : "Absteigend";
+}
+
+function setSort(key, fromHeader){
+  if (fromHeader && key === sortKey) sortAsc = !sortAsc;
+  else {
+    sortKey = key;
+    const col = COLS.find(c => c.key === key);
+    sortAsc = key === "name" ? true : col && col.better === "low";
+    if (col && (col.feat || col.better === "high")) sortAsc = false;
+  }
+  try { localStorage.setItem("esuv-sort", JSON.stringify({sortKey, sortAsc})); } catch(e) {}
+  renderHead(); renderBody(); syncControls();
+}
+
+(function init(){
+  const sel = document.getElementById("sortSel");
+  sel.innerHTML = `<option value="name">Name</option>` + COLS.map(c => `<option value="${c.key}">${c.label}${c.unit ? " ("+c.unit+")" : ""}</option>`).join("");
+  sel.addEventListener("change", () => setSort(sel.value, false));
+  document.getElementById("dirBtn").addEventListener("click", () => setSort(sortKey, true));
+  try {
+    const saved = JSON.parse(localStorage.getItem("esuv-sort") || "null");
+    if (saved && (saved.sortKey === "name" || COLS.some(c => c.key === saved.sortKey))) { sortKey = saved.sortKey; sortAsc = !!saved.sortAsc; }
+  } catch(e) {}
+  const d = document.getElementById("gal");
+  document.getElementById("galClose").addEventListener("click", closeGallery);
+  d.addEventListener("click", e => { if (e.target === d) closeGallery(); });
+  renderStats(); renderHead(); renderBody(); syncControls();
+  window.addEventListener("resize", () => { const g = document.querySelector("tr.grp"); if (g) document.getElementById("tbl").style.setProperty("--grp-h", Math.round(g.getBoundingClientRect().height) + "px"); });
+})();
+</script>
+
+</body>
+</html>
