@@ -127,7 +127,65 @@ dialog::backdrop{background:rgba(10,14,18,.6)}
 .gal-thumbs .t img{width:100%;height:100%;object-fit:cover;display:block}
 .gal-thumbs button[aria-current="true"] .t{outline-color:var(--accent)}
 .gal-thumbs button[aria-current="true"]{color:var(--fg)}
-@media (max-width:640px){.hero{grid-template-columns:1fr}.car{min-width:190px}.carcell{grid-template-columns:64px minmax(0,1fr)}.thumb{width:64px}.gal-thumbs{grid-template-columns:repeat(5,minmax(48px,1fr))}}
+/* Mobile: cards instead of the wide table */
+.cards,.quick{display:none}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.card-top{display:grid;grid-template-columns:22px 76px minmax(0,1fr);gap:10px;align-items:center;padding:12px 14px}
+.rank{font-family:var(--f-mono);font-size:13px;font-weight:500;color:var(--muted);text-align:center}
+.card .thumb{width:76px}
+.card .thumb .ph{font-size:17px}
+.card .name{font-size:18px}
+.card-sort{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 14px;background:var(--accent-soft);color:var(--accent);font-size:12.5px;border-top:1px solid var(--line)}
+.card-sort b{font-family:var(--f-mono);font-size:15px;font-weight:600;white-space:nowrap}
+.facts{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.fact{padding:9px 14px 10px;min-width:0}
+.fact:nth-child(odd){border-right:1px solid var(--line)}
+.fact:nth-child(n+3){border-top:1px solid var(--line)}
+.fact .k{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fact .v{display:block;font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:17px;font-weight:600;line-height:1.3;margin-top:2px}
+.fact .v small{font-size:12px;font-weight:400;color:var(--muted);margin-left:3px}
+.fact.best .v{color:var(--accent)}
+.fact.sorted{background:var(--accent-soft)}
+.feats{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;border-top:1px solid var(--line)}
+.feats .chip{font-weight:500}
+.feats .chip i{font-style:normal;font-weight:700;margin-right:4px}
+details.more{border-top:1px solid var(--line)}
+details.more summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:11px 14px;font-size:14px;font-weight:500;color:var(--accent)}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::after{content:"+";font-family:var(--f-mono);font-size:18px;line-height:1}
+details.more[open] summary::after{content:"−"}
+.grpblock h4{margin:0;padding:7px 14px;font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:8px 14px;border-top:1px solid var(--line);align-items:baseline}
+.row .k{font-size:13.5px}
+.row .k small{font-size:11.5px;color:var(--muted);margin-left:6px}
+.row .v{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:14px;text-align:right;white-space:nowrap}
+.row.best .v{color:var(--accent);font-weight:600}
+.row .n{grid-column:1/-1;font-size:11.5px;color:var(--muted);line-height:1.35}
+.quick button{all:unset;cursor:pointer;flex:none;font-size:13px;padding:5px 11px;border-radius:999px;border:1px solid var(--line-strong);background:var(--surface);color:var(--fg)}
+.quick button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+@media (max-width:760px){
+  body{padding-block:12px 40px}
+  .wrap{gap:12px}
+  .hero{grid-template-columns:1fr;padding:18px 16px;gap:12px;border-radius:12px}
+  .lead{font-size:13px;line-height:1.45}
+  .eyebrow{font-size:10.5px;letter-spacing:.06em}
+  .row{padding:7px 14px}
+  .lead .desk{display:none}
+  h1{font-size:32px;margin:4px 0 6px}
+  .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .stat{padding:8px 8px;min-width:0}
+  .stat b{font-size:17px}
+  .stat span{display:block;font-size:10px;line-height:1.25;letter-spacing:0;margin-top:3px}
+  .bar{position:sticky;top:0;z-index:20;background:var(--bg);margin:0 -16px;padding:8px 16px;gap:8px;border-bottom:1px solid var(--line)}
+  .legend,.scroller{display:none}
+  .controls{width:100%;flex-wrap:nowrap}
+  .controls label{flex:1;min-width:0;font-size:0;gap:0}
+  .controls select{flex:1;min-width:0;width:100%;font-size:14px}
+  .quick{display:flex;gap:6px;overflow-x:auto;width:100%;scrollbar-width:none;padding-bottom:2px}
+  .quick::-webkit-scrollbar{display:none}
+  .cards{display:flex;flex-direction:column;gap:12px}
+  .gal-thumbs{grid-template-columns:repeat(5,minmax(48px,1fr))}
+}
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
 </style></head><body>
 
@@ -136,7 +194,7 @@ dialog::backdrop{background:rgba(10,14,18,.6)}
     <div>
       <span class="eyebrow">Stand 11. November 2026 · Schweizer Preise in CHF · Allradversionen</span>
       <h1>E-SUV Shortlist</h1>
-      <p class="lead">Alle Werte gelten für die Allradversion (4x4), nur der VW ID. Cross ist ausschliesslich mit Frontantrieb erhältlich. Den Preis mit Heckantrieb findest du jeweils darunter. Ein Klick auf eine Spaltenüberschrift sortiert, ein zweiter dreht die Reihenfolge. Der beste Wert jeder Spalte ist hervorgehoben.</p>
+      <p class="lead">Alle Werte gelten für die Allradversion (4x4), nur der VW ID. Cross ist ausschliesslich mit Frontantrieb erhältlich. <span class="desk">Den Preis mit Heckantrieb findest du jeweils darunter. Ein Klick auf eine Spaltenüberschrift sortiert, ein zweiter dreht die Reihenfolge. </span>Der beste Wert jedes Kriteriums ist blau hervorgehoben.</p>
     </div>
     <div class="stats" id="stats"></div>
   </header>
@@ -148,6 +206,7 @@ dialog::backdrop{background:rgba(10,14,18,.6)}
       </label>
       <button class="dir" id="dirBtn" type="button">Aufsteigend</button>
     </div>
+    <div class="quick" id="quick" aria-label="Schnell sortieren"></div>
     <div class="legend">
       <span class="chip yes">Serie</span>
       <span class="chip opt">Option</span>
@@ -163,6 +222,8 @@ dialog::backdrop{background:rgba(10,14,18,.6)}
       <tbody id="tbody"></tbody>
     </table>
   </div>
+
+  <div class="cards" id="cards"></div>
 
   <section class="notes">
     <div class="note">
@@ -397,7 +458,7 @@ const COLS = [
   {key:"air", label:"Luftfederung", unit:"höhenverstellbar", grp:"Komfort", feat:true, note:"airNote"},
 ];
 
-let sortKey = "len", sortAsc = false;
+let sortKey = "priceFrom", sortAsc = true;
 
 function sortVal(c, key){
   if (key === "name") return c.name;
@@ -490,11 +551,59 @@ function renderBody(){
     }).join("")}
   </tr>`).join("");
   document.querySelectorAll("#tbody [data-gal]").forEach(b => b.addEventListener("click", () => openGallery(b.dataset.gal)));
+  renderCards(rows, bests);
+}
+
+// Mobile cards
+const FACTS = [
+  {key:"priceFrom", k:"Preis 4x4 ab", v:c=>(c.priceFromEst?"ca. ":"")+chf(c.priceFrom), u:"CHF"},
+  {key:"lease", k:"Leasingzins", v:c=>c.leaseLabel, u:""},
+  {key:"real", k:"Reichweite real", v:c=>"ca. "+c.real, u:"km"},
+  {key:"t1080", k:"Laden 10–80 %", v:c=>c.t1080, u:"min"},
+];
+const FEATS = [["massage","Massage"],["hud","Head-up"],["roof","Panoramadach"],["air","Luftfederung"],["tail","El. Heckklappe"]];
+const FEAT_ICON = {yes:"✓", opt:"+", open:"?", no:"✕"};
+const QUICK = [["priceFrom","Preis"],["lease","Leasing"],["real","Reichweite"],["t1080","Laden"],["massage","Massage"],["acc","0–100"],["len","Länge"],["weight","Gewicht"],["name","Name"]];
+const openCards = new Set();
+
+function renderCards(rows, bests){
+  const sortCol = COLS.find(x => x.key === sortKey);
+  const showBand = sortCol && !FACTS.some(f => f.key === sortKey);
+  document.getElementById("cards").innerHTML = rows.map((c, i) => {
+    const facts = FACTS.map(f => {
+      const cls = ["fact", bests[f.key].has(c.id) ? "best" : "", sortKey === f.key ? "sorted" : ""].filter(Boolean).join(" ");
+      return `<div class="${cls}"><span class="k">${f.k}</span><span class="v">${f.v(c)}${f.u ? `<small>${f.u}</small>` : ""}</span></div>`;
+    }).join("");
+    const feats = FEATS.map(([k, l]) => `<span class="chip ${c[k]}" title="${FEAT_LABEL[c[k]]}"><i>${FEAT_ICON[c[k]]}</i>${l}</span>`).join("");
+    const band = showBand ? `<div class="card-sort"><span>${sortCol.label}${sortCol.unit ? " · " + sortCol.unit : ""}</span><b>${sortCol.feat ? FEAT_LABEL[c[sortKey]] : sortCol.fmt(c)}</b></div>` : "";
+    const groups = [];
+    COLS.forEach(col => { const g = groups[groups.length-1]; if (g && g.name === col.grp) g.cols.push(col); else groups.push({name:col.grp, cols:[col]}); });
+    const detail = groups.map(g => `<div class="grpblock"><h4 class="${GRP_CLASS[g.name]||""}">${g.name}</h4>${g.cols.map(col => {
+      const note = col.note && c[col.note] ? `<span class="n">${c[col.note]}</span>` : "";
+      const val = col.feat ? `<span class="chip ${c[col.key]}">${FEAT_LABEL[c[col.key]]}</span>` : col.fmt(c);
+      return `<div class="row${!col.feat && bests[col.key].has(c.id) ? " best" : ""}"><span class="k">${col.label}${col.unit ? `<small>${col.unit}</small>` : ""}</span><span class="v">${val}</span>${note}</div>`;
+    }).join("")}</div>`).join("");
+    return `<article class="card">
+      <div class="card-top">
+        <span class="rank">${i + 1}</span>
+        <button class="thumb" type="button" data-gal="${c.id}" aria-label="Galerie ${c.name} öffnen"><span class="ph">${brand(c)}</span><img src="${imgSrc(c, "front")}" alt="" onerror="this.remove()"><span class="cnt">5</span></button>
+        <div><div class="name">${c.name}</div><div class="sub">${c.ref}</div>
+          <div class="links"><button type="button" data-gal="${c.id}">Galerie</button><a href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(c.name)}" target="_blank" rel="noopener">Mehr Fotos ↗</a></div></div>
+      </div>
+      ${band}
+      <div class="facts">${facts}</div>
+      <div class="feats">${feats}</div>
+      <details class="more" data-id="${c.id}"${openCards.has(c.id) ? " open" : ""}><summary>Alle ${COLS.length} Kriterien</summary>${detail}</details>
+    </article>`;
+  }).join("");
+  document.querySelectorAll("#cards [data-gal]").forEach(b => b.addEventListener("click", () => openGallery(b.dataset.gal)));
+  document.querySelectorAll("#cards details").forEach(d => d.addEventListener("toggle", () => { d.open ? openCards.add(d.dataset.id) : openCards.delete(d.dataset.id); }));
 }
 
 function syncControls(){
   document.getElementById("sortSel").value = sortKey;
   document.getElementById("dirBtn").textContent = sortAsc ? "Aufsteigend" : "Absteigend";
+  document.querySelectorAll("#quick button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.key === sortKey)));
 }
 
 function setSort(key, fromHeader){
@@ -514,6 +623,9 @@ function setSort(key, fromHeader){
   sel.innerHTML = `<option value="name">Name</option>` + COLS.map(c => `<option value="${c.key}">${c.label}${c.unit ? " ("+c.unit+")" : ""}</option>`).join("");
   sel.addEventListener("change", () => setSort(sel.value, false));
   document.getElementById("dirBtn").addEventListener("click", () => setSort(sortKey, true));
+  const quick = document.getElementById("quick");
+  quick.innerHTML = QUICK.map(([k, l]) => `<button type="button" data-key="${k}" aria-pressed="false">${l}</button>`).join("");
+  quick.querySelectorAll("button").forEach(b => b.addEventListener("click", () => setSort(b.dataset.key, b.dataset.key === sortKey)));
   try {
     const saved = JSON.parse(localStorage.getItem("esuv-sort") || "null");
     if (saved && (saved.sortKey === "name" || COLS.some(c => c.key === saved.sortKey))) { sortKey = saved.sortKey; sortAsc = !!saved.sortAsc; }
