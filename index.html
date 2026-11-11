@@ -1,10 +1,4 @@
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style>img{max-width:100%}[hidden]{display:none!important}</style>
-<title>E-SUV Shortlist</title>
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>img{max-width:100%}[hidden]{display:none!important}</style><title>E-SUV Shortlist</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -135,9 +129,7 @@ dialog::backdrop{background:rgba(10,14,18,.6)}
 .gal-thumbs button[aria-current="true"]{color:var(--fg)}
 @media (max-width:640px){.hero{grid-template-columns:1fr}.car{min-width:190px}.carcell{grid-template-columns:64px minmax(0,1fr)}.thumb{width:64px}.gal-thumbs{grid-template-columns:repeat(5,minmax(48px,1fr))}}
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
-</style>
-</head>
-<body>
+</style></head><body>
 
 <div class="wrap">
   <header class="hero">
@@ -184,13 +176,18 @@ dialog::backdrop{background:rgba(10,14,18,.6)}
       <p>Beim Polestar fehlt der offizielle Schweizer Preis für das Nappa-Paket, beim Zeekr die Schweizer Paketpreise. Diese Werte sind geschätzt und mit ca. markiert.</p>
     </div>
     <div class="note">
+      <h2>Leasing</h2>
+      <p>Nur Polestar bietet für den 4x4 echtes 0 % ohne Anzahlung. Škoda hat 0 %, aber nur für die Heckantriebsversionen und gekoppelt an das AMAG-Versicherungspaket. Bei Tesla gelten die 0 % nur für einen Kredit, nicht fürs Leasing.</p>
+      <p>Die meisten Aktionen gelten für Privatkunden. Läuft der Vertrag über die Firma, beim Händler nach den Konditionen für Geschäftskunden fragen. Vollkasko ist überall Pflicht und nicht in der Rate enthalten.</p>
+    </div>
+    <div class="note">
       <h2>Reale Reichweite</h2>
       <p>Beim Volvo EX60 stammt der Wert aus der ADAC-Messung, beim Zeekr 7GT aus dem Blick-Test. Die übrigen Werte sind für gemischtes Fahren bei mildem Wetter geschätzt. Im Winter auf der Autobahn sind 20 bis 30 % weniger normal.</p>
     </div>
   </section>
 
   <footer>
-    <span>Quellen: Hersteller und Schweizer Händler (Polestar, Zeekr Schweiz, Škoda Preisliste Elroq ab 21.09.2026, XPeng Preisliste Schweiz, Volkswagen Schweiz, Volvo Preisliste MY27), EV Database, ADAC Autokatalog, Automobil Revue, Blick, blue News und Tsüri zur Parkkarte. Preise sind Listenpreise ohne Rabatte, Händleraktionen und Überführung. Ausstattung und Preise können sich ändern, vor dem Entscheid im Konfigurator prüfen.</span>
+    <span>Quellen: Hersteller und Schweizer Händler (Polestar, Zeekr Schweiz, Škoda Preisliste Elroq ab 21.09.2026, XPeng Preisliste Schweiz, Volkswagen Schweiz, Volvo Preisliste MY27), EV Database, ADAC Autokatalog, Automobil Revue, Blick, blue News und Tsüri zur Parkkarte. Leasing: Aktionsseiten von Polestar, Volvo, Škoda, AMAG Leasing, Volkswagen, XPeng und Tesla Schweiz sowie Emil-Frey-Inserate, Stand 11.11.2026. Preise sind Listenpreise ohne Rabatte, Händleraktionen und Überführung. Ausstattung und Preise können sich ändern, vor dem Entscheid im Konfigurator prüfen.</span>
     <span>Fotos: Die Galerie zeigt pro Auto Front, Seite, Heck und zwei Innenraumbilder, sobald die Bilddateien im Ordner «images» liegen. «Mehr Fotos» öffnet eine Bildersuche in einem neuen Tab.</span>
   </footer>
 </div>
@@ -347,6 +344,22 @@ CARS.forEach(c => { const a = AIR[c.id] || ["open",""]; c.air = a[0]; c.airNote 
 const VOLT = { polestar:400, zeekr:800, volvo:800, xpengg9:800, leapmotor:800, zeekr7gt:800, idtiguan:400, tesla:400, xpeng:800, enyaq:400, elroq:400, idcross:400 };
 CARS.forEach(c => { c.volt = VOLT[c.id] ?? null; });
 CARS.forEach(c => { c.park = Math.round(c.weight * 0.35); });
+// Leasing: [Zins in %, Anzeige, Details]. Stand 11.11.2026, Aktionen für Privatkunden, Firmenleasing kann abweichen.
+const LEASE = {
+  polestar:[0, "0 %", "48 Mt, ohne Anzahlung, 10'000 km/J., eff. 0,04 %. Dual Motor ca. CHF 866/Mt laut deiner Offerte, Heckantrieb CHF 549/Mt. Bestellung bis 31.12.2026"],
+  zeekr:[1.29, "ab 1,29 %", "Händleraktion Emil Frey, ab CHF 881/Mt. Anzahlung und Laufzeit beim Händler erfragen"],
+  zeekr7gt:[1.29, "ab 1,29 %", "Händleraktion Emil Frey, ab CHF 741/Mt (Vorführwagen). Anzahlung und Laufzeit beim Händler erfragen"],
+  volvo:[1.9, "1,9 %", "48 Mt, 10'000 km/J., eff. 1,92 %. Beispiel P6: CHF 684/Mt plus erste Rate CHF 14'400. P10 auf Anfrage"],
+  xpengg9:[null, "Offen", "Zinsaktion 1,9 % lief bis 30.09.2026. Aktuell All-in-one-Leasing ohne Anzahlung ab CHF 729/Mt, Zins nicht angegeben"],
+  xpeng:[null, "Offen", "Zinsaktion 1,9 % lief bis 30.09.2026. Aktuell All-in-one-Leasing ohne Anzahlung ab CHF 899/Mt, Zins nicht angegeben"],
+  leapmotor:[1.99, "ab 1,99 %", "1,99 % nur mit Emil Frey Protect, sonst 2,99 %. 48 Mt, 10'000 km/J., Anzahlung freiwillig, ca. CHF 403/Mt mit CHF 8'000 Anzahlung"],
+  tesla:[null, "0 % Kredit", "0 % gilt nur als Finanzierung (Kredit) für Model Y Maximum Range AWD, Auslieferung bis 31.12.2026. Leasing über Migros Bank, CHF 4'000 Bonus als Anzahlung, Zins nicht angegeben"],
+  enyaq:[1.99, "1,99 %", "eff. 2,01 %, 48 Mt, 10'000 km/J., 20 % Anzahlung. 0 % nur für Enyaq 85 mit Heckantrieb und LeasingPLUS-Paket inkl. AMAG-Versicherung. Deine Offerte: CHF 923/Mt"],
+  elroq:[1.99, "1,99 %", "eff. 2,01 %, 48 Mt, 10'000 km/J., 20 % Anzahlung. 0 % nur für Elroq 60 mit LeasingPLUS-Paket inkl. AMAG-Versicherung"],
+  idtiguan:[1.9, "1,9 %", "VW-Aktion für Verträge 01.11. bis 31.12.2026. Auslieferung 4Motion erst ab Anfang 2027"],
+  idcross:[1.9, "1,9 %", "VW-Aktion für Verträge 01.11. bis 31.12.2026, 48 Mt, 10'000 km/J., 20 % Anzahlung"],
+};
+CARS.forEach(c => { const l = LEASE[c.id] || [null, "Offen", ""]; c.lease = l[0]; c.leaseLabel = l[1]; c.leaseNote = l[2]; });
 
 const FEAT_LABEL = {yes:"Serie", opt:"Option", open:"Offen", no:"Nein"};
 const FEAT_RANK = {yes:3, opt:2, open:1, no:0};
@@ -357,6 +370,7 @@ const dec = n => String(n).replace(".", ",");
 const COLS = [
   {key:"priceFrom", label:"Preis 4x4 ab", unit:"CHF", grp:"Preis", better:"low", fmt:c=>(c.priceFromEst?"ca. ":"")+chf(c.priceFrom), note:"priceFromNote"},
   {key:"priceFull", label:"Mit HUD, Massage, Panorama", unit:"CHF", grp:"Preis", better:"low", fmt:c=>c.priceFull==null?"Nicht möglich":(c.priceFullEst?"ca. ":"")+chf(c.priceFull), note:"priceFullNote"},
+  {key:"lease", label:"Leasingzins", unit:"Aktion, %", grp:"Preis", better:"low", fmt:c=>c.leaseLabel, note:"leaseNote"},
   {key:"park", label:"Parkkarte ZH 2027", unit:"CHF/Jahr", grp:"Preis", better:"low", fmt:c=>chf(c.park)},
   {key:"batt", label:"Batterie", unit:"kWh netto", grp:"Akku & Laden", better:"high", fmt:c=>dec(c.batt), note:"battNote"},
   {key:"volt", label:"Spannung", unit:"Volt", grp:"Akku & Laden", better:"high", fmt:c=>c.volt==null?"k. A.":c.volt+" V"},
@@ -511,6 +525,4 @@ function setSort(key, fromHeader){
   window.addEventListener("resize", () => { const g = document.querySelector("tr.grp"); if (g) document.getElementById("tbl").style.setProperty("--grp-h", Math.round(g.getBoundingClientRect().height) + "px"); });
 })();
 </script>
-
-</body>
-</html>
+</body></html>
