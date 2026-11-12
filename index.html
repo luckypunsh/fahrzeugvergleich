@@ -234,7 +234,7 @@ details.more[open] summary::after{content:"−"}
     </div>
     <div class="note">
       <h2>Voll ausgestattet</h2>
-      <p>Head-up-Display, Massagesitze und Panoramadach gibt es nur bei Polestar, Zeekr und Enyaq zusammen. Tesla, XPeng und Volvo bieten kein Head-up-Display an, der Elroq kein Panoramadach. Beim Volvo EX60 gibt es auch keine Massagesitze, nur Sitzbelüftung. Der XPeng G9 hat als einziger auch hinten Massage, ob er ein Head-up-Display hat, ist widersprüchlich. Der Leapmotor C10 und der smart #5 haben keine Massagesitze, beim smart gibt es sie nur in China.</p>
+      <p>Head-up-Display, Massagesitze und Panoramadach gibt es nur bei Polestar, Zeekr und Enyaq zusammen. Tesla, XPeng und Volvo bieten kein Head-up-Display an, der Elroq kein Panoramadach. Beim Volvo EX60 gibt es auch keine Massagesitze, nur Sitzbelüftung. Der XPeng G9 hat als einziger auch hinten Massage, ob er ein Head-up-Display hat, ist widersprüchlich. Der Leapmotor C10, der Audi Q4 und der smart #5 haben keine Massagesitze, beim smart gibt es sie nur in China.</p>
       <p>Beim Polestar fehlt der offizielle Schweizer Preis für das Nappa-Paket, beim Zeekr die Schweizer Paketpreise. Diese Werte sind geschätzt und mit ca. markiert.</p>
     </div>
     <div class="note">
@@ -249,7 +249,7 @@ details.more[open] summary::after{content:"−"}
   </section>
 
   <footer>
-    <span>Quellen: Hersteller und Schweizer Händler (Polestar, Zeekr Schweiz, Škoda Preisliste Elroq ab 21.09.2026, XPeng Preisliste Schweiz, Volkswagen Schweiz, Volvo Preisliste MY27, Merbag für smart), EV Database, ADAC Autokatalog, Automobil Revue, Blick, blue News und Tsüri zur Parkkarte. Leasing: Aktionsseiten von Polestar, Volvo, Škoda, AMAG Leasing, Volkswagen, XPeng und Tesla Schweiz sowie Emil-Frey-Inserate, Stand 11.11.2026. Preise sind Listenpreise ohne Rabatte, Händleraktionen und Überführung. Ausstattung und Preise können sich ändern, vor dem Entscheid im Konfigurator prüfen.</span>
+    <span>Quellen: Hersteller und Schweizer Händler (Polestar, Zeekr Schweiz, Škoda Preisliste Elroq ab 21.09.2026, XPeng Preisliste Schweiz, Volkswagen Schweiz, Volvo Preisliste MY27, Merbag für smart, Audi Schweiz), EV Database, ADAC Autokatalog, Automobil Revue, Blick, blue News und Tsüri zur Parkkarte. Leasing: Aktionsseiten von Polestar, Volvo, Škoda, AMAG Leasing, Volkswagen, XPeng und Tesla Schweiz sowie Emil-Frey-Inserate, Stand 11.11.2026. Preise sind Listenpreise ohne Rabatte, Händleraktionen und Überführung. Ausstattung und Preise können sich ändern, vor dem Entscheid im Konfigurator prüfen.</span>
     <span>Fotos: Die Galerie zeigt pro Auto Front, Seite, Heck und zwei Innenraumbilder, sobald die Bilddateien im Ordner «images» liegen. «Mehr Fotos» öffnet eine Bildersuche in einem neuen Tab.</span>
   </footer>
 </div>
@@ -396,7 +396,17 @@ const CARS = [
     len:4695, wid:1920, hei:1705, wb:2900, turn:11.2, turnNote:"ADAC Katalog, im Test 11,7",
     boot:630, bootMax:1530, bootNote:"+ 47 l vorne", weight:2420,
     screen:13, screenNote:"+ 10,25\" Cockpit + Beifahrer-Display",
-    massage:"no", massageNote:"nur in China erhältlich", hud:"yes", hudNote:"AR, ab Premium", roof:"yes", roofNote:"nicht zu öffnen, abdunkelbar", tail:"yes" }
+    massage:"no", massageNote:"nur in China erhältlich", hud:"yes", hudNote:"AR, ab Premium", roof:"yes", roofNote:"nicht zu öffnen, abdunkelbar", tail:"yes" },
+  { id:"q4", name:"Audi Q4 e-tron", ref:"quattro, Facelift 2026", cls:"Kompakt-SUV",
+    priceFrom:60400, priceFromNote:"ca., Schweizer Preis Facelift nicht gefunden, Vorgänger 45 quattro 60'400", priceFromEst:true,
+    priceFull:null, priceFullNote:"keine Massagesitze erhältlich",
+    batt:77, battNote:"82 brutto · NMC · 400 V", wltp:558, real:450, realNote:"geschätzt",
+    dc:165, ac:11, t1080:27, t1080Note:"Herstellerangabe", acc:6.2,
+    ps:299, psNote:"quattro performance 340 PS, 5,4 s",
+    len:4588, wid:1865, hei:1632, wb:2764, turn:10.2,
+    boot:515, bootMax:1487, weight:2240, weightNote:"laut Test (electrive)",
+    screen:12.8, screenNote:"+ 11,9\" Cockpit, 12\" Beifahrer optional",
+    massage:"no", massageNote:"nicht erhältlich", hud:"opt", hudNote:"AR, im Navigationspaket", roof:"opt", tail:"opt" }
 ];
 const AIR = {
   polestar:["no","Stahlfedern, adaptive Dämpfer mit Performance-Paket"],
@@ -411,10 +421,11 @@ const AIR = {
   elroq:["no","adaptive Dämpfer optional"],
   idcross:["no",""],
   smart5:["no","Stahlfedern"],
+  q4:["no",""],
   idtiguan:["no",""]
 };
 CARS.forEach(c => { const a = AIR[c.id] || ["open",""]; c.air = a[0]; c.airNote = a[1]; });
-const VOLT = { polestar:400, zeekr:800, volvo:800, xpengg9:800, leapmotor:800, zeekr7gt:800, idtiguan:400, tesla:400, xpeng:800, enyaq:400, elroq:400, idcross:400, smart5:800 };
+const VOLT = { polestar:400, zeekr:800, volvo:800, xpengg9:800, leapmotor:800, zeekr7gt:800, idtiguan:400, tesla:400, xpeng:800, enyaq:400, elroq:400, idcross:400, smart5:800, q4:400 };
 CARS.forEach(c => { c.volt = VOLT[c.id] ?? null; });
 CARS.forEach(c => { c.park = Math.round(c.weight * 0.35); });
 // Leasing: [Zins in %, Anzeige, Details]. Stand 11.11.2026, Aktionen für Privatkunden, Firmenleasing kann abweichen.
@@ -431,6 +442,7 @@ const LEASE = {
   elroq:[1.99, "1,99 %", "eff. 2,01 %, 48 Mt, 10'000 km/J., 20 % Anzahlung. 0 % nur für Elroq 60 mit LeasingPLUS-Paket inkl. AMAG-Versicherung"],
   idtiguan:[1.9, "1,9 %", "VW-Aktion für Verträge 01.11. bis 31.12.2026. Auslieferung 4Motion erst ab Anfang 2027"],
   smart5:[null, "Offen", "Keine offizielle Schweizer Zinsaktion gefunden. Ein Händlerinserat für den BRABUS wirbt mit 0 % Aktionsleasing, bitte bei Merbag oder smart direkt nachfragen"],
+  q4:[null, "Offen", "0 % gab es für die Edition Swiss Ski des alten Q4 bis 31.03.2026. Für den neuen Q4 keine Aktion gefunden, bei AMAG nachfragen"],
   idcross:[1.9, "1,9 %", "VW-Aktion für Verträge 01.11. bis 31.12.2026, 48 Mt, 10'000 km/J., 20 % Anzahlung"],
 };
 // Alltag & Technik: [360-Kamera, Rücksitze flach, CarPlay, elektr. Sitze, adaptives Fahrwerk, Werkstatt] je [Status, Hinweis]
@@ -447,6 +459,7 @@ const TECH = {
   elroq:{cam360:["opt","im Paket"], flat:["opt","fast eben"], carplay:["yes","kabellos"], eseat:["opt",""], adapt:["opt","DCC, im Paket"], service:["yes","AMAG, sehr dichtes Netz"]},
   idtiguan:{cam360:["open","Schweizer Ausstattung noch offen"], flat:["open","nicht bestätigt"], carplay:["yes","kabellos"], eseat:["open","Schweizer Ausstattung noch offen"], adapt:["open","Schweizer Ausstattung noch offen"], service:["yes","AMAG, sehr dichtes Netz"]},
   idcross:{cam360:["open","im Konfigurator prüfen"], flat:["open","nicht bestätigt"], carplay:["yes","kabellos"], eseat:["opt","12-Wege-Sitze"], adapt:["no",""], service:["yes","AMAG, sehr dichtes Netz"]},
+  q4:{cam360:["open","im Konfigurator prüfen"], flat:["open","nicht bestätigt"], carplay:["yes","kabellos"], eseat:["opt","im Komfortpaket"], adapt:["opt","Dämpferregelung im Paket"], service:["yes","AMAG, sehr dichtes Netz"]},
   smart5:{cam360:["yes",""], flat:["no","bucklige Liegefläche (ADAC)"], carplay:["yes","kabellos"], eseat:["yes",""], adapt:["no","Stahlfedern, nicht verstellbar"], service:["yes","Merbag und Mercedes-Partner"]},
 };
 // Doppel- bzw. Akustikverglasung der Seitenscheiben
@@ -464,6 +477,7 @@ const GLASS = {
   idtiguan:["open","Schweizer Ausstattung noch offen"],
   idcross:["open","im Konfigurator prüfen"],
   smart5:["open","nicht bestätigt"],
+  q4:["opt","Akustikglas Seitenscheiben als Option"],
 };
 CARS.forEach(c => { const g = GLASS[c.id] || ["open",""]; c.glass = g[0]; c.glassNote = g[1]; });
 CARS.forEach(c => {
