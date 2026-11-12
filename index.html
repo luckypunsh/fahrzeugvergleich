@@ -449,6 +449,23 @@ const TECH = {
   idcross:{cam360:["open","im Konfigurator prüfen"], flat:["open","nicht bestätigt"], carplay:["yes","kabellos"], eseat:["opt","12-Wege-Sitze"], adapt:["no",""], service:["yes","AMAG, sehr dichtes Netz"]},
   smart5:{cam360:["yes",""], flat:["no","bucklige Liegefläche (ADAC)"], carplay:["yes","kabellos"], eseat:["yes",""], adapt:["no","Stahlfedern, nicht verstellbar"], service:["yes","Merbag und Mercedes-Partner"]},
 };
+// Doppel- bzw. Akustikverglasung der Seitenscheiben
+const GLASS = {
+  polestar:["opt","hinten laminiert als Option, vorne nicht angegeben. Glasdach laminiert"],
+  zeekr:["open","beim 7GT alle Scheiben doppelt, beim 7X nicht bestätigt"],
+  zeekr7gt:["yes","alle Scheiben doppelt (Zeekr)"],
+  volvo:["open","nicht bestätigt, Tests loben die Ruhe"],
+  xpengg9:["open","Glas nicht angegeben, Tests loben die Dämmung"],
+  xpeng:["open","nicht bestätigt"],
+  leapmotor:["open","in der Ausstattungsliste nicht aufgeführt"],
+  tesla:["yes","Akustikglas rundum seit Modell 2025"],
+  enyaq:["opt","Akustikglas vorne je nach Linie, wie Elroq"],
+  elroq:["opt","Akustikglas vorne je nach Linie"],
+  idtiguan:["open","Schweizer Ausstattung noch offen"],
+  idcross:["open","im Konfigurator prüfen"],
+  smart5:["open","nicht bestätigt"],
+};
+CARS.forEach(c => { const g = GLASS[c.id] || ["open",""]; c.glass = g[0]; c.glassNote = g[1]; });
 CARS.forEach(c => {
   const t = TECH[c.id] || {};
   ["cam360","flat","carplay","eseat","adapt","service"].forEach(k => { const v = t[k] || ["open",""]; c[k] = v[0]; c[k+"Note"] = v[1]; });
@@ -493,6 +510,7 @@ const COLS = [
   {key:"tail", label:"Elektr. Heckklappe", unit:"", grp:"Komfort", feat:true, note:"tailNote"},
   {key:"air", label:"Luftfederung", unit:"höhenverstellbar", grp:"Komfort", feat:true, note:"airNote"},
   {key:"adapt", label:"Adaptives Fahrwerk", unit:"Comfort/Eco wählbar", grp:"Komfort", feat:true, note:"adaptNote"},
+  {key:"glass", label:"Doppelverglasung", unit:"Akustikglas Seitenscheiben", grp:"Komfort", feat:true, labels:{yes:"Rundum", opt:"Teilweise", open:"Offen", no:"Nein"}, note:"glassNote"},
   {key:"cam360", label:"360-Grad-Kamera", unit:"", grp:"Komfort", feat:true, note:"cam360Note"},
   {key:"carplay", label:"Apple CarPlay", unit:"", grp:"Komfort", feat:true, note:"carplayNote"},
   {key:"eseat", label:"Elektr. Sitze", unit:"vorne", grp:"Komfort", feat:true, note:"eseatNote"},
@@ -604,7 +622,7 @@ const FACTS = [
   {key:"real", k:"Reichweite real", v:c=>"ca. "+c.real, u:"km"},
   {key:"t1080", k:"Laden 10–80 %", v:c=>c.t1080, u:"min"},
 ];
-const FEATS = [["massage","Massage"],["hud","Head-up"],["cam360","360°-Kamera"],["roof","Panoramadach"],["carplay","CarPlay"],["eseat","El. Sitze"],["adapt","Adaptives Fahrwerk"],["tail","El. Heckklappe"]];
+const FEATS = [["massage","Massage"],["hud","Head-up"],["cam360","360°-Kamera"],["roof","Panoramadach"],["carplay","CarPlay"],["eseat","El. Sitze"],["adapt","Adaptives Fahrwerk"],["glass","Akustikglas"],["tail","El. Heckklappe"]];
 const FEAT_ICON = {yes:"✓", opt:"+", open:"?", no:"✕"};
 const QUICK = [["priceFrom","Preis"],["lease","Leasing"],["real","Reichweite"],["t1080","Laden"],["massage","Massage"],["hud","Head-up"],["carplay","CarPlay"],["acc","0–100"],["len","Länge"],["weight","Gewicht"],["name","Name"]];
 const openCards = new Set();
