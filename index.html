@@ -9,7 +9,7 @@
   --ink:#1c2733; --ink-fg:#f3f5f6; --ink-muted:#a9b4c0;
   --accent:#1f5c8f; --accent-soft:#e2ebf4; --best-bg:#e2ebf4; --row-hover:#f2f6fa; --zebra:#fafbfa;
   --g-preis:#f3ede1; --g-akku:#e3eef3; --g-fahren:#efe6ee; --g-masse:#e7ece2; --g-komfort:#ece8f3;
-  --g-preis-fg:#7a5a1e; --g-akku-fg:#1e5a72; --g-fahren-fg:#6f3466; --g-masse-fg:#3e5a24; --g-komfort-fg:#4f3f86;
+  --g-alltag:#f6e8e1; --g-alltag-fg:#8a3d1c; --g-preis-fg:#7a5a1e; --g-akku-fg:#1e5a72; --g-fahren-fg:#6f3466; --g-masse-fg:#3e5a24; --g-komfort-fg:#4f3f86;
   --yes-bg:#ddefe3; --yes-fg:#1b6537;
   --opt-bg:#e2eaf5; --opt-fg:#22517c;
   --no-bg:#f5e1de; --no-fg:#97301f;
@@ -25,7 +25,7 @@
   --ink:#0b0f13; --ink-fg:#eef1f4; --ink-muted:#8f9ba8;
   --accent:#86b9e4; --accent-soft:#1d2c3b; --best-bg:#1f3346; --row-hover:#1e2630; --zebra:#1a2027;
   --g-preis:#2c2618; --g-akku:#172a33; --g-fahren:#2a1d29; --g-masse:#1f2a19; --g-komfort:#231f33;
-  --g-preis-fg:#e2c48b; --g-akku-fg:#8fcbe2; --g-fahren-fg:#dfa6d6; --g-masse-fg:#b3d38f; --g-komfort-fg:#bcb0ef;
+  --g-alltag:#2e1f18; --g-alltag-fg:#f0b496; --g-preis-fg:#e2c48b; --g-akku-fg:#8fcbe2; --g-fahren-fg:#dfa6d6; --g-masse-fg:#b3d38f; --g-komfort-fg:#bcb0ef;
   --yes-bg:#16301f; --yes-fg:#8fd6a8; --opt-bg:#1a2a3b; --opt-fg:#9cc4ea;
   --no-bg:#3a1f1c; --no-fg:#f0a197; --open-bg:#2a2823; --open-fg:#c2baa6;
   --ph-a:#232a33; --ph-b:#2d3640;
@@ -36,7 +36,7 @@
   --ink:#0b0f13; --ink-fg:#eef1f4; --ink-muted:#8f9ba8;
   --accent:#86b9e4; --accent-soft:#1d2c3b; --best-bg:#1f3346; --row-hover:#1e2630; --zebra:#1a2027;
   --g-preis:#2c2618; --g-akku:#172a33; --g-fahren:#2a1d29; --g-masse:#1f2a19; --g-komfort:#231f33;
-  --g-preis-fg:#e2c48b; --g-akku-fg:#8fcbe2; --g-fahren-fg:#dfa6d6; --g-masse-fg:#b3d38f; --g-komfort-fg:#bcb0ef;
+  --g-alltag:#2e1f18; --g-alltag-fg:#f0b496; --g-preis-fg:#e2c48b; --g-akku-fg:#8fcbe2; --g-fahren-fg:#dfa6d6; --g-masse-fg:#b3d38f; --g-komfort-fg:#bcb0ef;
   --yes-bg:#16301f; --yes-fg:#8fd6a8; --opt-bg:#1a2a3b; --opt-fg:#9cc4ea;
   --no-bg:#3a1f1c; --no-fg:#f0a197; --open-bg:#2a2823; --open-fg:#c2baa6;
   --ph-a:#232a33; --ph-b:#2d3640;
@@ -77,6 +77,7 @@ thead tr.hdr th{top:var(--grp-h,30px);border-bottom:1px solid var(--line-strong)
 .g-fahren{background:var(--g-fahren)!important;color:var(--g-fahren-fg)}
 .g-masse{background:var(--g-masse)!important;color:var(--g-masse-fg)}
 .g-komfort{background:var(--g-komfort)!important;color:var(--g-komfort-fg)}
+.g-alltag{background:var(--g-alltag)!important;color:var(--g-alltag-fg)}
 .gs{border-left:1px solid var(--line-strong)}
 .grp th span{position:sticky;left:244px}
 th button{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:2px;padding:10px 13px 9px;font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
@@ -192,7 +193,7 @@ details.more[open] summary::after{content:"−"}
 <div class="wrap">
   <header class="hero">
     <div>
-      <span class="eyebrow">Stand 11. November 2026 · Schweizer Preise in CHF · Allradversionen</span>
+      <span class="eyebrow">Stand 12. November 2026 · Schweizer Preise in CHF · Allradversionen</span>
       <h1>E-SUV Shortlist</h1>
       <p class="lead">Alle Werte gelten für die Allradversion (4x4), nur der VW ID. Cross ist ausschliesslich mit Frontantrieb erhältlich. <span class="desk">Den Preis mit Heckantrieb findest du jeweils darunter. Ein Klick auf eine Spaltenüberschrift sortiert, ein zweiter dreht die Reihenfolge. </span>Der beste Wert jedes Kriteriums ist blau hervorgehoben.</p>
     </div>
@@ -432,6 +433,28 @@ const LEASE = {
   smart5:[null, "Offen", "Keine offizielle Schweizer Zinsaktion gefunden. Ein Händlerinserat für den BRABUS wirbt mit 0 % Aktionsleasing, bitte bei Merbag oder smart direkt nachfragen"],
   idcross:[1.9, "1,9 %", "VW-Aktion für Verträge 01.11. bis 31.12.2026, 48 Mt, 10'000 km/J., 20 % Anzahlung"],
 };
+// Alltag & Technik: [360-Kamera, Rücksitze flach, CarPlay, elektr. Sitze, adaptives Fahrwerk, Werkstatt] je [Status, Hinweis]
+const TECH = {
+  polestar:{cam360:["yes",""], flat:["open","60/40 umklappbar, Ebenheit nicht bestätigt"], carplay:["yes","kabellos"], eseat:["yes","mit Memory"], adapt:["opt","aktive Dämpfer mit Performance-Paket, mehrere Stufen"], service:["yes","Polestar Zürich, Servicepartner in der Region"]},
+  zeekr:{cam360:["yes","mit 3D-Ansicht"], flat:["opt","fast eben, laut Test nicht ganz flach"], carplay:["yes","kabellos, auch Android Auto"], eseat:["yes","vorne mit Memory, Lehnen hinten elektrisch"], adapt:["yes","Luftfederung mit adaptiven Dämpfern"], service:["yes","Emil Frey Zürich Nord"]},
+  zeekr7gt:{cam360:["yes","wie 7X"], flat:["open","nicht bestätigt"], carplay:["yes","wie 7X"], eseat:["yes",""], adapt:["yes","Luftfederung, laut Test aber kein Individual-Modus"], service:["yes","Emil Frey Zürich Nord"]},
+  volvo:{cam360:["yes","ab Plus"], flat:["open","nicht bestätigt"], carplay:["yes","neben Google integriert"], eseat:["yes","ab Plus mit Memory"], adapt:["open","nicht bestätigt"], service:["yes","dichtes Volvo-Netz im Raum Zürich"]},
+  xpengg9:{cam360:["yes",""], flat:["open","nicht bestätigt"], carplay:["open","beim G6 bestätigt, beim G9 offen"], eseat:["yes",""], adapt:["yes","Luftfederung mit adaptiven Dämpfern"], service:["open","Partnernetz noch dünn, nächsten Partner beim Händler prüfen"]},
+  xpeng:{cam360:["yes",""], flat:["open","nicht bestätigt"], carplay:["yes","seit Modell 2025"], eseat:["yes",""], adapt:["open","nicht bestätigt"], service:["open","Partnernetz noch dünn, nächsten Partner beim Händler prüfen"]},
+  leapmotor:{cam360:["yes",""], flat:["open","nicht bestätigt"], carplay:["no","erst ab Modelljahr 2027 kabellos"], eseat:["yes",""], adapt:["no",""], service:["yes","Stellantis- und Emil-Frey-Partner"]},
+  tesla:{cam360:["no","nur 3D-Darstellung aus den Kameras"], flat:["yes","fast eben, beliebt zum Campen"], carplay:["no","angekündigt, Stand November 2026 nicht verfügbar"], eseat:["yes",""], adapt:["no",""], service:["yes","Tesla Service Zürich"]},
+  enyaq:{cam360:["opt","im Paket"], flat:["opt","weitgehend eben mit Zwischenboden (ADAC)"], carplay:["yes","kabellos"], eseat:["opt","Fahrersitz mit Memory ab Sportline Serie"], adapt:["opt","DCC, im Paket"], service:["yes","AMAG, sehr dichtes Netz"]},
+  elroq:{cam360:["opt","im Paket"], flat:["opt","fast eben"], carplay:["yes","kabellos"], eseat:["opt",""], adapt:["opt","DCC, im Paket"], service:["yes","AMAG, sehr dichtes Netz"]},
+  idtiguan:{cam360:["open","Schweizer Ausstattung noch offen"], flat:["open","nicht bestätigt"], carplay:["yes","kabellos"], eseat:["open","Schweizer Ausstattung noch offen"], adapt:["open","Schweizer Ausstattung noch offen"], service:["yes","AMAG, sehr dichtes Netz"]},
+  idcross:{cam360:["open","im Konfigurator prüfen"], flat:["open","nicht bestätigt"], carplay:["yes","kabellos"], eseat:["opt","12-Wege-Sitze"], adapt:["no",""], service:["yes","AMAG, sehr dichtes Netz"]},
+  smart5:{cam360:["yes",""], flat:["no","bucklige Liegefläche (ADAC)"], carplay:["yes","kabellos"], eseat:["yes",""], adapt:["no","Stahlfedern, nicht verstellbar"], service:["yes","Merbag und Mercedes-Partner"]},
+};
+CARS.forEach(c => {
+  const t = TECH[c.id] || {};
+  ["cam360","flat","carplay","eseat","adapt","service"].forEach(k => { const v = t[k] || ["open",""]; c[k] = v[0]; c[k+"Note"] = v[1]; });
+  c.app = "yes"; c.appNote = "";
+  c.awd = c.id === "idcross" ? "no" : "yes"; c.awdNote = c.id === "idcross" ? "nur Frontantrieb" : "";
+});
 CARS.forEach(c => { const l = LEASE[c.id] || [null, "Offen", ""]; c.lease = l[0]; c.leaseLabel = l[1]; c.leaseNote = l[2]; });
 
 const FEAT_LABEL = {yes:"Serie", opt:"Option", open:"Offen", no:"Nein"};
@@ -455,6 +478,7 @@ const COLS = [
   {key:"acc", label:"0–100", unit:"Sekunden", grp:"Fahren", better:"low", fmt:c=>dec(c.acc.toFixed(1)), note:"accNote"},
   {key:"ps", label:"Leistung", unit:"PS", grp:"Fahren", better:"high", fmt:c=>c.ps, note:"psNote"},
   {key:"turn", label:"Wendekreis", unit:"m", grp:"Fahren", better:"low", fmt:c=>c.turn==null?"k. A.":dec(c.turn.toFixed(1)), note:"turnNote"},
+  {key:"awd", label:"Allrad", unit:"", grp:"Fahren", feat:true, labels:{yes:"Ja", no:"Nein", open:"Offen", opt:"Option"}, note:"awdNote"},
   {key:"len", label:"Länge", unit:"mm", grp:"Masse", better:null, fmt:c=>chf(c.len)},
   {key:"wid", label:"Breite", unit:"mm o. Spiegel", grp:"Masse", better:null, fmt:c=>chf(c.wid), note:"widNote"},
   {key:"hei", label:"Höhe", unit:"mm", grp:"Masse", better:null, fmt:c=>chf(c.hei)},
@@ -468,6 +492,13 @@ const COLS = [
   {key:"roof", label:"Panoramadach", unit:"", grp:"Komfort", feat:true, note:"roofNote"},
   {key:"tail", label:"Elektr. Heckklappe", unit:"", grp:"Komfort", feat:true, note:"tailNote"},
   {key:"air", label:"Luftfederung", unit:"höhenverstellbar", grp:"Komfort", feat:true, note:"airNote"},
+  {key:"adapt", label:"Adaptives Fahrwerk", unit:"Comfort/Eco wählbar", grp:"Komfort", feat:true, note:"adaptNote"},
+  {key:"cam360", label:"360-Grad-Kamera", unit:"", grp:"Komfort", feat:true, note:"cam360Note"},
+  {key:"carplay", label:"Apple CarPlay", unit:"", grp:"Komfort", feat:true, note:"carplayNote"},
+  {key:"eseat", label:"Elektr. Sitze", unit:"vorne", grp:"Komfort", feat:true, note:"eseatNote"},
+  {key:"flat", label:"Rücksitze flach", unit:"Liegefläche", grp:"Alltag", feat:true, labels:{yes:"Eben", opt:"Fast eben", open:"Offen", no:"Uneben"}, note:"flatNote"},
+  {key:"app", label:"App Vorklimatisieren", unit:"heizen/kühlen", grp:"Alltag", feat:true, note:"appNote"},
+  {key:"service", label:"Werkstatt", unit:"max. 1 h von 8049", grp:"Alltag", feat:true, labels:{yes:"Ja", opt:"Ja", open:"Prüfen", no:"Nein"}, note:"serviceNote"},
 ];
 
 let sortKey = "priceFrom", sortAsc = true;
@@ -484,7 +515,7 @@ const IMG_BASE = "images/";
 const VIEWS = [["front","Front"],["side","Seite"],["rear","Heck"],["interior-1","Innenraum 1"],["interior-2","Innenraum 2"]];
 const imgSrc = (c, v) => `${IMG_BASE}${c.id}-${v}.jpg`;
 const brand = c => c.name.split(" ")[0];
-const GRP_CLASS = {"Preis":"g-preis","Akku & Laden":"g-akku","Fahren":"g-fahren","Masse":"g-masse","Komfort":"g-komfort"};
+const GRP_CLASS = {"Preis":"g-preis","Akku & Laden":"g-akku","Fahren":"g-fahren","Masse":"g-masse","Komfort":"g-komfort","Alltag":"g-alltag"};
 const GROUP_START = new Set(COLS.filter((c,i) => i === 0 || COLS[i-1].grp !== c.grp).map(c => c.key));
 
 let galCar = null, galView = 0;
@@ -557,7 +588,7 @@ function renderBody(){
     ${COLS.map(col => {
       const note = col.note && c[col.note] ? `<span class="small">${c[col.note]}</span>` : "";
       const gs = GROUP_START.has(col.key) ? "gs" : "";
-      if (col.feat) return `<td class="${gs}"><span class="chip ${c[col.key]}">${FEAT_LABEL[c[col.key]]}</span>${note}</td>`;
+      if (col.feat) return `<td class="${gs}"><span class="chip ${c[col.key]}">${(col.labels||FEAT_LABEL)[c[col.key]]}</span>${note}</td>`;
       const cls = [gs, bests[col.key].has(c.id) ? "best" : ""].filter(Boolean).join(" ");
       return `<td class="${cls}"><span class="num">${col.fmt(c)}</span>${note}</td>`;
     }).join("")}
@@ -573,9 +604,9 @@ const FACTS = [
   {key:"real", k:"Reichweite real", v:c=>"ca. "+c.real, u:"km"},
   {key:"t1080", k:"Laden 10–80 %", v:c=>c.t1080, u:"min"},
 ];
-const FEATS = [["massage","Massage"],["hud","Head-up"],["roof","Panoramadach"],["air","Luftfederung"],["tail","El. Heckklappe"]];
+const FEATS = [["massage","Massage"],["hud","Head-up"],["cam360","360°-Kamera"],["roof","Panoramadach"],["carplay","CarPlay"],["eseat","El. Sitze"],["adapt","Adaptives Fahrwerk"],["tail","El. Heckklappe"]];
 const FEAT_ICON = {yes:"✓", opt:"+", open:"?", no:"✕"};
-const QUICK = [["priceFrom","Preis"],["lease","Leasing"],["real","Reichweite"],["t1080","Laden"],["massage","Massage"],["acc","0–100"],["len","Länge"],["weight","Gewicht"],["name","Name"]];
+const QUICK = [["priceFrom","Preis"],["lease","Leasing"],["real","Reichweite"],["t1080","Laden"],["massage","Massage"],["hud","Head-up"],["carplay","CarPlay"],["acc","0–100"],["len","Länge"],["weight","Gewicht"],["name","Name"]];
 const openCards = new Set();
 
 function renderCards(rows, bests){
@@ -587,12 +618,12 @@ function renderCards(rows, bests){
       return `<div class="${cls}"><span class="k">${f.k}</span><span class="v">${f.v(c)}${f.u ? `<small>${f.u}</small>` : ""}</span></div>`;
     }).join("");
     const feats = FEATS.map(([k, l]) => `<span class="chip ${c[k]}" title="${FEAT_LABEL[c[k]]}"><i>${FEAT_ICON[c[k]]}</i>${l}</span>`).join("");
-    const band = showBand ? `<div class="card-sort"><span>${sortCol.label}${sortCol.unit ? " · " + sortCol.unit : ""}</span><b>${sortCol.feat ? FEAT_LABEL[c[sortKey]] : sortCol.fmt(c)}</b></div>` : "";
+    const band = showBand ? `<div class="card-sort"><span>${sortCol.label}${sortCol.unit ? " · " + sortCol.unit : ""}</span><b>${sortCol.feat ? (sortCol.labels||FEAT_LABEL)[c[sortKey]] : sortCol.fmt(c)}</b></div>` : "";
     const groups = [];
     COLS.forEach(col => { const g = groups[groups.length-1]; if (g && g.name === col.grp) g.cols.push(col); else groups.push({name:col.grp, cols:[col]}); });
     const detail = groups.map(g => `<div class="grpblock"><h4 class="${GRP_CLASS[g.name]||""}">${g.name}</h4>${g.cols.map(col => {
       const note = col.note && c[col.note] ? `<span class="n">${c[col.note]}</span>` : "";
-      const val = col.feat ? `<span class="chip ${c[col.key]}">${FEAT_LABEL[c[col.key]]}</span>` : col.fmt(c);
+      const val = col.feat ? `<span class="chip ${c[col.key]}">${(col.labels||FEAT_LABEL)[c[col.key]]}</span>` : col.fmt(c);
       return `<div class="row${!col.feat && bests[col.key].has(c.id) ? " best" : ""}"><span class="k">${col.label}${col.unit ? `<small>${col.unit}</small>` : ""}</span><span class="v">${val}</span>${note}</div>`;
     }).join("")}</div>`).join("");
     return `<article class="card">
