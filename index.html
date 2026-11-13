@@ -1,7 +1,8 @@
 <!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>img{max-width:100%}[hidden]{display:none!important}</style><title>E-SUV Shortlist</title>
+<script>document.documentElement.setAttribute("data-theme","light")</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: spec-sheet hero band, then one scrollable table box whose group and column headers stay pinned (top) together with the car column (left); photo gallery in a dialog; notes below */
 :root{
@@ -208,17 +209,128 @@ details.more[open] summary::after{content:"−"}
   .gal-thumbs{grid-template-columns:repeat(5,minmax(48px,1fr))}
 }
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+
+/* ===== Glass dashboard theme (always light) ===== */
+:root{color-scheme:light}
+:root,:root[data-theme="light"]{--bg:#f1edf1;--surface:rgba(255,255,255,.62);--solid:#fbfaff;--raised:rgba(255,255,255,.55);--fg:#1c1830;--muted:#6e6a82;--line:rgba(120,110,160,.16);--line-strong:rgba(120,110,160,.26);
+--accent:#6a48f5;--accent-soft:rgba(106,72,245,.10);--best-bg:rgba(106,72,245,.12);--row-hover:rgba(106,72,245,.05);--zebra:rgba(255,255,255,.35);
+--g-preis:rgba(255,236,206,.7);--g-akku:rgba(214,236,255,.7);--g-fahren:rgba(240,224,255,.7);--g-masse:rgba(222,245,226,.7);--g-komfort:rgba(230,226,255,.75);--g-alltag:rgba(255,228,216,.7);
+--g-preis-fg:#8a5a12;--g-akku-fg:#1d5d86;--g-fahren-fg:#7a3a8e;--g-masse-fg:#3c6a2a;--g-komfort-fg:#5038b8;--g-alltag-fg:#9a4422;
+--yes-bg:rgba(34,170,110,.13);--yes-fg:#16784c;--opt-bg:rgba(106,72,245,.11);--opt-fg:#5236d6;--no-bg:rgba(230,80,70,.11);--no-fg:#b5352a;--open-bg:rgba(120,110,140,.11);--open-fg:#5f5a72;
+--ph-a:rgba(225,220,245,.8);--ph-b:rgba(205,200,235,.8);--glass-b:rgba(255,255,255,.78);
+--f-display:"Plus Jakarta Sans","Inter",system-ui,sans-serif;--f-body:"Plus Jakarta Sans","Inter",system-ui,sans-serif;--f-mono:"Plus Jakarta Sans","Inter",system-ui,sans-serif;
+--shadow:0 1px 1px rgba(60,40,120,.04),0 18px 48px rgba(60,40,120,.08);
+--bgimg:radial-gradient(900px 600px at 0% 0%,#e8e3ff 0%,transparent 60%),radial-gradient(900px 700px at 100% 10%,#dcecf8 0%,transparent 55%),radial-gradient(800px 600px at 15% 100%,#fbdfe4 0%,transparent 60%),radial-gradient(700px 500px at 90% 95%,#fde9dc 0%,transparent 55%)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f0d1a;--surface:rgba(30,27,48,.6);--solid:#1b1830;--raised:rgba(36,32,58,.55);--fg:#ece9f7;--muted:#a19cb8;--line:rgba(180,170,230,.12);--line-strong:rgba(180,170,230,.2);
+--accent:#a690ff;--accent-soft:rgba(166,144,255,.14);--best-bg:rgba(166,144,255,.18);--row-hover:rgba(166,144,255,.07);--zebra:rgba(255,255,255,.02);
+--g-preis:rgba(90,70,30,.35);--g-akku:rgba(30,70,100,.35);--g-fahren:rgba(80,40,100,.35);--g-masse:rgba(40,80,40,.35);--g-komfort:rgba(60,50,120,.4);--g-alltag:rgba(110,50,30,.35);
+--g-preis-fg:#f0c98a;--g-akku-fg:#9ad3f2;--g-fahren-fg:#e2aef0;--g-masse-fg:#b4e2a0;--g-komfort-fg:#c3b6ff;--g-alltag-fg:#ffbc98;
+--yes-bg:rgba(60,200,140,.16);--yes-fg:#7fe0b4;--opt-bg:rgba(166,144,255,.18);--opt-fg:#c9bcff;--no-bg:rgba(240,110,100,.16);--no-fg:#ffaaa2;--open-bg:rgba(200,190,230,.12);--open-fg:#cfc9e4;
+--ph-a:rgba(50,45,80,.8);--ph-b:rgba(70,62,105,.8);--glass-b:rgba(255,255,255,.08);--shadow:0 18px 48px rgba(0,0,0,.35);
+--bgimg:radial-gradient(900px 600px at 0% 0%,#2a2150 0%,transparent 60%),radial-gradient(900px 700px at 100% 10%,#14304a 0%,transparent 55%),radial-gradient(800px 600px at 15% 100%,#3a1a2e 0%,transparent 60%)}}
+body{background:var(--bgimg),var(--bg);background-attachment:fixed;font-family:var(--f-body)}
+.glass,.scroller,.filters,.card,.note,.kpi,.topnav{background:var(--surface);-webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);border:1px solid var(--glass-b);box-shadow:var(--shadow);border-radius:24px}
+h1,.name,.note h2,.f-head b,.gal-head h2,.stat b{font-stretch:100%!important}
+.topnav{display:flex;align-items:center;gap:16px;padding:10px 12px 10px 16px;border-radius:999px;position:sticky;top:10px;z-index:30}
+.brandmark{display:flex;align-items:center;gap:10px;color:var(--accent);text-decoration:none;font-weight:800;font-size:16px}
+.brandmark span{color:var(--fg)}
+.navpills{display:flex;gap:4px;margin:0 auto;background:rgba(255,255,255,.35);padding:4px;border-radius:999px;border:1px solid var(--glass-b)}
+.navpills a{padding:8px 16px;border-radius:999px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+.navpills a[aria-current="true"]{background:var(--solid);color:var(--fg);box-shadow:0 2px 10px rgba(60,40,120,.08)}
+.navdate{font-size:12.5px;color:var(--muted);padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.4);border:1px solid var(--glass-b);white-space:nowrap}
+.hello h1{font-family:var(--f-display);font-weight:800;font-size:clamp(26px,3.4vw,34px);letter-spacing:-.02em;margin:6px 0 6px}
+.hello .lead{color:var(--muted);max-width:80ch;margin:0;font-size:14.5px}
+.dash{display:grid;grid-template-columns:minmax(0,2.1fr) minmax(280px,1fr);grid-template-areas:"kpis gauge" "chart gauge";gap:16px}
+.kpis{grid-area:kpis;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kpi{padding:16px 18px;display:flex;flex-direction:column;gap:6px;border-radius:22px;min-width:0}
+.kpi svg{width:30px;height:30px;color:var(--fg);opacity:.85}
+.kpi b{font-family:var(--f-display);font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.1;margin-top:6px}
+.kpi b small{font-size:14px;font-weight:500;color:var(--muted);margin-left:4px}
+.kpi span{font-size:13px;color:var(--muted);line-height:1.3}
+.kpi em{font-style:normal;font-size:12px;color:var(--accent);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chartcard{grid-area:chart;padding:18px 20px 16px;position:relative;min-width:0}
+.gaugecard{grid-area:gauge;padding:18px 20px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cc-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.cc-head h2{margin:0;font-size:18px;font-weight:700;letter-spacing:-.01em}
+.cc-head p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.seg{display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(255,255,255,.4);border:1px solid var(--glass-b)}
+.seg button{all:unset;cursor:pointer;font-size:13px;font-weight:500;padding:6px 12px;border-radius:999px;color:var(--muted)}
+.seg button[aria-selected="true"]{background:var(--solid);color:var(--fg);box-shadow:0 2px 10px rgba(60,40,120,.1)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bars{display:flex;flex-direction:column;gap:6px}
+.brow{display:grid;grid-template-columns:132px minmax(0,1fr) 78px;align-items:center;gap:10px;font-size:13px;cursor:default;border-radius:8px;padding:1px 4px}
+.brow:hover{background:var(--row-hover)}
+.brow .bn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--fg)}
+.brow .bt{height:16px;border-radius:0 6px 6px 0;background:repeating-linear-gradient(135deg,rgba(106,72,245,.30) 0 6px,rgba(106,72,245,.20) 6px 12px);min-width:4px;transition:width .35s ease}
+.brow.top .bt{background:var(--accent)}
+.brow:hover .bt{background:var(--accent)}
+.brow .bv{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.brow.top .bv{color:var(--fg);font-weight:600}
+.cc-tip{position:absolute;pointer-events:none;background:var(--solid);border:1px solid var(--glass-b);box-shadow:0 8px 24px rgba(60,40,120,.15);border-radius:12px;padding:8px 10px;font-size:12.5px;z-index:5;max-width:240px}
+.cc-tip b{display:block;font-size:13px}
+.gauge{position:relative;width:100%;max-width:280px;margin:4px auto 0}
+.gauge svg{width:100%;height:auto;display:block}
+.gauge .gv{position:absolute;left:0;right:0;top:46%;text-align:center}
+.gauge .gv b{display:block;font-size:34px;font-weight:800;letter-spacing:-.02em}
+.gauge .gv span{font-size:13px;color:var(--muted)}
+.toplist{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.toplist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;font-size:13.5px}
+.toplist .tb{grid-column:1/-1;height:6px;border-radius:99px;background:rgba(106,72,245,.12);overflow:hidden}
+.toplist .tb i{display:block;height:100%;border-radius:99px;background:var(--accent)}
+.toplist .ts{color:var(--muted);font-variant-numeric:tabular-nums}
+.toplist .miss{grid-column:1/-1;font-size:11.5px;color:var(--muted);margin-top:-2px}
+.bar{background:transparent}
+tbody td{background:rgba(255,255,255,.5)}
+tbody tr:nth-child(even) td{background:rgba(255,255,255,.32)}
+td.car,th.car{background:var(--solid)!important}
+thead th{background:rgba(255,255,255,.55)}
+th button{text-transform:none;letter-spacing:.01em;font-size:12px;font-weight:600}
+thead tr.grp th{letter-spacing:.06em}
+.chip{border-radius:8px}
+select,button.dir{background:rgba(255,255,255,.7);border-color:var(--glass-b);border-radius:12px}
+.f-row button,.quick button{border-radius:999px;background:rgba(255,255,255,.55);border-color:var(--glass-b)}
+.f-row button[aria-pressed="true"],.quick button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+dialog{background:var(--solid)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .navpills,:root:not([data-theme="light"]) .seg,:root:not([data-theme="light"]) .navdate{background:rgba(255,255,255,.05)}
+ :root:not([data-theme="light"]) tbody td{background:rgba(30,27,48,.55)} :root:not([data-theme="light"]) tbody tr:nth-child(even) td{background:rgba(36,32,58,.5)}
+ :root:not([data-theme="light"]) thead th{background:rgba(36,32,58,.7)} :root:not([data-theme="light"]) select,:root:not([data-theme="light"]) button.dir,:root:not([data-theme="light"]) .f-row button,:root:not([data-theme="light"]) .quick button{background:rgba(255,255,255,.06)}}
+@media (max-width:1050px){.dash{grid-template-columns:1fr;grid-template-areas:"kpis" "chart" "gauge"}}
+@media (max-width:760px){
+  .topnav{border-radius:20px;position:static;padding:8px 10px}.navpills,.navdate{display:none}
+  .gauge{max-width:220px}.kpi svg{width:24px;height:24px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.kpi{padding:12px 14px}.kpi b{font-size:21px}
+  .brow{grid-template-columns:96px minmax(0,1fr) 64px;font-size:12px}
+  .bar{position:sticky;top:0;background:rgba(241,237,241,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+}
+@media (max-width:760px) and (prefers-color-scheme: dark){:root:not([data-theme="light"]) .bar{background:rgba(15,13,26,.82)}}
 </style></head><body>
 
 <div class="wrap">
-  <header class="hero">
-    <div>
-      <span class="eyebrow">Stand 12. November 2026 · Schweizer Preise in CHF · Allradversionen</span>
-      <h1>E-SUV Shortlist</h1>
-      <p class="lead">Alle Werte gelten für die Allradversion (4x4), nur der VW ID. Cross ist ausschliesslich mit Frontantrieb erhältlich. <span class="desk">Den Preis mit Heckantrieb findest du jeweils darunter. Ein Klick auf eine Spaltenüberschrift sortiert, ein zweiter dreht die Reihenfolge. </span>Der beste Wert jedes Kriteriums ist blau hervorgehoben.</p>
-    </div>
-    <div class="stats" id="stats"></div>
+  <nav class="topnav glass" aria-label="Seitennavigation">
+    <a class="brandmark" href="#top" aria-label="Nach oben"><svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="16" cy="16" r="4" fill="currentColor"/></svg><span>E-SUV Shortlist</span></a>
+    <div class="navpills"><a href="#top" aria-current="true">Übersicht</a><a href="#filter">Filter</a><a href="#vergleich">Vergleich</a><a href="#hinweise">Hinweise</a></div>
+    <span class="navdate">Stand 13.11.2026</span>
+  </nav>
+
+  <header class="hello" id="top">
+    <h1>Dein E-SUV-Vergleich</h1>
+    <p class="lead">Schweizer Preise in CHF, alle Werte für die Allradversion (nur der VW ID. Cross hat Frontantrieb). <span class="desk">Ein Klick auf eine Spaltenüberschrift sortiert, ein zweiter dreht die Reihenfolge. </span>Der beste Wert jedes Kriteriums ist farbig hervorgehoben.</p>
   </header>
+
+  <section class="dash" aria-label="Übersicht">
+    <div class="kpis" id="stats"></div>
+    <div class="glass chartcard">
+      <div class="cc-head"><div><h2>Auf einen Blick</h2><p id="ccSub">Reale Reichweite, sortiert</p></div>
+        <div class="seg" id="ccSeg" role="tablist" aria-label="Kennzahl"></div></div>
+      <div class="bars" id="ccBars"></div>
+      <div class="cc-tip" id="ccTip" hidden></div>
+    </div>
+    <div class="glass gaugecard">
+      <div class="cc-head"><div><h2>Deine Muss-Kriterien</h2><p>12 Punkte, Serie oder Option zählt</p></div></div>
+      <div class="gauge" id="gauge"></div>
+      <ol class="toplist" id="toplist"></ol>
+    </div>
+  </section>
 
   <div class="bar">
     <div class="controls">
@@ -237,7 +349,7 @@ details.more[open] summary::after{content:"−"}
     </div>
   </div>
 
-  <section class="filters" aria-label="Filter">
+  <section class="filters" id="filter" aria-label="Filter">
     <div class="f-head"><b>Filtern</b><span id="fCount"></span><button type="button" id="fReset">Alle anzeigen</button></div>
     <div class="f-row" id="fFeat"></div>
     <div class="f-row f-opts">
@@ -246,7 +358,7 @@ details.more[open] summary::after{content:"−"}
     </div>
   </section>
 
-  <div class="scroller">
+  <div class="scroller" id="vergleich">
     <table id="tbl">
       <thead id="thead"></thead>
       <tbody id="tbody"></tbody>
@@ -256,7 +368,7 @@ details.more[open] summary::after{content:"−"}
   <div class="cards" id="cards"></div>
   <p class="f-empty" id="fEmpty" hidden>Kein Auto erfüllt alle gewählten Filter. Entferne einen Filter oder tippe auf «Alle anzeigen».</p>
 
-  <section class="notes">
+  <section class="notes" id="hinweise">
     <div class="note">
       <h2>Parkkarte blaue Zone ab 2027</h2>
       <p>Die Stadt Zürich verrechnet ab 1. Januar 2027 pro Kilo Leergewicht, für Elektroautos 35 Rappen pro Kilo und Jahr (Verbrenner 40 Rappen). Bisher waren es pauschal 300 Franken.</p>
@@ -624,13 +736,73 @@ function renderGallery(){
 }
 function closeGallery(){ const d = document.getElementById("gal"); if (d.open) d.close ? d.close() : d.removeAttribute("open"); }
 
-function renderStats(){
-  const awd = CARS.filter(c => c.id !== "idcross");
-  const cheapest = Math.min(...awd.map(c => c.priceFrom));
-  const fastest = Math.min(...CARS.map(c => c.t1080));
-  document.getElementById("stats").innerHTML = [
-    [CARS.length, "Autos"], [COLS.length, "Kriterien"], [chf(cheapest), "CHF, günstigster 4x4"], [fastest + " min", "schnellstes Laden 10–80 %"]
-  ].map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
+const ICON = {
+  car:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16h14M6.5 16l1.4-5.2A2 2 0 0 1 9.8 9.3h4.4a2 2 0 0 1 1.9 1.5L17.5 16"/><rect x="3.5" y="12.5" width="17" height="5" rx="2"/><circle cx="7.5" cy="18.5" r="1.3"/><circle cx="16.5" cy="18.5" r="1.3"/></svg>',
+  tag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1.5 1.5 0 0 1 0 2.1l-6.1 6.1a1.5 1.5 0 0 1-2.1 0z"/><circle cx="8.3" cy="8.3" r="1.4"/></svg>',
+  bolt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>',
+  road:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 21M16 3l4 18M12 4v3M12 10.5v3M12 17v3"/></svg>'
+};
+function renderStats(list = CARS){
+  const L = list.length ? list : CARS;
+  const by = (k, low) => [...L].filter(c => c[k] != null).sort((a,b) => low ? a[k]-b[k] : b[k]-a[k])[0];
+  const awd = L.filter(c => c.awd === "yes"); const cheap = [...(awd.length ? awd : L)].sort((a,b)=>a.priceFrom-b.priceFrom)[0];
+  const fast = by("t1080", true), far = by("real", false);
+  const tiles = [
+    [ICON.car, `${list.length}<small>von ${CARS.length}</small>`, "Autos in der Auswahl", fState.on.size || fState.price ? "Filter aktiv" : "alle angezeigt"],
+    [ICON.tag, `${chf(cheap.priceFrom)}<small>CHF</small>`, "günstigster 4x4", cheap.name],
+    [ICON.bolt, `${fast.t1080}<small>min</small>`, "schnellstes Laden 10–80 %", fast.name],
+    [ICON.road, `${far.real}<small>km</small>`, "grösste reale Reichweite", far.name],
+  ];
+  document.getElementById("stats").innerHTML = tiles.map(([ic, b, s, e]) => `<div class="kpi">${ic}<b>${b}</b><span>${s}</span><em>${e}</em></div>`).join("");
+}
+
+// Dashboard chart: one measure at a time, ranked
+const METRICS = [
+  {k:"real", l:"Reichweite", sub:"Reale Reichweite, beste zuerst", u:"km", low:false, f:v => "ca. " + v + " km"},
+  {k:"priceFrom", l:"Preis", sub:"Preis 4x4 ab, günstigste zuerst", u:"CHF", low:true, f:v => chf(v)},
+  {k:"t1080", l:"Laden", sub:"Laden 10–80 %, schnellste zuerst", u:"min", low:true, f:v => v + " min"},
+  {k:"ps", l:"Leistung", sub:"Leistung, stärkste zuerst", u:"PS", low:false, f:v => v + " PS"},
+];
+let ccMetric = "real";
+function renderChart(list){
+  const m = METRICS.find(x => x.k === ccMetric);
+  document.getElementById("ccSub").textContent = m.sub;
+  const L = [...list].filter(c => c[m.k] != null).sort((a,b) => m.low ? a[m.k]-b[m.k] : b[m.k]-a[m.k]);
+  const max = Math.max(...L.map(c => c[m.k]), 1);
+  const box = document.getElementById("ccBars");
+  box.innerHTML = L.length ? L.map((c, i) => `<div class="brow${i===0?" top":""}" data-id="${c.id}"><span class="bn">${c.name}</span><span class="bt" style="width:${Math.max(2, c[m.k]/max*100)}%"></span><span class="bv">${m.f(c[m.k])}</span></div>`).join("")
+    : `<p class="cc-empty">Keine Autos in der Auswahl</p>`;
+  const tip = document.getElementById("ccTip"), card = box.closest(".chartcard");
+  box.querySelectorAll(".brow").forEach(r => {
+    r.addEventListener("mousemove", e => {
+      const c = CARS.find(x => x.id === r.dataset.id), rc = card.getBoundingClientRect();
+      tip.innerHTML = `<b>${c.name}</b>${c.ref}<br>${m.l}: ${m.f(c[m.k])}`;
+      tip.hidden = false; tip.style.left = Math.min(e.clientX - rc.left + 14, rc.width - 250) + "px"; tip.style.top = (e.clientY - rc.top + 14) + "px";
+    });
+    r.addEventListener("mouseleave", () => { tip.hidden = true; });
+  });
+}
+function initChart(){
+  const seg = document.getElementById("ccSeg");
+  seg.innerHTML = METRICS.map(m => `<button type="button" role="tab" data-k="${m.k}" aria-selected="${m.k===ccMetric}">${m.l}</button>`).join("");
+  seg.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { ccMetric = b.dataset.k; seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-selected", String(x === b))); renderChart(CARS.filter(passes)); }));
+}
+
+// Muss-Kriterien: Serie oder Option zählt
+const MUST = [["hud","Head-up"],["cam360","360°-Kamera"],["flat","Rücksitze flach"],["roof","Panoramadach"],["carplay","CarPlay"],["awd","Allrad"],["v800","800 Volt"],["eseat","El. Sitze"],["adapt","Adaptives Fahrwerk"],["app","App"],["service","Werkstatt"],["tail","El. Heckklappe"]];
+const mustScore = c => { const miss = []; let n = 0; MUST.forEach(([k,l]) => { const ok = k === "v800" ? c.volt === 800 : (c[k] === "yes" || c[k] === "opt"); ok ? n++ : miss.push(l); }); return {n, miss}; };
+function renderGauge(list){
+  const L = (list.length ? list : CARS).map(c => ({c, ...mustScore(c)})).sort((a,b) => b.n - a.n || a.c.priceFrom - b.c.priceFrom);
+  const best = L[0], pct = Math.round(best.n / MUST.length * 100), ticks = 28, on = Math.round(ticks * best.n / MUST.length);
+  let svg = '<svg viewBox="0 0 240 150" aria-hidden="true">';
+  for (let i = 0; i < ticks; i++) {
+    const a = Math.PI * (1 - i/(ticks-1)), r1 = 92, r2 = 112, cx = 120, cy = 128;
+    const x1 = cx + r1*Math.cos(a), y1 = cy - r1*Math.sin(a), x2 = cx + r2*Math.cos(a), y2 = cy - r2*Math.sin(a);
+    svg += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke-width="7" stroke-linecap="round" stroke="${i < on ? "var(--accent)" : "rgba(106,72,245,.14)"}"/>`;
+  }
+  svg += '</svg>';
+  document.getElementById("gauge").innerHTML = svg + `<div class="gv"><b>${pct}%</b><span>${best.c.name}</span></div>`;
+  document.getElementById("toplist").innerHTML = L.slice(0, 5).map(x => `<li><span>${x.c.name}</span><span class="ts">${x.n}/${MUST.length}</span><span class="tb"><i style="width:${x.n/MUST.length*100}%"></i></span>${x.miss.length ? `<span class="miss">fehlt: ${x.miss.slice(0,3).join(", ")}${x.miss.length>3?" …":""}</span>` : ""}</li>`).join("");
 }
 
 function bestIds(col, list = CARS){
@@ -698,6 +870,7 @@ function renderBody(){
   const active = fState.on.size || fState.price;
   document.getElementById("fCount").textContent = active ? `${visible.length} von ${CARS.length} Autos` : `alle ${CARS.length} Autos`;
   document.getElementById("fEmpty").hidden = visible.length > 0;
+  renderStats(visible); renderChart(visible); renderGauge(visible);
   const rows = visible.sort((a,b) => {
     let va = sortVal(a, sortKey), vb = sortVal(b, sortKey);
     if (va == null && vb == null) return 0;
@@ -804,8 +977,8 @@ function setSort(key, fromHeader){
   const d = document.getElementById("gal");
   document.getElementById("galClose").addEventListener("click", closeGallery);
   d.addEventListener("click", e => { if (e.target === d) closeGallery(); });
-  initFilters();
-  renderStats(); renderHead(); renderBody(); syncControls();
+  initFilters(); initChart();
+  renderHead(); renderBody(); syncControls();
   window.addEventListener("resize", () => { const g = document.querySelector("tr.grp"); if (g) document.getElementById("tbl").style.setProperty("--grp-h", Math.round(g.getBoundingClientRect().height) + "px"); });
 })();
 </script>
