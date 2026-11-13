@@ -231,7 +231,7 @@ details.more[open] summary::after{content:"−"}
 body{background:var(--bgimg),var(--bg);background-attachment:fixed;font-family:var(--f-body)}
 .glass,.scroller,.filters,.card,.note,.kpi,.topnav{background:var(--surface);-webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);border:1px solid var(--glass-b);box-shadow:var(--shadow);border-radius:24px}
 h1,.name,.note h2,.f-head b,.gal-head h2,.stat b{font-stretch:100%!important}
-.topnav{display:flex;align-items:center;gap:16px;padding:10px 12px 10px 16px;border-radius:999px;position:sticky;top:10px;z-index:30}
+.topnav{display:flex;align-items:center;gap:16px;padding:10px 12px 10px 16px;border-radius:999px;position:relative;z-index:30}
 .brandmark{display:flex;align-items:center;gap:10px;color:var(--accent);text-decoration:none;font-weight:800;font-size:16px}
 .brandmark span{color:var(--fg)}
 .navpills{display:flex;gap:4px;margin:0 auto;background:rgba(255,255,255,.35);padding:4px;border-radius:999px;border:1px solid var(--glass-b)}
@@ -283,7 +283,10 @@ h1,.name,.note h2,.f-head b,.gal-head h2,.stat b{font-stretch:100%!important}
 tbody td{background:rgba(255,255,255,.5)}
 tbody tr:nth-child(even) td{background:rgba(255,255,255,.32)}
 td.car,th.car{background:var(--solid)!important}
-thead th{background:rgba(255,255,255,.55)}
+thead th{background:#f8f6fc}
+thead tr.grp th.car,thead tr.hdr th.car{background:#f8f6fc!important}
+thead tr.grp th.g-preis{background:#fff3e2!important}thead tr.grp th.g-akku{background:#e7f2fd!important}thead tr.grp th.g-fahren{background:#f6eefd!important}thead tr.grp th.g-masse{background:#edf8ef!important}thead tr.grp th.g-komfort{background:#efecff!important}thead tr.grp th.g-alltag{background:#fdefe8!important}
+.f-hint{font-size:12.5px;color:var(--muted)}
 th button{text-transform:none;letter-spacing:.01em;font-size:12px;font-weight:600}
 thead tr.grp th{letter-spacing:.06em}
 .chip{border-radius:8px}
@@ -300,7 +303,7 @@ dialog{background:var(--solid)}
   .gauge{max-width:220px}.kpi svg{width:24px;height:24px}
   .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.kpi{padding:12px 14px}.kpi b{font-size:21px}
   .brow{grid-template-columns:96px minmax(0,1fr) 64px;font-size:12px}
-  .bar{position:sticky;top:0;background:rgba(241,237,241,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+  .bar{position:sticky;top:0;background:#f3eff4;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
 }
 @media (max-width:760px) and (prefers-color-scheme: dark){:root:not([data-theme="light"]) .bar{background:rgba(15,13,26,.82)}}
 </style></head><body>
@@ -354,7 +357,7 @@ dialog{background:var(--solid)}
     <div class="f-row" id="fFeat"></div>
     <div class="f-row f-opts">
       <label>Preis 4x4 <select id="fPrice"><option value="">alle</option><option value="50000">bis 50'000</option><option value="60000">bis 60'000</option><option value="70000">bis 70'000</option></select></label>
-      <label class="f-check"><input type="checkbox" id="fOpt" checked> Option zählt auch</label>
+      <span class="f-hint">Serie und Option zählen. Mehrere Filter gelten zusammen.</span>
     </div>
   </section>
 
@@ -828,23 +831,21 @@ function passes(c){
     const f = FILTERS.find(x => x.k === k);
     if (f.test) { if (!f.test(c)) return false; continue; }
     const v = c[k];
-    if (!(v === "yes" || (fState.opt && !f.strict && v === "opt"))) return false;
+    if (!(v === "yes" || (!f.strict && v === "opt"))) return false;
   }
   return true;
 }
-function saveFilters(){ try { localStorage.setItem("esuv-filter", JSON.stringify({on:[...fState.on], price:fState.price, opt:fState.opt})); } catch(e) {} }
+function saveFilters(){ try { localStorage.setItem("esuv-filter-v2", JSON.stringify({on:[...fState.on], price:fState.price, opt:fState.opt})); } catch(e) {} }
 function syncFilters(){
   document.querySelectorAll("#fFeat button").forEach(b => b.setAttribute("aria-pressed", String(fState.on.has(b.dataset.k))));
   document.getElementById("fPrice").value = fState.price;
-  document.getElementById("fOpt").checked = fState.opt;
 }
 function initFilters(){
-  try { const s = JSON.parse(localStorage.getItem("esuv-filter") || "null"); if (s) { fState.on = new Set((s.on || []).filter(k => FILTERS.some(f => f.k === k))); fState.price = s.price || ""; fState.opt = s.opt !== false; } } catch(e) {}
+  try { const s = JSON.parse(localStorage.getItem("esuv-filter-v2") || "null"); if (s) { fState.on = new Set((s.on || []).filter(k => FILTERS.some(f => f.k === k))); fState.price = s.price || ""; fState.opt = s.opt !== false; } } catch(e) {}
   const row = document.getElementById("fFeat");
   row.innerHTML = FILTERS.map(f => `<button type="button" data-k="${f.k}" aria-pressed="false">${f.l}</button>`).join("");
   row.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { const k = b.dataset.k; fState.on.has(k) ? fState.on.delete(k) : fState.on.add(k); saveFilters(); syncFilters(); renderBody(); }));
   document.getElementById("fPrice").addEventListener("change", e => { fState.price = e.target.value; saveFilters(); renderBody(); });
-  document.getElementById("fOpt").addEventListener("change", e => { fState.opt = e.target.checked; saveFilters(); renderBody(); });
   document.getElementById("fReset").addEventListener("click", () => { fState.on.clear(); fState.price = ""; fState.opt = true; saveFilters(); syncFilters(); renderBody(); });
   syncFilters();
 }
