@@ -306,6 +306,31 @@ dialog{background:var(--solid)}
   .bar{position:sticky;top:0;background:#f3eff4;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
 }
 @media (max-width:760px) and (prefers-color-scheme: dark){:root:not([data-theme="light"]) .bar{background:rgba(15,13,26,.82)}}
+
+/* Dashboard v2 */
+.seg{flex-wrap:wrap;border-radius:18px}
+.btrack{position:relative;height:16px;display:block}
+.btrack .bg{position:absolute;left:0;top:0;height:100%;border-radius:0 6px 6px 0;background:rgba(106,72,245,.13)}
+.btrack .bt{position:absolute;left:0;top:0;height:100%}
+.brow{grid-template-columns:132px minmax(0,1fr) 116px}
+.bars.v-size,.bars.v-turn{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.tile{background:rgba(255,255,255,.5);border:1px solid var(--glass-b);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;font-size:12.5px}
+.tile:hover{background:#fff}
+.tile b{font-size:13px;font-weight:600}.tile small{color:var(--muted);font-variant-numeric:tabular-nums}
+.fp{height:62px;display:flex;align-items:center}
+.fp span{display:block;border-radius:14px 22px 22px 14px;background:linear-gradient(90deg,rgba(106,72,245,.35),rgba(106,72,245,.18));border:1.5px solid rgba(106,72,245,.55)}
+.v-turn svg{width:100%;max-width:120px;margin:0 auto;display:block}
+.v-turn .tc{fill:rgba(106,72,245,.10);stroke:var(--accent);stroke-width:2}
+.v-turn .top .tc{fill:rgba(106,72,245,.22)}
+.v-turn .tmin{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3}
+.v-turn text{text-anchor:middle;font:600 12px var(--f-body);fill:var(--fg)}
+.v-turn .tile b{text-align:center}
+.mchips{display:flex;flex-wrap:wrap;gap:6px}
+.mchips button{all:unset;cursor:pointer;font-size:12.5px;padding:4px 10px;border-radius:999px;border:1px solid var(--glass-b);background:rgba(255,255,255,.55);color:var(--muted)}
+.mchips button[aria-pressed="true"]{background:var(--accent-soft);border-color:rgba(106,72,245,.45);color:var(--accent);font-weight:600}
+.mhalf{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--muted);margin-top:4px}
+.mhalf input{accent-color:var(--accent)}
+@media (max-width:760px){.brow{grid-template-columns:92px minmax(0,1fr) 96px}.bars.v-size,.bars.v-turn{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style></head><body>
 
 <div class="wrap">
@@ -329,7 +354,9 @@ dialog{background:var(--solid)}
       <div class="cc-tip" id="ccTip" hidden></div>
     </div>
     <div class="glass gaugecard">
-      <div class="cc-head"><div><h2>Deine Muss-Kriterien</h2><p>12 Punkte, Serie oder Option zählt</p></div></div>
+      <div class="cc-head"><div><h2>Deine Muss-Kriterien</h2><p id="mustSub">Tippe an, was dir wichtig ist</p></div></div>
+      <div class="mchips" id="mustChips"></div>
+      <label class="mhalf"><input type="checkbox" id="mustHalf" checked> Option zählt halb</label>
       <div class="gauge" id="gauge"></div>
       <ol class="toplist" id="toplist"></ol>
     </div>
@@ -760,52 +787,84 @@ function renderStats(list = CARS){
 }
 
 // Dashboard chart: one measure at a time, ranked
-const METRICS = [
-  {k:"real", l:"Reichweite", sub:"Reale Reichweite, beste zuerst", u:"km", low:false, f:v => "ca. " + v + " km"},
-  {k:"priceFrom", l:"Preis", sub:"Preis 4x4 ab, günstigste zuerst", u:"CHF", low:true, f:v => chf(v)},
-  {k:"t1080", l:"Laden", sub:"Laden 10–80 %, schnellste zuerst", u:"min", low:true, f:v => v + " min"},
-  {k:"ps", l:"Leistung", sub:"Leistung, stärkste zuerst", u:"PS", low:false, f:v => v + " PS"},
+// "Auf einen Blick": verschiedene Ansichten
+const gross = c => { const m = /([\d]+(?:,\d)?) brutto/.exec(c.battNote || ""); return m ? parseFloat(m[1].replace(",", ".")) : null; };
+const n1 = v => String(Math.round(v*10)/10).replace(".", ",");
+const VIEWS2 = [
+  {k:"real", l:"Reichweite", sub:"Real (dunkel) und WLTP (hell), beste zuerst", type:"bullet", v:c=>c.real, ghost:c=>c.wltp, low:false, f:c=>`${c.real} / ${c.wltp} km`},
+  {k:"batt", l:"Akku", sub:"Netto nutzbar (dunkel) und brutto (hell), grösste zuerst", type:"bullet", v:c=>c.batt, ghost:c=>gross(c), low:false, f:c=>gross(c) ? `${n1(c.batt)} / ${n1(gross(c))} kWh` : `${n1(c.batt)} kWh`},
+  {k:"dc", l:"Laden DC", sub:"Maximale Ladeleistung am Schnelllader", type:"bar", v:c=>c.dc, low:false, f:c=>c.dc+" kW"},
+  {k:"t1080", l:"10–80 %", sub:"Ladezeit von 10 auf 80 %, schnellste zuerst", type:"bar", v:c=>c.t1080, low:true, f:c=>c.t1080+" min"},
+  {k:"ac", l:"Laden AC", sub:"Ladeleistung an der Wechselstrom-Säule (Migros 22 kW)", type:"bar", v:c=>c.ac, low:false, f:c=>c.ac+" kW"},
+  {k:"ps", l:"Leistung", sub:"Leistung, stärkste zuerst", type:"bar", v:c=>c.ps, low:false, f:c=>c.ps+" PS"},
+  {k:"priceFrom", l:"Preis", sub:"Preis 4x4 ab, günstigste zuerst", type:"bar", v:c=>c.priceFrom, low:true, f:c=>chf(c.priceFrom)},
+  {k:"size", l:"Grösse", sub:"Grundfläche von oben, massstabsgetreu (Länge × Breite)", type:"size"},
+  {k:"turn", l:"Wendekreis", sub:"Wendekreis massstabsgetreu, gestrichelt der kleinste", type:"turn"},
 ];
 let ccMetric = "real";
-function renderChart(list){
-  const m = METRICS.find(x => x.k === ccMetric);
-  document.getElementById("ccSub").textContent = m.sub;
-  const L = [...list].filter(c => c[m.k] != null).sort((a,b) => m.low ? a[m.k]-b[m.k] : b[m.k]-a[m.k]);
-  const max = Math.max(...L.map(c => c[m.k]), 1);
-  const box = document.getElementById("ccBars");
-  box.innerHTML = L.length ? L.map((c, i) => `<div class="brow${i===0?" top":""}" data-id="${c.id}"><span class="bn">${c.name}</span><span class="bt" style="width:${Math.max(2, c[m.k]/max*100)}%"></span><span class="bv">${m.f(c[m.k])}</span></div>`).join("")
-    : `<p class="cc-empty">Keine Autos in der Auswahl</p>`;
+function bindTips(box, fmt){
   const tip = document.getElementById("ccTip"), card = box.closest(".chartcard");
-  box.querySelectorAll(".brow").forEach(r => {
-    r.addEventListener("mousemove", e => {
-      const c = CARS.find(x => x.id === r.dataset.id), rc = card.getBoundingClientRect();
-      tip.innerHTML = `<b>${c.name}</b>${c.ref}<br>${m.l}: ${m.f(c[m.k])}`;
-      tip.hidden = false; tip.style.left = Math.min(e.clientX - rc.left + 14, rc.width - 250) + "px"; tip.style.top = (e.clientY - rc.top + 14) + "px";
-    });
+  box.querySelectorAll("[data-id]").forEach(r => {
+    r.addEventListener("mousemove", e => { const c = CARS.find(x => x.id === r.dataset.id), rc = card.getBoundingClientRect();
+      tip.innerHTML = `<b>${c.name}</b>${c.ref}<br>${fmt(c)}`; tip.hidden = false;
+      tip.style.left = Math.min(e.clientX - rc.left + 14, rc.width - 250) + "px"; tip.style.top = (e.clientY - rc.top + 14) + "px"; });
     r.addEventListener("mouseleave", () => { tip.hidden = true; });
   });
 }
+function renderChart(list){
+  const m = VIEWS2.find(x => x.k === ccMetric), box = document.getElementById("ccBars");
+  document.getElementById("ccSub").textContent = m.sub;
+  box.className = "bars v-" + m.type;
+  if (!list.length) { box.innerHTML = `<p class="cc-empty">Keine Autos in der Auswahl</p>`; return; }
+  if (m.type === "bar" || m.type === "bullet") {
+    const L = [...list].filter(c => m.v(c) != null).sort((a,b) => m.low ? m.v(a)-m.v(b) : m.v(b)-m.v(a));
+    const max = Math.max(...L.map(c => Math.max(m.v(c), m.ghost ? (m.ghost(c) || 0) : 0)), 1);
+    box.innerHTML = L.map((c, i) => `<div class="brow${i===0?" top":""}" data-id="${c.id}"><span class="bn">${c.name}</span><span class="btrack">${m.ghost && m.ghost(c) ? `<span class="bg" style="width:${m.ghost(c)/max*100}%"></span>` : ""}<span class="bt" style="width:${Math.max(2, m.v(c)/max*100)}%"></span></span><span class="bv">${m.f(c)}</span></div>`).join("");
+    bindTips(box, c => `${m.l}: ${m.f(c)}`);
+  } else if (m.type === "size") {
+    const L = [...list].sort((a,b) => b.len - a.len), maxL = Math.max(...L.map(c => c.len)), sc = 100 / maxL;
+    box.innerHTML = L.map(c => `<div class="tile" data-id="${c.id}"><div class="fp"><span style="width:${c.len*sc}%;aspect-ratio:${c.len}/${c.wid}"></span></div><b>${c.name}</b><small>${chf(c.len)} × ${chf(c.wid)} mm</small></div>`).join("");
+    bindTips(box, c => `Länge ${chf(c.len)} mm · Breite ${chf(c.wid)} mm · Höhe ${chf(c.hei)} mm`);
+  } else {
+    const L = [...list].filter(c => c.turn != null).sort((a,b) => a.turn - b.turn), max = Math.max(...L.map(c => c.turn)), min = Math.min(...L.map(c => c.turn));
+    box.innerHTML = L.map((c, i) => `<div class="tile${i===0?" top":""}" data-id="${c.id}"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="${46*c.turn/max}" class="tc"/><circle cx="50" cy="50" r="${46*min/max}" class="tmin"/><text x="50" y="55">${n1(c.turn)} m</text></svg><b>${c.name}</b></div>`).join("");
+    bindTips(box, c => `Wendekreis ${n1(c.turn)} m${c.turnNote ? " · " + c.turnNote : ""}`);
+  }
+}
 function initChart(){
   const seg = document.getElementById("ccSeg");
-  seg.innerHTML = METRICS.map(m => `<button type="button" role="tab" data-k="${m.k}" aria-selected="${m.k===ccMetric}">${m.l}</button>`).join("");
+  seg.innerHTML = VIEWS2.map(m => `<button type="button" role="tab" data-k="${m.k}" aria-selected="${m.k===ccMetric}">${m.l}</button>`).join("");
   seg.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { ccMetric = b.dataset.k; seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-selected", String(x === b))); renderChart(CARS.filter(passes)); }));
 }
 
-// Muss-Kriterien: Serie oder Option zählt
-const MUST = [["hud","Head-up"],["cam360","360°-Kamera"],["flat","Rücksitze flach"],["roof","Panoramadach"],["carplay","CarPlay"],["awd","Allrad"],["v800","800 Volt"],["eseat","El. Sitze"],["adapt","Adaptives Fahrwerk"],["app","App"],["service","Werkstatt"],["tail","El. Heckklappe"]];
-const mustScore = c => { const miss = []; let n = 0; MUST.forEach(([k,l]) => { const ok = k === "v800" ? c.volt === 800 : (c[k] === "yes" || c[k] === "opt"); ok ? n++ : miss.push(l); }); return {n, miss}; };
+// Muss-Kriterien: frei wählbar, Rangliste rechnet sich neu
+const MUST_ALL = [["hud","Head-up"],["massage","Massagesitze"],["cam360","360°-Kamera"],["flat","Rücksitze flach"],["roof","Panoramadach"],["carplay","CarPlay"],["awd","Allrad"],["v800","800 Volt"],["eseat","El. Sitze"],["adapt","Adaptives Fahrwerk"],["air","Luftfederung"],["glass","Akustikglas"],["tail","El. Heckklappe"],["app","App"],["service","Werkstatt"],["lease2","Leasing bis 2 %"]];
+const MUST_DEFAULT = ["hud","cam360","flat","roof","carplay","awd","v800","eseat","adapt","app","service","tail"];
+const mState = {on:new Set(MUST_DEFAULT), half:true};
+function mustPts(c, k){
+  if (k === "v800") return c.volt === 800 ? 1 : 0;
+  if (k === "lease2") return c.lease != null && c.lease <= 2 ? 1 : 0;
+  return c[k] === "yes" ? 1 : c[k] === "opt" ? (mState.half ? .5 : 1) : 0;
+}
 function renderGauge(list){
-  const L = (list.length ? list : CARS).map(c => ({c, ...mustScore(c)})).sort((a,b) => b.n - a.n || a.c.priceFrom - b.c.priceFrom);
-  const best = L[0], pct = Math.round(best.n / MUST.length * 100), ticks = 28, on = Math.round(ticks * best.n / MUST.length);
+  const keys = MUST_ALL.filter(([k]) => mState.on.has(k)), N = keys.length;
+  document.getElementById("mustSub").textContent = N ? `${N} Kriterien gewählt, Serie 1 Punkt${mState.half ? ", Option ½" : ", Option 1"}` : "Tippe an, was dir wichtig ist";
+  if (!N) { document.getElementById("gauge").innerHTML = ""; document.getElementById("toplist").innerHTML = ""; return; }
+  const L = (list.length ? list : CARS).map(c => { let n = 0; const miss = []; keys.forEach(([k,l]) => { const p = mustPts(c,k); n += p; if (p === 0) miss.push(l); }); return {c, n, miss}; })
+    .sort((a,b) => b.n - a.n || a.c.priceFrom - b.c.priceFrom);
+  const best = L[0], pct = Math.round(best.n / N * 100), ticks = 28, on = Math.round(ticks * best.n / N);
   let svg = '<svg viewBox="0 0 240 150" aria-hidden="true">';
-  for (let i = 0; i < ticks; i++) {
-    const a = Math.PI * (1 - i/(ticks-1)), r1 = 92, r2 = 112, cx = 120, cy = 128;
-    const x1 = cx + r1*Math.cos(a), y1 = cy - r1*Math.sin(a), x2 = cx + r2*Math.cos(a), y2 = cy - r2*Math.sin(a);
-    svg += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke-width="7" stroke-linecap="round" stroke="${i < on ? "var(--accent)" : "rgba(106,72,245,.14)"}"/>`;
-  }
-  svg += '</svg>';
-  document.getElementById("gauge").innerHTML = svg + `<div class="gv"><b>${pct}%</b><span>${best.c.name}</span></div>`;
-  document.getElementById("toplist").innerHTML = L.slice(0, 5).map(x => `<li><span>${x.c.name}</span><span class="ts">${x.n}/${MUST.length}</span><span class="tb"><i style="width:${x.n/MUST.length*100}%"></i></span>${x.miss.length ? `<span class="miss">fehlt: ${x.miss.slice(0,3).join(", ")}${x.miss.length>3?" …":""}</span>` : ""}</li>`).join("");
+  for (let i = 0; i < ticks; i++) { const a = Math.PI*(1-i/(ticks-1)), cx=120, cy=128;
+    svg += `<line x1="${(cx+92*Math.cos(a)).toFixed(1)}" y1="${(cy-92*Math.sin(a)).toFixed(1)}" x2="${(cx+112*Math.cos(a)).toFixed(1)}" y2="${(cy-112*Math.sin(a)).toFixed(1)}" stroke-width="7" stroke-linecap="round" stroke="${i < on ? "var(--accent)" : "rgba(106,72,245,.14)"}"/>`; }
+  document.getElementById("gauge").innerHTML = svg + `</svg><div class="gv"><b>${pct}%</b><span>${best.c.name}</span></div>`;
+  const fmt = v => String(v).replace(".5", "½").replace(/^0½/, "½");
+  document.getElementById("toplist").innerHTML = L.slice(0, 5).map((x, i) => `<li><span>${i+1}. ${x.c.name}</span><span class="ts">${fmt(x.n)}/${N}</span><span class="tb"><i style="width:${x.n/N*100}%"></i></span>${x.miss.length ? `<span class="miss">fehlt: ${x.miss.slice(0,3).join(", ")}${x.miss.length>3?" …":""}</span>` : ""}</li>`).join("");
+}
+function initMust(){
+  const box = document.getElementById("mustChips");
+  box.innerHTML = MUST_ALL.map(([k,l]) => `<button type="button" data-k="${k}" aria-pressed="${mState.on.has(k)}">${l}</button>`).join("");
+  box.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { const k = b.dataset.k; mState.on.has(k) ? mState.on.delete(k) : mState.on.add(k); b.setAttribute("aria-pressed", String(mState.on.has(k))); renderGauge(CARS.filter(passes)); }));
+  document.getElementById("mustHalf").addEventListener("change", e => { mState.half = e.target.checked; renderGauge(CARS.filter(passes)); });
 }
 
 function bestIds(col, list = CARS){
@@ -978,7 +1037,7 @@ function setSort(key, fromHeader){
   const d = document.getElementById("gal");
   document.getElementById("galClose").addEventListener("click", closeGallery);
   d.addEventListener("click", e => { if (e.target === d) closeGallery(); });
-  initFilters(); initChart();
+  initFilters(); initChart(); initMust();
   renderHead(); renderBody(); syncControls();
   window.addEventListener("resize", () => { const g = document.querySelector("tr.grp"); if (g) document.getElementById("tbl").style.setProperty("--grp-h", Math.round(g.getBoundingClientRect().height) + "px"); });
 })();
