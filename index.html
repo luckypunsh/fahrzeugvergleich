@@ -279,6 +279,7 @@ h1,.name,.note h2,.f-head b,.gal-head h2,.stat b{font-stretch:100%!important}
 .toplist .tb i{display:block;height:100%;border-radius:99px;background:var(--accent)}
 .toplist .ts{color:var(--muted);font-variant-numeric:tabular-nums}
 .toplist .miss{grid-column:1/-1;font-size:11.5px;color:var(--muted);margin-top:-2px}
+.toplist .miss.plus{color:var(--accent)}
 .bar{background:transparent}
 tbody td{background:rgba(255,255,255,.5)}
 tbody tr:nth-child(even) td{background:rgba(255,255,255,.32)}
@@ -328,7 +329,7 @@ dialog{background:var(--solid)}
 .mchips{display:flex;flex-wrap:wrap;gap:6px}
 .mchips button{all:unset;cursor:pointer;font-size:12.5px;padding:4px 10px;border-radius:999px;border:1px solid var(--glass-b);background:rgba(255,255,255,.55);color:var(--muted)}
 .mchips button[aria-pressed="true"]{background:var(--accent-soft);border-color:rgba(106,72,245,.45);color:var(--accent);font-weight:600}
-.mhalf{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--muted);margin-top:4px}
+.mhalf{font-size:12px;color:var(--muted);margin:4px 0 0;line-height:1.4}
 .mhalf input{accent-color:var(--accent)}
 @media (max-width:760px){.brow{grid-template-columns:92px minmax(0,1fr) 96px}.bars.v-size,.bars.v-turn{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style></head><body>
@@ -356,7 +357,7 @@ dialog{background:var(--solid)}
     <div class="glass gaugecard">
       <div class="cc-head"><div><h2>Deine Muss-Kriterien</h2><p id="mustSub">Tippe an, was dir wichtig ist</p></div></div>
       <div class="mchips" id="mustChips"></div>
-      <label class="mhalf"><input type="checkbox" id="mustHalf" checked> Option zählt halb</label>
+      <p class="mhalf">Zählt, wie viele Kriterien erfüllt sind (Serie oder Option). Bei Gleichstand entscheidet die Qualität, zum Beispiel das grösste Glasdach oder die beste Massage (★), danach der Preis.</p>
       <div class="gauge" id="gauge"></div>
       <ol class="toplist" id="toplist"></ol>
     </div>
@@ -444,7 +445,7 @@ const CARS = [
     priceFrom:67900, priceFromNote:"Heckantrieb ab 59'800",
     priceFull:70700, priceFullNote:"ca., Dual Motor + Prime + Leder, mit Launch-Rabatt", priceFullEst:true,
     batt:94, battNote:"100 brutto · NMC", wltp:600, real:470, realNote:"geschätzt · mit Performance-Paket 520 km WLTP",
-    dc:200, ac:11, acNote:"22 kW optional", t1080:30, acc:3.9,
+    dc:200, ac:22, acNote:"optional, Serie 11 kW", t1080:30, acc:3.9,
     ps:544, psNote:"Vordermotor abkoppelbar",
     len:4840, wid:2010, widNote:"2'139 mit Spiegeln", hei:1556, wb:2999, turn:11.6, turnNote:"ADAC",
     boot:530, bootMax:1665, weight:2375,
@@ -842,31 +843,44 @@ function initChart(){
 // Muss-Kriterien: frei wählbar, Rangliste rechnet sich neu
 const MUST_ALL = [["hud","Head-up"],["massage","Massagesitze"],["cam360","360°-Kamera"],["flat","Rücksitze flach"],["roof","Panoramadach"],["carplay","CarPlay"],["awd","Allrad"],["v800","800 Volt"],["eseat","El. Sitze"],["adapt","Adaptives Fahrwerk"],["air","Luftfederung"],["glass","Akustikglas"],["tail","El. Heckklappe"],["app","App"],["service","Werkstatt"],["lease2","Leasing bis 2 %"]];
 const MUST_DEFAULT = ["hud","cam360","flat","roof","carplay","awd","v800","eseat","adapt","app","service","tail"];
-const mState = {on:new Set(MUST_DEFAULT), half:true};
+const mState = {on:new Set(MUST_DEFAULT)};
+// Qualität je Kriterium: 3 = besonders gut, 2 = vorhanden (Standard), 1 = einfache Ausführung. Gilt für Serie und Option.
+const QUALITY = {
+  roof:{polestar:[3,"grösstes Glasdach, reicht bis über die Rücksitze"], tesla:[2.5,"durchgehendes Glasdach"], volvo:[2.5,"elektrochrom (Ultra)"], enyaq:[2.5,"zum Öffnen"]},
+  massage:{polestar:[3,"beste Massage im Vergleich, mehrere Programme und Stufen"], xpengg9:[2.5,"vorne und hinten"], zeekr:[2.5,"vorne, gut bewertet"], zeekr7gt:[2.5,"vorne, hinten auf Wunsch"], enyaq:[1,"einfache Massage"], elroq:[1,"einfache Massage"], idcross:[1,"einfache Massage"], idtiguan:[1.5,"Massage mit Belüftung"]},
+  hud:{zeekr:[3,"sehr grosses AR-Head-up"], zeekr7gt:[3,"sehr grosses AR-Head-up"], enyaq:[2.5,"AR-Head-up"], elroq:[2.5,"AR-Head-up"], q4:[2.5,"AR-Head-up"], smart5:[2.5,"AR-Head-up"]},
+  adapt:{zeekr:[3,"Luftfederung und adaptive Dämpfer"], zeekr7gt:[3,"Luftfederung und adaptive Dämpfer"], xpengg9:[3,"Luftfederung und adaptive Dämpfer"]},
+  air:{zeekr:[3,"höhenverstellbar"], xpengg9:[3,"Zweikammer-Luftfederung"]},
+  carplay:{}, cam360:{}, eseat:{}, tail:{}, flat:{tesla:[3,"fast eben"], sealion7:[2.5,"ohne Stufe"]},
+};
 function mustPts(c, k){
-  if (k === "v800") return c.volt === 800 ? 1 : 0;
-  if (k === "lease2") return c.lease != null && c.lease <= 2 ? 1 : 0;
-  return c[k] === "yes" ? 1 : c[k] === "opt" ? (mState.half ? .5 : 1) : 0;
+  if (k === "v800") return c.volt === 800 ? 3 : 0;
+  if (k === "lease2") return c.lease == null ? 0 : c.lease === 0 ? 3 : c.lease <= 2 ? 2 : 0;
+  if (!(c[k] === "yes" || c[k] === "opt")) return 0;
+  const q = QUALITY[k] && QUALITY[k][c.id]; return q ? q[0] : 2;
 }
 function renderGauge(list){
   const keys = MUST_ALL.filter(([k]) => mState.on.has(k)), N = keys.length;
-  document.getElementById("mustSub").textContent = N ? `${N} Kriterien gewählt, Serie 1 Punkt${mState.half ? ", Option ½" : ", Option 1"}` : "Tippe an, was dir wichtig ist";
+  document.getElementById("mustSub").textContent = N ? `${N} ${N === 1 ? "Kriterium" : "Kriterien"} gewählt, Optionen zählen voll` : "Tippe an, was dir wichtig ist";
   if (!N) { document.getElementById("gauge").innerHTML = ""; document.getElementById("toplist").innerHTML = ""; return; }
-  const L = (list.length ? list : CARS).map(c => { let n = 0; const miss = []; keys.forEach(([k,l]) => { const p = mustPts(c,k); n += p; if (p === 0) miss.push(l); }); return {c, n, miss}; })
-    .sort((a,b) => b.n - a.n || a.c.priceFrom - b.c.priceFrom);
+  const L = (list.length ? list : CARS).map(c => { let n = 0, q = 0; const miss = [], plus = []; keys.forEach(([k,l]) => { const p = mustPts(c,k); q += p; if (p === 0) miss.push(l); else { n++; if (p >= 2.5 && QUALITY[k] && QUALITY[k][c.id]) plus.push(l + ": " + QUALITY[k][c.id][1]); } }); return {c, n, q, miss, plus}; })
+    .sort((a,b) => b.n - a.n || b.q - a.q || a.c.priceFrom - b.c.priceFrom);
   const best = L[0], pct = Math.round(best.n / N * 100), ticks = 28, on = Math.round(ticks * best.n / N);
   let svg = '<svg viewBox="0 0 240 150" aria-hidden="true">';
   for (let i = 0; i < ticks; i++) { const a = Math.PI*(1-i/(ticks-1)), cx=120, cy=128;
     svg += `<line x1="${(cx+92*Math.cos(a)).toFixed(1)}" y1="${(cy-92*Math.sin(a)).toFixed(1)}" x2="${(cx+112*Math.cos(a)).toFixed(1)}" y2="${(cy-112*Math.sin(a)).toFixed(1)}" stroke-width="7" stroke-linecap="round" stroke="${i < on ? "var(--accent)" : "rgba(106,72,245,.14)"}"/>`; }
   document.getElementById("gauge").innerHTML = svg + `</svg><div class="gv"><b>${pct}%</b><span>${best.c.name}</span></div>`;
-  const fmt = v => String(v).replace(".5", "½").replace(/^0½/, "½");
-  document.getElementById("toplist").innerHTML = L.slice(0, 5).map((x, i) => `<li><span>${i+1}. ${x.c.name}</span><span class="ts">${fmt(x.n)}/${N}</span><span class="tb"><i style="width:${x.n/N*100}%"></i></span>${x.miss.length ? `<span class="miss">fehlt: ${x.miss.slice(0,3).join(", ")}${x.miss.length>3?" …":""}</span>` : ""}</li>`).join("");
+  document.getElementById("toplist").innerHTML = L.slice(0, 5).map((x, i) => {
+    const p = Math.round(x.n / N * 100);
+    const extra = x.plus.length ? `<span class="miss plus">★ ${x.plus.slice(0,2).join(", ")}</span>` : "";
+    const miss = x.miss.length ? `<span class="miss">fehlt: ${x.miss.slice(0,3).join(", ")}${x.miss.length>3?" …":""}</span>` : "";
+    return `<li><span>${i+1}. ${x.c.name}</span><span class="ts">${x.n}/${N}</span><span class="tb"><i style="width:${p}%"></i></span>${extra}${miss}</li>`;
+  }).join("");
 }
 function initMust(){
   const box = document.getElementById("mustChips");
   box.innerHTML = MUST_ALL.map(([k,l]) => `<button type="button" data-k="${k}" aria-pressed="${mState.on.has(k)}">${l}</button>`).join("");
   box.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { const k = b.dataset.k; mState.on.has(k) ? mState.on.delete(k) : mState.on.add(k); b.setAttribute("aria-pressed", String(mState.on.has(k))); renderGauge(CARS.filter(passes)); }));
-  document.getElementById("mustHalf").addEventListener("change", e => { mState.half = e.target.checked; renderGauge(CARS.filter(passes)); });
 }
 
 function bestIds(col, list = CARS){
