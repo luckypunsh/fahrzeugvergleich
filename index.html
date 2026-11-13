@@ -313,7 +313,9 @@ dialog{background:var(--solid)}
 .btrack{position:relative;height:16px;display:block}
 .btrack .bg{position:absolute;left:0;top:0;height:100%;border-radius:0 6px 6px 0;background:rgba(106,72,245,.13)}
 .btrack .bt{position:absolute;left:0;top:0;height:100%}
-.brow{grid-template-columns:132px minmax(0,1fr) 150px}
+.brow,.bhead{grid-template-columns:132px minmax(0,1fr) 190px}
+.bhead{display:grid;gap:10px;padding:0 4px 2px;font-size:11.5px;color:var(--muted);font-weight:600}
+.bhead span:last-child{text-align:right}
 .bars.v-size,.bars.v-turn{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .tile{background:rgba(255,255,255,.5);border:1px solid var(--glass-b);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;font-size:12.5px}
 .tile:hover{background:#fff}
@@ -331,7 +333,7 @@ dialog{background:var(--solid)}
 .mchips button[aria-pressed="true"]{background:var(--accent-soft);border-color:rgba(106,72,245,.45);color:var(--accent);font-weight:600}
 .mhalf{font-size:12px;color:var(--muted);margin:4px 0 0;line-height:1.4}
 .mhalf input{accent-color:var(--accent)}
-@media (max-width:760px){.brow{grid-template-columns:92px minmax(0,1fr) 96px}.bars.v-size,.bars.v-turn{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.brow,.bhead{grid-template-columns:92px minmax(0,1fr) 112px}.bars.v-size,.bars.v-turn{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style></head><body>
 
 <div class="wrap">
@@ -792,8 +794,8 @@ function renderStats(list = CARS){
 const gross = c => { const m = /([\d]+(?:,\d)?) brutto/.exec(c.battNote || ""); return m ? parseFloat(m[1].replace(",", ".")) : null; };
 const n1 = v => String(Math.round(v*10)/10).replace(".", ",");
 const VIEWS2 = [
-  {k:"real", l:"Reichweite", sub:"Real (dunkel) und WLTP (hell), beste zuerst", type:"bullet", v:c=>c.real, ghost:c=>c.wltp, low:false, f:c=>`${c.real} / ${c.wltp} km`},
-  {k:"batt", l:"Akku", sub:"Netto nutzbar (dunkel) und brutto (hell), grösste zuerst", type:"bullet", v:c=>c.batt, ghost:c=>gross(c), low:false, f:c=>gross(c) ? `${n1(c.batt)} / ${n1(gross(c))} kWh` : `${n1(c.batt)} kWh`},
+  {k:"real", l:"Reichweite", sub:"Real (dunkel) und WLTP (hell), beste zuerst", type:"bullet", hdr:["", "real / WLTP"], v:c=>c.real, ghost:c=>c.wltp, low:false, f:c=>`${c.real} / ${c.wltp} km`},
+  {k:"batt", l:"Akku", sub:"Netto nutzbar (dunkel) und brutto (hell), grösste zuerst", type:"bullet", hdr:["", "netto / brutto"], v:c=>c.batt, ghost:c=>gross(c), low:false, f:c=>gross(c) ? `${n1(c.batt)} / ${n1(gross(c))} kWh` : `${n1(c.batt)} kWh`},
   {k:"dc", l:"Laden DC", sub:"Maximale Ladeleistung am Schnelllader", type:"bar", v:c=>c.dc, low:false, f:c=>c.dc+" kW"},
   {k:"t1080", l:"10–80 %", sub:"Ladezeit von 10 auf 80 %, schnellste zuerst", type:"bar", v:c=>c.t1080, low:true, f:c=>c.t1080+" min"},
   {k:"ac", l:"Laden AC", sub:"Ladeleistung an der Wechselstrom-Säule (Migros 22 kW)", type:"bar", v:c=>c.ac, low:false, f:c=>c.ac+" kW"},
@@ -801,7 +803,7 @@ const VIEWS2 = [
   {k:"priceFrom", l:"Preis", sub:"Preis 4x4 ab, günstigste zuerst", type:"bar", v:c=>c.priceFrom, low:true, f:c=>chf(c.priceFrom)},
   {k:"len", l:"Länge", sub:"Balken = wie viel länger als das kürzeste Auto", type:"bar", diff:true, v:c=>c.len, low:true, f:(c,d)=>chf(c.len)+" mm"+(d ? ` (+${chf(d)})` : "")},
   {k:"wid", l:"Breite", sub:"Breite ohne Spiegel, Balken = wie viel breiter als das schmalste Auto", type:"bar", diff:true, v:c=>c.wid, low:true, f:(c,d)=>chf(c.wid)+" mm"+(d ? ` (+${chf(d)})` : "")},
-  {k:"weight", l:"Gewicht", sub:"Leergewicht (EU), leichteste zuerst, dazu die Parkkarte Zürich 2027", type:"bar", v:c=>c.weight, low:true, f:c=>`${chf(c.weight)} kg · ${chf(c.park)} CHF`},
+  {k:"weight", l:"Gewicht", sub:"Leergewicht nach EU-Norm, leichteste zuerst. Rechts daneben die Kosten der Parkkarte blaue Zone Zürich ab 2027 (35 Rp. pro kg und Jahr).", type:"bar", v:c=>c.weight, low:true, hdr:["", "Leergewicht · Parkkarte blaue Zone ZH pro Jahr"], f:c=>`${chf(c.weight)} kg · ${chf(c.park)} CHF`, tip:c=>`Leergewicht (EU): ${chf(c.weight)} kg<br>Parkkarte blaue Zone Zürich ab 2027: CHF ${chf(c.park)} pro Jahr`},
   {k:"turn", l:"Wendekreis", sub:"Balken = wie viel grösser als der kleinste Wendekreis", type:"bar", diff:true, v:c=>c.turn, low:true, f:(c,d)=>n1(c.turn)+" m"+(d > 0.04 ? ` (+${n1(d)})` : "")},
 ];
 let ccMetric = "real";
@@ -823,8 +825,9 @@ function renderChart(list){
     const L = [...list].filter(c => m.v(c) != null).sort((a,b) => m.low ? m.v(a)-m.v(b) : m.v(b)-m.v(a));
     const base = m.diff ? Math.min(...L.map(m.v)) : 0, val = c => m.v(c) - base;
     const max = Math.max(...L.map(c => Math.max(val(c), m.ghost ? (m.ghost(c) || 0) : 0)), m.diff ? 1e-9 : 1);
-    box.innerHTML = L.map((c, i) => `<div class="brow${i===0?" top":""}" data-id="${c.id}"><span class="bn">${c.name}</span><span class="btrack">${m.ghost && m.ghost(c) ? `<span class="bg" style="width:${m.ghost(c)/max*100}%"></span>` : ""}<span class="bt" style="width:${Math.max(1.2, val(c)/max*100)}%"></span></span><span class="bv">${m.f(c, val(c))}</span></div>`).join("");
-    bindTips(box, c => `${m.l}: ${m.f(c, val(c))}`);
+    const head = m.hdr ? `<div class="bhead"><span></span><span>${m.hdr[0] && m.hdr[0] !== "" ? m.hdr[0] : ""}</span><span>${m.hdr[1]}</span></div>` : "";
+    box.innerHTML = head + L.map((c, i) => `<div class="brow${i===0?" top":""}" data-id="${c.id}"><span class="bn">${c.name}</span><span class="btrack">${m.ghost && m.ghost(c) ? `<span class="bg" style="width:${m.ghost(c)/max*100}%"></span>` : ""}<span class="bt" style="width:${Math.max(1.2, val(c)/max*100)}%"></span></span><span class="bv">${m.f(c, val(c))}</span></div>`).join("");
+    bindTips(box, c => m.tip ? m.tip(c) : `${m.l}: ${m.f(c, val(c))}`);
   } else if (m.type === "size") {
     const L = [...list].sort((a,b) => b.len - a.len), maxL = Math.max(...L.map(c => c.len)), sc = 100 / maxL;
     box.innerHTML = L.map(c => `<div class="tile" data-id="${c.id}"><div class="fp"><span style="width:${c.len*sc}%;aspect-ratio:${c.len}/${c.wid}"></span></div><b>${c.name}</b><small>${chf(c.len)} × ${chf(c.wid)} mm</small></div>`).join("");
