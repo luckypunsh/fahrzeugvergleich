@@ -132,6 +132,22 @@ dialog::backdrop{background:rgba(10,14,18,.6)}
 .gal-thumbs .t img{width:100%;height:100%;object-fit:cover;display:block}
 .gal-thumbs button[aria-current="true"] .t{outline-color:var(--accent)}
 .gal-thumbs button[aria-current="true"]{color:var(--fg)}
+/* Filters */
+.filters{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow)}
+.f-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.f-head b{font-family:var(--f-display);font-stretch:85%;font-size:16px}
+.f-head span{font-size:13px;color:var(--muted)}
+.f-head button{all:unset;cursor:pointer;margin-left:auto;font-size:13px;color:var(--accent);border-bottom:1px solid currentColor}
+.f-row{display:flex;flex-wrap:wrap;gap:6px}
+.f-row button{all:unset;cursor:pointer;font-size:13px;padding:5px 11px;border-radius:999px;border:1px solid var(--line-strong);background:var(--surface);color:var(--fg);white-space:nowrap}
+.f-row button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.f-row button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.f-opts{gap:8px 18px;align-items:center;font-size:13px;color:var(--muted)}
+.f-opts label{display:flex;gap:8px;align-items:center}
+.f-check input{accent-color:var(--accent);width:16px;height:16px}
+.f-empty{background:var(--surface);border:1px dashed var(--line-strong);border-radius:12px;padding:18px;text-align:center;color:var(--muted);margin:0}
+@media (max-width:760px){.f-row#fFeat{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.f-row#fFeat::-webkit-scrollbar{display:none}}
+
 /* Mobile: cards instead of the wide table */
 .cards,.quick{display:none}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
@@ -221,6 +237,15 @@ details.more[open] summary::after{content:"−"}
     </div>
   </div>
 
+  <section class="filters" aria-label="Filter">
+    <div class="f-head"><b>Filtern</b><span id="fCount"></span><button type="button" id="fReset">Alle anzeigen</button></div>
+    <div class="f-row" id="fFeat"></div>
+    <div class="f-row f-opts">
+      <label>Preis 4x4 <select id="fPrice"><option value="">alle</option><option value="50000">bis 50'000</option><option value="60000">bis 60'000</option><option value="70000">bis 70'000</option></select></label>
+      <label class="f-check"><input type="checkbox" id="fOpt" checked> Option zählt auch</label>
+    </div>
+  </section>
+
   <div class="scroller">
     <table id="tbl">
       <thead id="thead"></thead>
@@ -229,6 +254,7 @@ details.more[open] summary::after{content:"−"}
   </div>
 
   <div class="cards" id="cards"></div>
+  <p class="f-empty" id="fEmpty" hidden>Kein Auto erfüllt alle gewählten Filter. Entferne einen Filter oder tippe auf «Alle anzeigen».</p>
 
   <section class="notes">
     <div class="note">
@@ -238,7 +264,7 @@ details.more[open] summary::after{content:"−"}
     </div>
     <div class="note">
       <h2>Voll ausgestattet</h2>
-      <p>Head-up-Display, Massagesitze und Panoramadach gibt es nur bei Polestar, Zeekr und Enyaq zusammen. Tesla, XPeng und Volvo bieten kein Head-up-Display an, der Elroq kein Panoramadach. Beim Volvo EX60 gibt es auch keine Massagesitze, nur Sitzbelüftung. Der XPeng G9 hat als einziger auch hinten Massage, ob er ein Head-up-Display hat, ist widersprüchlich. Der Leapmotor C10, der Audi Q4 und der smart #5 haben keine Massagesitze, beim smart gibt es sie nur in China.</p>
+      <p>Head-up-Display, Massagesitze und Panoramadach gibt es nur bei Polestar, Zeekr und Enyaq zusammen. Tesla, XPeng und Volvo bieten kein Head-up-Display an, der Elroq kein Panoramadach. Beim Volvo EX60 gibt es auch keine Massagesitze, nur Sitzbelüftung. Der XPeng G9 hat als einziger auch hinten Massage, ob er ein Head-up-Display hat, ist widersprüchlich. Der Leapmotor C10, der Audi Q4 und der smart #5 haben keine Massagesitze, beim BYD Sealion 7 sind sie nicht bestätigt, beim smart gibt es sie nur in China.</p>
       <p>Beim Polestar fehlt der offizielle Schweizer Preis für das Nappa-Paket, beim Zeekr die Schweizer Paketpreise. Diese Werte sind geschätzt und mit ca. markiert.</p>
     </div>
     <div class="note">
@@ -253,7 +279,7 @@ details.more[open] summary::after{content:"−"}
   </section>
 
   <footer>
-    <span>Quellen: Hersteller und Schweizer Händler (Polestar, Zeekr Schweiz, Škoda Preisliste Elroq ab 21.09.2026, XPeng Preisliste Schweiz, Volkswagen Schweiz, Volvo Preisliste MY27, Merbag für smart, Audi Schweiz), EV Database, ADAC Autokatalog, Automobil Revue, Blick, blue News und Tsüri zur Parkkarte. Leasing: Aktionsseiten von Polestar, Volvo, Škoda, AMAG Leasing, Volkswagen, XPeng und Tesla Schweiz sowie Emil-Frey-Inserate, Stand 11.11.2026. Preise sind Listenpreise ohne Rabatte, Händleraktionen und Überführung. Ausstattung und Preise können sich ändern, vor dem Entscheid im Konfigurator prüfen.</span>
+    <span>Quellen: Hersteller und Schweizer Händler (Polestar, Zeekr Schweiz, Škoda Preisliste Elroq ab 21.09.2026, XPeng Preisliste Schweiz, Volkswagen Schweiz, Volvo Preisliste MY27, Merbag für smart, Audi Schweiz, BYD Schweiz), EV Database, ADAC Autokatalog, Automobil Revue, Blick, blue News und Tsüri zur Parkkarte. Leasing: Aktionsseiten von Polestar, Volvo, Škoda, AMAG Leasing, Volkswagen, XPeng und Tesla Schweiz sowie Emil-Frey-Inserate, Stand 11.11.2026. Preise sind Listenpreise ohne Rabatte, Händleraktionen und Überführung. Ausstattung und Preise können sich ändern, vor dem Entscheid im Konfigurator prüfen.</span>
     <span>Fotos: Wikimedia Commons, frei lizenziert (CC BY-SA bzw. CC0). Urheber und Lizenz stehen in der Galerie unter jedem Bild. Wo es vom neuen Modell noch keine freien Bilder gibt, ist das vermerkt, etwa Innenraum wie Coupé. «Fotos CarExpert» öffnet den Testbericht von CarExpert mit grosser Bildergalerie, auch vom Innenraum und der Bedienung.</span>
   </footer>
 </div>
@@ -411,7 +437,16 @@ const CARS = [
     len:4588, wid:1865, hei:1632, wb:2764, turn:11.5, turnNote:"quattro · Heckantrieb 10,2",
     boot:515, bootMax:1487, weight:2240, weightNote:"laut Test (electrive)",
     screen:12.8, screenNote:"+ 11,9\" Cockpit, 12\" Beifahrer optional",
-    massage:"no", massageNote:"nicht erhältlich", hud:"opt", hudNote:"AR, im Navigationspaket", roof:"opt", tail:"opt" }
+    massage:"no", massageNote:"nicht erhältlich", hud:"opt", hudNote:"AR, im Navigationspaket", roof:"opt", tail:"opt" },
+  { id:"sealion7", name:"BYD Sealion 7", ref:"Excellence AWD", cls:"Mittelklasse",
+    priceFrom:60990, priceFromNote:"Lancierungspreis 2025 · Design AWD ab 55'990",
+    priceFull:null, priceFullNote:"Massagesitze nicht bestätigt, HUD und Glasdach Serie",
+    batt:91.3, battNote:"LFP Blade", wltp:502, real:430, realNote:"ADAC Ecotest 432",
+    dc:230, ac:11, t1080:24, t1080Note:"Herstellerangabe", acc:4.5,
+    ps:530, len:4830, wid:1925, hei:1620, wb:2930, turn:11.7, turnNote:"ADAC",
+    boot:520, bootMax:1789, weight:2435, weightNote:"ADAC",
+    screen:15.6, screenNote:"drehbar + 10,25\" Cockpit",
+    massage:"open", massageNote:"ADAC-Test nennt nur Heizung und Belüftung", hud:"yes", roof:"yes", tail:"yes", tailNote:"mit Fussgeste" }
 ];
 const AIR = {
   polestar:["no","Stahlfedern, adaptive Dämpfer mit Performance-Paket"],
@@ -427,10 +462,11 @@ const AIR = {
   idcross:["no",""],
   smart5:["no","Stahlfedern"],
   q4:["no",""],
+  sealion7:["no","Stahlfedern"],
   idtiguan:["no",""]
 };
 CARS.forEach(c => { const a = AIR[c.id] || ["open",""]; c.air = a[0]; c.airNote = a[1]; });
-const VOLT = { polestar:400, zeekr:800, volvo:800, xpengg9:800, leapmotor:800, zeekr7gt:800, idtiguan:400, tesla:400, xpeng:800, enyaq:400, elroq:400, idcross:400, smart5:800, q4:400 };
+const VOLT = { polestar:400, zeekr:800, volvo:800, xpengg9:800, leapmotor:800, zeekr7gt:800, idtiguan:400, tesla:400, xpeng:800, enyaq:400, elroq:400, idcross:400, smart5:800, q4:400, sealion7:800 };
 CARS.forEach(c => { c.volt = VOLT[c.id] ?? null; });
 CARS.forEach(c => { c.park = Math.round(c.weight * 0.35); });
 // Leasing: [Zins in %, Anzeige, Details]. Stand 11.11.2026, Aktionen für Privatkunden, Firmenleasing kann abweichen.
@@ -448,6 +484,7 @@ const LEASE = {
   idtiguan:[1.9, "1,9 %", "VW-Aktion für Verträge 01.11. bis 31.12.2026. Auslieferung 4Motion erst ab Anfang 2027"],
   smart5:[null, "Offen", "Keine offizielle Schweizer Zinsaktion gefunden. Ein Händlerinserat für den BRABUS wirbt mit 0 % Aktionsleasing, bitte bei Merbag oder smart direkt nachfragen"],
   q4:[null, "Offen", "0 % gab es für die Edition Swiss Ski des alten Q4 bis 31.03.2026. Für den neuen Q4 keine Aktion gefunden, bei AMAG nachfragen"],
+  sealion7:[null, "Offen", "Keine Schweizer Zinsaktion gefunden, beim BYD-Händler nachfragen"],
   idcross:[1.9, "1,9 %", "VW-Aktion für Verträge 01.11. bis 31.12.2026, 48 Mt, 10'000 km/J., 20 % Anzahlung"],
 };
 // Alltag & Technik: [360-Kamera, Rücksitze flach, CarPlay, elektr. Sitze, adaptives Fahrwerk, Werkstatt] je [Status, Hinweis]
@@ -465,6 +502,7 @@ const TECH = {
   idtiguan:{cam360:["open","Schweizer Ausstattung noch offen"], flat:["open","nicht bestätigt"], carplay:["yes","kabellos"], eseat:["open","Schweizer Ausstattung noch offen"], adapt:["open","Schweizer Ausstattung noch offen"], service:["yes","AMAG, sehr dichtes Netz"]},
   idcross:{cam360:["open","im Konfigurator prüfen"], flat:["open","nicht bestätigt"], carplay:["yes","kabellos"], eseat:["opt","12-Wege-Sitze"], adapt:["no",""], service:["yes","AMAG, sehr dichtes Netz"]},
   q4:{cam360:["open","im Konfigurator prüfen"], flat:["open","nicht bestätigt"], carplay:["yes","kabellos"], eseat:["opt","im Komfortpaket"], adapt:["opt","Dämpferregelung im Paket"], service:["yes","AMAG, sehr dichtes Netz"]},
+  sealion7:{cam360:["yes",""], flat:["yes","ohne Stufe, leicht ansteigend (ADAC)"], carplay:["yes","kabellos"], eseat:["yes","mit Memory"], adapt:["no","nicht verstellbar (ADAC)"], service:["open","Partnernetz noch im Aufbau, nächsten Händler prüfen"]},
   smart5:{cam360:["yes",""], flat:["no","bucklige Liegefläche (ADAC)"], carplay:["yes","kabellos"], eseat:["yes",""], adapt:["no","Stahlfedern, nicht verstellbar"], service:["yes","Merbag und Mercedes-Partner"]},
 };
 // Doppel- bzw. Akustikverglasung der Seitenscheiben
@@ -483,6 +521,7 @@ const GLASS = {
   idcross:["open","im Konfigurator prüfen"],
   smart5:["open","nicht bestätigt"],
   q4:["opt","Akustikglas Seitenscheiben als Option"],
+  sealion7:["open","nicht angegeben, laut ADAC sehr leise (64 dB bei 130 km/h)"],
 };
 CARS.forEach(c => { const g = GLASS[c.id] || ["open",""]; c.glass = g[0]; c.glassNote = g[1]; });
 CARS.forEach(c => {
@@ -552,7 +591,7 @@ const PHOTOS = {"polestar":[["Front","https://thumb.wikimedia.org/wikipedia/comm
 const photos = c => PHOTOS[c.id] || [];
 // Weitere Fotos: Testberichte von CarExpert (Australien) mit grossen Bildergalerien, nur verlinkt
 const CX_BASE = "https://www.carexpert.com.au/";
-const CX = {polestar:"car-reviews/2027-polestar-4-suv-review", zeekr:"car-reviews/2025-zeekr-7x-review", zeekr7gt:"car-reviews/2027-zeekr-7gt-review-quick-drive", volvo:"car-reviews/2027-volvo-ex60-review-quick-drive", xpengg9:"xpeng", xpeng:"car-reviews/2026-xpeng-g6-awd-performance-review-quick-drive", leapmotor:"car-reviews/2025-leapmotor-c10-review", tesla:"car-reviews/2025-tesla-model-y-review", enyaq:"car-reviews/2026-skoda-enyaq-review", elroq:"car-reviews/2025-skoda-elroq-review-quick-drive", idtiguan:"car-news/2027-volkswagen-id-tiguan-to-replace-id4-and-id5", idcross:"car-news/volkswagen-id-cross-t-cross-size-electric-suv-unveiled", smart5:"car-reviews/2025-smart-5-review-quick-drive", q4:"car-reviews/2027-audi-q4-e-tron-review-quick-drive"};
+const CX = {polestar:"car-reviews/2027-polestar-4-suv-review", zeekr:"car-reviews/2025-zeekr-7x-review", zeekr7gt:"car-reviews/2027-zeekr-7gt-review-quick-drive", volvo:"car-reviews/2027-volvo-ex60-review-quick-drive", xpengg9:"xpeng", xpeng:"car-reviews/2026-xpeng-g6-awd-performance-review-quick-drive", leapmotor:"car-reviews/2025-leapmotor-c10-review", tesla:"car-reviews/2025-tesla-model-y-review", enyaq:"car-reviews/2026-skoda-enyaq-review", elroq:"car-reviews/2025-skoda-elroq-review-quick-drive", idtiguan:"car-news/2027-volkswagen-id-tiguan-to-replace-id4-and-id5", idcross:"car-news/volkswagen-id-cross-t-cross-size-electric-suv-unveiled", smart5:"car-reviews/2025-smart-5-review-quick-drive", q4:"car-reviews/2027-audi-q4-e-tron-review-quick-drive", sealion7:"car-reviews/2026-byd-sealion-7-review"};
 const moreUrl = c => CX[c.id] ? CX_BASE + CX[c.id] : "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(c.name);
 const px = (u, w) => u.replace("/1280px-", "/" + w + "px-");
 const coverImg = c => { const p = photos(c)[0]; return p ? `<img src="${px(p[1], 330)}" alt="" loading="lazy" onerror="this.remove()">` : ""; };
@@ -594,11 +633,48 @@ function renderStats(){
   ].map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
 }
 
-function bestIds(col){
+function bestIds(col, list = CARS){
   if (!col.better) return new Set();
-  const vals = CARS.map(c => c[col.key]).filter(v => v != null);
+  const vals = list.map(c => c[col.key]).filter(v => v != null);
+  if (!vals.length) return new Set();
   const target = col.better === "low" ? Math.min(...vals) : Math.max(...vals);
-  return new Set(CARS.filter(c => c[col.key] === target).map(c => c.id));
+  return new Set(list.filter(c => c[col.key] === target).map(c => c.id));
+}
+
+// Filter: Ausstattung muss vorhanden sein (Serie, auf Wunsch auch Option)
+const FILTERS = [
+  {k:"massage", l:"Massagesitze"}, {k:"hud", l:"Head-up"}, {k:"v800", l:"800 Volt", test:c => c.volt === 800},
+  {k:"adapt", l:"Adaptives Fahrwerk"}, {k:"air", l:"Luftfederung"}, {k:"cam360", l:"360°-Kamera"},
+  {k:"carplay", l:"CarPlay"}, {k:"roof", l:"Panoramadach"}, {k:"glass", l:"Akustikglas"},
+  {k:"flat", l:"Rücksitze flach"}, {k:"tail", l:"El. Heckklappe"}, {k:"awd", l:"Allrad", strict:true},
+  {k:"lease2", l:"Leasing bis 2 %", test:c => c.lease != null && c.lease <= 2},
+];
+const fState = {on:new Set(), price:"", opt:true};
+function passes(c){
+  if (fState.price && c.priceFrom > +fState.price) return false;
+  for (const k of fState.on) {
+    const f = FILTERS.find(x => x.k === k);
+    if (f.test) { if (!f.test(c)) return false; continue; }
+    const v = c[k];
+    if (!(v === "yes" || (fState.opt && !f.strict && v === "opt"))) return false;
+  }
+  return true;
+}
+function saveFilters(){ try { localStorage.setItem("esuv-filter", JSON.stringify({on:[...fState.on], price:fState.price, opt:fState.opt})); } catch(e) {} }
+function syncFilters(){
+  document.querySelectorAll("#fFeat button").forEach(b => b.setAttribute("aria-pressed", String(fState.on.has(b.dataset.k))));
+  document.getElementById("fPrice").value = fState.price;
+  document.getElementById("fOpt").checked = fState.opt;
+}
+function initFilters(){
+  try { const s = JSON.parse(localStorage.getItem("esuv-filter") || "null"); if (s) { fState.on = new Set((s.on || []).filter(k => FILTERS.some(f => f.k === k))); fState.price = s.price || ""; fState.opt = s.opt !== false; } } catch(e) {}
+  const row = document.getElementById("fFeat");
+  row.innerHTML = FILTERS.map(f => `<button type="button" data-k="${f.k}" aria-pressed="false">${f.l}</button>`).join("");
+  row.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { const k = b.dataset.k; fState.on.has(k) ? fState.on.delete(k) : fState.on.add(k); saveFilters(); syncFilters(); renderBody(); }));
+  document.getElementById("fPrice").addEventListener("change", e => { fState.price = e.target.value; saveFilters(); renderBody(); });
+  document.getElementById("fOpt").addEventListener("change", e => { fState.opt = e.target.checked; saveFilters(); renderBody(); });
+  document.getElementById("fReset").addEventListener("click", () => { fState.on.clear(); fState.price = ""; fState.opt = true; saveFilters(); syncFilters(); renderBody(); });
+  syncFilters();
 }
 
 function renderHead(){
@@ -618,7 +694,11 @@ function renderHead(){
 }
 
 function renderBody(){
-  const rows = [...CARS].sort((a,b) => {
+  const visible = CARS.filter(passes);
+  const active = fState.on.size || fState.price;
+  document.getElementById("fCount").textContent = active ? `${visible.length} von ${CARS.length} Autos` : `alle ${CARS.length} Autos`;
+  document.getElementById("fEmpty").hidden = visible.length > 0;
+  const rows = visible.sort((a,b) => {
     let va = sortVal(a, sortKey), vb = sortVal(b, sortKey);
     if (va == null && vb == null) return 0;
     if (va == null) return 1;           // missing values always last
@@ -626,7 +706,7 @@ function renderBody(){
     const cmp = typeof va === "string" ? va.localeCompare(vb, "de") : va - vb;
     return sortAsc ? cmp : -cmp;
   });
-  const bests = Object.fromEntries(COLS.map(c => [c.key, bestIds(c)]));
+  const bests = Object.fromEntries(COLS.map(c => [c.key, bestIds(c, visible)]));
   document.getElementById("tbody").innerHTML = rows.map(c => `<tr>
     <td class="car"><div class="carcell">
       <button class="thumb" type="button" data-gal="${c.id}" aria-label="Galerie ${c.name} öffnen"><span class="ph" style="font-size:15px">${brand(c)}</span>${coverImg(c)}<span class="cnt">${photos(c).length}</span></button>
@@ -724,6 +804,7 @@ function setSort(key, fromHeader){
   const d = document.getElementById("gal");
   document.getElementById("galClose").addEventListener("click", closeGallery);
   d.addEventListener("click", e => { if (e.target === d) closeGallery(); });
+  initFilters();
   renderStats(); renderHead(); renderBody(); syncControls();
   window.addEventListener("resize", () => { const g = document.querySelector("tr.grp"); if (g) document.getElementById("tbl").style.setProperty("--grp-h", Math.round(g.getBoundingClientRect().height) + "px"); });
 })();
