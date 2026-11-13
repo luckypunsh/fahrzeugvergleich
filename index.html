@@ -312,7 +312,7 @@ dialog{background:var(--solid)}
 .btrack{position:relative;height:16px;display:block}
 .btrack .bg{position:absolute;left:0;top:0;height:100%;border-radius:0 6px 6px 0;background:rgba(106,72,245,.13)}
 .btrack .bt{position:absolute;left:0;top:0;height:100%}
-.brow{grid-template-columns:132px minmax(0,1fr) 116px}
+.brow{grid-template-columns:132px minmax(0,1fr) 140px}
 .bars.v-size,.bars.v-turn{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .tile{background:rgba(255,255,255,.5);border:1px solid var(--glass-b);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;font-size:12.5px}
 .tile:hover{background:#fff}
@@ -798,8 +798,9 @@ const VIEWS2 = [
   {k:"ac", l:"Laden AC", sub:"Ladeleistung an der Wechselstrom-Säule (Migros 22 kW)", type:"bar", v:c=>c.ac, low:false, f:c=>c.ac+" kW"},
   {k:"ps", l:"Leistung", sub:"Leistung, stärkste zuerst", type:"bar", v:c=>c.ps, low:false, f:c=>c.ps+" PS"},
   {k:"priceFrom", l:"Preis", sub:"Preis 4x4 ab, günstigste zuerst", type:"bar", v:c=>c.priceFrom, low:true, f:c=>chf(c.priceFrom)},
-  {k:"size", l:"Grösse", sub:"Grundfläche von oben, massstabsgetreu (Länge × Breite)", type:"size"},
-  {k:"turn", l:"Wendekreis", sub:"Wendekreis massstabsgetreu, gestrichelt der kleinste", type:"turn"},
+  {k:"len", l:"Länge", sub:"Balken = wie viel länger als das kürzeste Auto", type:"bar", diff:true, v:c=>c.len, low:true, f:(c,d)=>chf(c.len)+" mm"+(d ? ` (+${chf(d)})` : "")},
+  {k:"wid", l:"Breite", sub:"Breite ohne Spiegel, Balken = wie viel breiter als das schmalste Auto", type:"bar", diff:true, v:c=>c.wid, low:true, f:(c,d)=>chf(c.wid)+" mm"+(d ? ` (+${chf(d)})` : "")},
+  {k:"turn", l:"Wendekreis", sub:"Balken = wie viel grösser als der kleinste Wendekreis", type:"bar", diff:true, v:c=>c.turn, low:true, f:(c,d)=>n1(c.turn)+" m"+(d > 0.04 ? ` (+${n1(d)})` : "")},
 ];
 let ccMetric = "real";
 function bindTips(box, fmt){
@@ -818,9 +819,10 @@ function renderChart(list){
   if (!list.length) { box.innerHTML = `<p class="cc-empty">Keine Autos in der Auswahl</p>`; return; }
   if (m.type === "bar" || m.type === "bullet") {
     const L = [...list].filter(c => m.v(c) != null).sort((a,b) => m.low ? m.v(a)-m.v(b) : m.v(b)-m.v(a));
-    const max = Math.max(...L.map(c => Math.max(m.v(c), m.ghost ? (m.ghost(c) || 0) : 0)), 1);
-    box.innerHTML = L.map((c, i) => `<div class="brow${i===0?" top":""}" data-id="${c.id}"><span class="bn">${c.name}</span><span class="btrack">${m.ghost && m.ghost(c) ? `<span class="bg" style="width:${m.ghost(c)/max*100}%"></span>` : ""}<span class="bt" style="width:${Math.max(2, m.v(c)/max*100)}%"></span></span><span class="bv">${m.f(c)}</span></div>`).join("");
-    bindTips(box, c => `${m.l}: ${m.f(c)}`);
+    const base = m.diff ? Math.min(...L.map(m.v)) : 0, val = c => m.v(c) - base;
+    const max = Math.max(...L.map(c => Math.max(val(c), m.ghost ? (m.ghost(c) || 0) : 0)), m.diff ? 1e-9 : 1);
+    box.innerHTML = L.map((c, i) => `<div class="brow${i===0?" top":""}" data-id="${c.id}"><span class="bn">${c.name}</span><span class="btrack">${m.ghost && m.ghost(c) ? `<span class="bg" style="width:${m.ghost(c)/max*100}%"></span>` : ""}<span class="bt" style="width:${Math.max(1.2, val(c)/max*100)}%"></span></span><span class="bv">${m.f(c, val(c))}</span></div>`).join("");
+    bindTips(box, c => `${m.l}: ${m.f(c, val(c))}`);
   } else if (m.type === "size") {
     const L = [...list].sort((a,b) => b.len - a.len), maxL = Math.max(...L.map(c => c.len)), sc = 100 / maxL;
     box.innerHTML = L.map(c => `<div class="tile" data-id="${c.id}"><div class="fp"><span style="width:${c.len*sc}%;aspect-ratio:${c.len}/${c.wid}"></span></div><b>${c.name}</b><small>${chf(c.len)} × ${chf(c.wid)} mm</small></div>`).join("");
