@@ -313,7 +313,7 @@ dialog{background:var(--solid)}
 .btrack{position:relative;height:16px;display:block}
 .btrack .bg{position:absolute;left:0;top:0;height:100%;border-radius:0 6px 6px 0;background:rgba(106,72,245,.13)}
 .btrack .bt{position:absolute;left:0;top:0;height:100%}
-.brow{grid-template-columns:132px minmax(0,1fr) 140px}
+.brow{grid-template-columns:132px minmax(0,1fr) 150px}
 .bars.v-size,.bars.v-turn{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .tile{background:rgba(255,255,255,.5);border:1px solid var(--glass-b);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;font-size:12.5px}
 .tile:hover{background:#fff}
@@ -801,6 +801,7 @@ const VIEWS2 = [
   {k:"priceFrom", l:"Preis", sub:"Preis 4x4 ab, günstigste zuerst", type:"bar", v:c=>c.priceFrom, low:true, f:c=>chf(c.priceFrom)},
   {k:"len", l:"Länge", sub:"Balken = wie viel länger als das kürzeste Auto", type:"bar", diff:true, v:c=>c.len, low:true, f:(c,d)=>chf(c.len)+" mm"+(d ? ` (+${chf(d)})` : "")},
   {k:"wid", l:"Breite", sub:"Breite ohne Spiegel, Balken = wie viel breiter als das schmalste Auto", type:"bar", diff:true, v:c=>c.wid, low:true, f:(c,d)=>chf(c.wid)+" mm"+(d ? ` (+${chf(d)})` : "")},
+  {k:"weight", l:"Gewicht", sub:"Leergewicht (EU), leichteste zuerst, dazu die Parkkarte Zürich 2027", type:"bar", v:c=>c.weight, low:true, f:c=>`${chf(c.weight)} kg · ${chf(c.park)} CHF`},
   {k:"turn", l:"Wendekreis", sub:"Balken = wie viel grösser als der kleinste Wendekreis", type:"bar", diff:true, v:c=>c.turn, low:true, f:(c,d)=>n1(c.turn)+" m"+(d > 0.04 ? ` (+${n1(d)})` : "")},
 ];
 let ccMetric = "real";
