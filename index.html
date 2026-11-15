@@ -98,6 +98,7 @@ thead tr.grp th.car{background:var(--raised)!important}
 .sub{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.35}
 .links{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap}
 .links a,.links button{all:unset;cursor:pointer;font-size:12px;color:var(--accent);border-bottom:1px solid currentColor;line-height:1.3}
+.pmiss{display:block;font-family:var(--f-sans,inherit);font-size:11px;font-weight:400;color:var(--muted);white-space:normal;margin-top:2px}
 .num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:14px;white-space:nowrap}
 td.best .num{color:var(--accent);font-weight:600;background:var(--best-bg);padding:1px 6px;border-radius:5px;margin-left:-6px}
 .small{display:block;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.35;max-width:24ch;white-space:normal}
@@ -408,13 +409,14 @@ dialog{background:var(--solid)}
       <p>Gerechnet ist hier mit dem EU-Leergewicht der Referenzversion. Massgebend ist das Gewicht im Fahrzeugausweis, also können es ein paar Franken mehr oder weniger sein.</p>
     </div>
     <div class="note">
-      <h2>Voll ausgestattet</h2>
-      <p>Head-up-Display, Massagesitze und Panoramadach gibt es nur bei Polestar, Zeekr und Enyaq zusammen. Tesla, XPeng und Volvo bieten kein Head-up-Display an, der Elroq kein Panoramadach. Beim Volvo EX60 gibt es auch keine Massagesitze, nur Sitzbelüftung. Der XPeng G9 hat als einziger auch hinten Massage, ob er ein Head-up-Display hat, ist widersprüchlich. Der Leapmotor C10, der Audi Q4 und der smart #5 haben keine Massagesitze, beim BYD Sealion 7 sind sie nicht bestätigt, beim smart gibt es sie nur in China.</p>
-      <p>Beim Polestar fehlt der offizielle Schweizer Preis für das Nappa-Paket, beim Zeekr die Schweizer Paketpreise. Diese Werte sind geschätzt und mit ca. markiert.</p>
+      <h2>Preis mit Wunschausstattung</h2>
+      <p>Die Spalte zeigt den Preis der Allradversion mit Head-up-Display, Massagesitzen und Panoramadach, soweit es diese gibt. Was beim jeweiligen Auto nicht erhältlich oder nicht bestätigt ist, steht klein darunter («ohne …»). Hervorgehoben wird nur das günstigste Auto, bei dem nichts fehlt.</p>
+      <p>Alles zusammen gibt es bei Polestar, Zeekr 7X, 7GT und 001, Enyaq, XPeng L03 und Mercedes GLC. Tesla, Volvo, Leapmotor, XPeng G6 und G9 bieten kein Head-up-Display an, der Elroq kein Panoramadach. Keine Massagesitze gibt es bei Tesla, Volvo, Leapmotor, smart, Audi Q4 und Zeekr X, beim BYD Sealion 7 und beim Mercedes GLB sind sie nicht bestätigt.</p>
+      <p>Geschätzte Werte sind mit ca. markiert, meist weil Schweizer Paketpreise fehlen. Beim Mercedes GLC ist das Massagepaket laut Mercedes Schweiz ohne Aufpreis wählbar.</p>
     </div>
     <div class="note">
       <h2>Leasing</h2>
-      <p>Nur Polestar bietet für den 4x4 echtes 0 % ohne Anzahlung. Škoda hat 0 %, aber nur für die Heckantriebsversionen und gekoppelt an das AMAG-Versicherungspaket. Bei Tesla gelten die 0 % nur für einen Kredit, nicht fürs Leasing.</p>
+      <p>Nur Polestar bietet für den 4x4 echtes 0 % ohne Anzahlung. Mercedes hat bis 30.11.2026 ebenfalls 0 % für alle 4MATIC, aber nur mit dem Mercedes-Versicherungspaket und mit einer grossen ersten Rate, sonst 0,5 %. Škoda hat 0 %, aber nur für die Heckantriebsversionen und gekoppelt an das AMAG-Versicherungspaket. Bei Tesla gelten die 0 % nur für einen Kredit, nicht fürs Leasing.</p>
       <p>Die meisten Aktionen gelten für Privatkunden. Läuft der Vertrag über die Firma, beim Händler nach den Konditionen für Geschäftskunden fragen. Vollkasko ist überall Pflicht und nicht in der Rate enthalten.</p>
     </div>
     <div class="note">
@@ -465,7 +467,7 @@ const CARS = [
     massage:"opt", massageNote:"Comfort-Paket", hud:"opt", hudNote:"36\" AR-HUD im Cockpit-Paket", roof:"yes", roofNote:"Glasdach", tail:"yes" },
   { id:"volvo", name:"Volvo EX60", ref:"P10 AWD Plus", cls:"Mittelklasse",
     priceFrom:75000, priceFromNote:"Heckantrieb P6 ab 72'000",
-    priceFull:null, priceFullNote:"weder HUD noch Massage erhältlich",
+    priceFull:75000, priceFullNote:"Panoramadach Serie", priceFullMiss:"HUD, Massage (nicht erhältlich)",
     batt:92, battNote:"95 brutto · 800 V", wltp:660, real:508, realNote:"ADAC-Messung",
     dc:370, ac:22, acNote:"je nach Version Option", t1080:18, t1080Note:"ADAC-Test: 17 min", acc:4.6, accNote:"P12 3,9 s",
     ps:510, psNote:"Asynchronmotor vorne",
@@ -475,7 +477,7 @@ const CARS = [
     massage:"no", massageNote:"nur Belüftung", hud:"no", hudNote:"Display an der Scheibe als Ersatz", roof:"yes", roofNote:"Ultra elektrochrom", tail:"yes" },
   { id:"xpengg9", name:"XPeng G9", ref:"AWD Performance", cls:"Obere Mittelklasse",
     priceFrom:72600, priceFromNote:"Heckantrieb ab 59'600",
-    priceFull:null, priceFullNote:"HUD nicht bestätigt · mit Premium-Paket ca. 76'600",
+    priceFull:76600, priceFullNote:"ca., + Premium-Paket mit Massage (in DE 3'960 €), Glasdach Serie", priceFullEst:true, priceFullMiss:"HUD (nicht erhältlich)",
     batt:92.2, battNote:"93,1 brutto · LFP · Wert laut ADAC", wltp:540, real:440, realNote:"geschätzt",
     dc:525, ac:11, t1080:12, t1080Note:"Herstellerangabe", acc:4.2,
     ps:575, psNote:"Vordermotor laut Datenbank asynchron",
@@ -485,7 +487,7 @@ const CARS = [
     massage:"opt", massageNote:"Premium-Paket, vorne und hinten, in DE 3'960 €", hud:"no", hudNote:"in Europa nicht erhältlich (Preisliste 10/2025)", roof:"yes", tail:"yes" },
   { id:"leapmotor", name:"Leapmotor C10", ref:"BEV 4x4 Design", cls:"Mittelklasse",
     priceFrom:39900, priceFromNote:"Heckantrieb ab 35'900",
-    priceFull:null, priceFullNote:"keine Massagesitze erhältlich",
+    priceFull:39900, priceFullNote:"Glasdach Serie", priceFullMiss:"HUD, Massage (nicht erhältlich)",
     batt:81.9, battNote:"Bruttowert · LFP · 800 V", wltp:437, real:360, realNote:"aus TCS-Verbrauch geschätzt, Autobahn im Winter ca. 300",
     dc:180, dcNote:"im Test knapp 150 kW", ac:11, t1080:28, t1080Note:"ca., Hersteller nennt nur 30–80 % in 22 min", acc:4.0,
     ps:598, psNote:"Permanentmagnet vorne, kein Disconnect bekannt",
@@ -505,7 +507,7 @@ const CARS = [
     massage:"opt", massageNote:"vorne, hinten auf Wunsch", hud:"yes", hudNote:"35,5\" AR, nicht beim Core", roof:"yes", roofNote:"laut Zeekr, Version nicht bestätigt", tail:"open" },
   { id:"idtiguan", name:"VW ID. Tiguan", ref:"Pro 4Motion, ab Anfang 2027", cls:"Mittelklasse",
     priceFrom:54700, priceFromNote:"ca., Schweizer Preis 4Motion offen · Heckantrieb ab 52'200", priceFromEst:true,
-    priceFull:null, priceFullNote:"HUD nicht bestätigt",
+    priceFull:null, priceFullNote:"Optionspreise für HUD, Massage (R-Line) und Panoramadach noch nicht publiziert",
     batt:77, battNote:"NMC · 400 V", wltp:565, real:410, realNote:"beides geschätzt, 4Motion noch nicht publiziert",
     dc:165, ac:11, t1080:29, t1080Note:"AMAG nennt ca. 21 min", acc:6.2,
     ps:299, psNote:"Asynchronmotor vorne erwartet",
@@ -515,7 +517,7 @@ const CARS = [
     massage:"opt", massageNote:"R-Line, mit Belüftung", hud:"opt", hudNote:"AR-Head-up als Option (VW)", roof:"opt", roofNote:"laut carwow, Details offen", tail:"open" },
   { id:"tesla", name:"Tesla Model Y", ref:"Premium AWD", cls:"Mittelklasse",
     priceFrom:54980, priceFromNote:"Barpreis laut Tesla Schweiz · Heckantrieb ab 39'990", priceFromEst:false,
-    priceFull:null, priceFullNote:"kein HUD, keine Massage erhältlich",
+    priceFull:54980, priceFullNote:"Glasdach Serie", priceFullMiss:"HUD, Massage (nicht erhältlich)",
     batt:79, battNote:"83 brutto · laut ADAC", wltp:622, real:500, realNote:"geschätzt, ADAC misst beim Heckantrieb 536",
     dc:250, ac:11, t1080:28, acc:4.8, accNote:"Performance 3,5 s",
     ps:440, psNote:"Tesla nennt keine Leistung, Wert laut ADAC",
@@ -525,7 +527,7 @@ const CARS = [
     massage:"no", hud:"no", roof:"yes", roofNote:"ab Premium", tail:"yes" },
   { id:"xpeng", name:"XPeng G6", ref:"AWD Performance", cls:"Mittelklasse",
     priceFrom:51600, priceFromNote:"Heckantrieb ab 43'600",
-    priceFull:null, priceFullNote:"kein HUD erhältlich, Massage und Glasdach Serie",
+    priceFull:51600, priceFullNote:"Massage und Glasdach Serie", priceFullMiss:"HUD (nicht erhältlich)",
     batt:80, battNote:"80,8 brutto · LFP · 800 V", wltp:510, real:400, realNote:"geschätzt",
     dc:451, ac:11, t1080:12, acc:4.1,
     ps:487, psNote:"Vordermotor vermutlich asynchron",
@@ -545,7 +547,7 @@ const CARS = [
     massage:"opt", massageNote:"Fahrersitz bzw. beide vorne", hud:"opt", hudNote:"mit Augmented Reality", roof:"opt", roofNote:"Panorama-Schiebedach", tail:"opt" },
   { id:"elroq", name:"Škoda Elroq", ref:"Elroq 85x Selection", cls:"Kompakt",
     priceFrom:45900, priceFromNote:"Heckantrieb ab 37'850",
-    priceFull:null, priceFullNote:"kein Panoramadach erhältlich, 85x mit HUD und Massage ca. 50'670",
+    priceFull:50670, priceFullNote:"ca., 85x mit HUD und Massage", priceFullEst:true, priceFullMiss:"Panoramadach (nicht erhältlich)",
     batt:77, battNote:"82 brutto · NMC", wltp:574, real:440, realNote:"geschätzt",
     dc:165, ac:11, t1080:29, acc:6.2, accNote:"RS 5,4 s",
     ps:299, psNote:"Asynchronmotor vorne",
@@ -555,7 +557,7 @@ const CARS = [
     massage:"opt", massageNote:"Paket Advanced, 4'770", hud:"opt", hudNote:"im Paket Advanced", roof:"no", tail:"opt", tailNote:"berührungslos im Paket Plus" },
   { id:"idcross", name:"VW ID. Cross", ref:"52 kWh, nur Frontantrieb", cls:"Klein-SUV",
     priceFrom:27600, priceFromNote:"Trend, 37 kWh",
-    priceFull:null, priceFullNote:"HUD nicht bestätigt · dein Konfig 45'640",
+    priceFull:45640, priceFullNote:"deine Konfiguration", priceFullMiss:"4x4, HUD (nicht erhältlich)",
     batt:52, battNote:"55 brutto · NMC", wltp:425, real:315,
     dc:105, ac:11, t1080:24, acc:7.1,
     ps:211, psNote:"auch 116 und 135 PS",
@@ -565,7 +567,7 @@ const CARS = [
     massage:"opt", massageNote:"Sitzkomfortpaket, nur Style", hud:"no", hudNote:"nicht erhältlich (Preisliste 10/2026)", roof:"opt", tail:"open", tailNote:"in der Preisliste nicht aufgeführt" },
   { id:"smart5", name:"smart #5", ref:"Pulse AWD", cls:"Mittelklasse",
     priceFrom:54000, priceFromNote:"Heckantrieb Pro ab 44'500 · BRABUS 646 PS ab 59'500",
-    priceFull:null, priceFullNote:"keine Massagesitze in Europa, HUD und Glasdach Serie",
+    priceFull:54000, priceFullNote:"HUD und Glasdach Serie", priceFullMiss:"Massage (nicht erhältlich)",
     batt:94, battNote:"100 brutto · NMC · 800 V", wltp:540, real:450, realNote:"EV Database · ADAC Test Premium 515",
     dc:400, ac:22, t1080:18, t1080Note:"Herstellerangabe", acc:4.9,
     ps:588, psNote:"BRABUS 646 PS, 3,8 s",
@@ -575,7 +577,7 @@ const CARS = [
     massage:"no", massageNote:"nur in China erhältlich", hud:"yes", hudNote:"AR, ab Premium", roof:"yes", roofNote:"nicht zu öffnen, abdunkelbar", tail:"yes" },
   { id:"q4", name:"Audi Q4 e-tron", ref:"quattro, Facelift 2026", cls:"Kompakt-SUV",
     priceFrom:60400, priceFromNote:"ca., Schweizer Preis Facelift nicht gefunden, Vorgänger 45 quattro 60'400", priceFromEst:true,
-    priceFull:null, priceFullNote:"keine Massagesitze erhältlich",
+    priceFull:null, priceFullNote:"Schweizer Optionspreise fürs Facelift nicht gefunden. In DE: AR-HUD 950 € nur mit Tech-Paket", priceFullMiss:"Massage (nicht erhältlich)",
     batt:77, battNote:"82 brutto · NMC · 400 V", wltp:558, real:450, realNote:"geschätzt",
     dc:165, ac:11, t1080:27, t1080Note:"Herstellerangabe", acc:6.2,
     ps:299, psNote:"quattro performance 340 PS, 5,4 s",
@@ -585,7 +587,7 @@ const CARS = [
     massage:"no", massageNote:"nicht erhältlich", hud:"opt", hudNote:"AR, nur mit Tech-Paket", roof:"opt", tail:"yes", tailNote:"seit Facelift Serie" },
   { id:"sealion7", name:"BYD Sealion 7", ref:"Excellence AWD", cls:"Mittelklasse",
     priceFrom:60990, priceFromNote:"Lancierungspreis 2025 · Design AWD ab 55'990",
-    priceFull:null, priceFullNote:"Massagesitze nicht bestätigt, HUD und Glasdach Serie",
+    priceFull:60990, priceFullNote:"HUD und Glasdach Serie", priceFullMiss:"Massage (nicht bestätigt)",
     batt:91.3, battNote:"LFP Blade", wltp:502, real:430, realNote:"ADAC Ecotest 432",
     dc:230, ac:11, t1080:24, t1080Note:"Herstellerangabe", acc:4.5,
     ps:530, len:4830, wid:1925, hei:1620, wb:2930, turn:11.7, turnNote:"ADAC",
@@ -594,7 +596,7 @@ const CARS = [
     massage:"open", massageNote:"ADAC-Test nennt nur Heizung und Belüftung", hud:"yes", roof:"yes", tail:"yes", tailNote:"mit Fussgeste" },
   { id:"geely5", name:"Geely E5", ref:"Max+, nur Frontantrieb", cls:"Mittelklasse",
     priceFrom:42990, priceFromNote:"noch kein Schweizer Preis, Wert = Preis in Deutschland (Euro) · Pro ab 37'990", priceFromEst:true,
-    priceFull:42990, priceFullNote:"Max+: Head-up, Massage und Glasdach Serie (Preis Deutschland, Euro)", priceFullEst:true,
+    priceFull:42990, priceFullNote:"Max+: Head-up, Massage und Glasdach Serie (Preis Deutschland, Euro)", priceFullEst:true, priceFullMiss:"4x4 (nicht erhältlich)",
     batt:68.4, battNote:"LFP · 400 V · netto nicht publiziert", wltp:450, real:360, realNote:"geschätzt",
     dc:135, dcNote:"ADAC nennt 100 kW", ac:11, t1080:28, t1080Note:"ca., Hersteller nennt nur 30–80 % in 20 min", acc:7.6,
     ps:218, psNote:"nur Frontantrieb, kein Allrad erhältlich",
@@ -624,14 +626,34 @@ const CARS = [
     massage:"yes", massageNote:"vorne, im Privilege", hud:"yes", hudNote:"", roof:"yes", roofNote:"Panorama-Glasdach", tail:"yes" },
   { id:"zeekrx", name:"Zeekr X", ref:"Privilege AWD", cls:"Kompaktklasse",
     priceFrom:47490, priceFromNote:"Heckantrieb ab 37'990",
-    priceFull:null, priceFullNote:"Privilege voll ausgestattet, Massage nicht erhältlich",
+    priceFull:47490, priceFullNote:"Head-up und Glasdach Serie", priceFullMiss:"Massage (nicht erhältlich)",
     batt:64, battNote:"69 brutto · NMC · 400 V · laut ADAC", wltp:415, real:330, realNote:"Test vmax.si ca. 320, EV Database 350",
     dc:150, ac:22, t1080:30, acc:3.7,
     ps:496,
     len:4432, wid:1836, widNote:"2'029 mit Spiegeln", hei:1566, wb:2750, turn:11.6, turnNote:"ADAC",
     boot:404, bootMax:1182, bootNote:"andere Messungen 362 l · + 21 l vorne", weight:1960, weightNote:"ADAC",
     screen:14.6, screenNote:"+ 8,8\" Cockpit + 24,3\" AR-Head-up",
-    massage:"no", massageNote:"nur Heizung und Belüftung", hud:"yes", hudNote:"24,3\" AR-HUD", roof:"yes", roofNote:"Panorama-Glasdach", tail:"open", tailNote:"nicht bestätigt" }
+    massage:"no", massageNote:"nur Heizung und Belüftung", hud:"yes", hudNote:"24,3\" AR-HUD", roof:"yes", roofNote:"Panorama-Glasdach", tail:"open", tailNote:"nicht bestätigt" },
+  { id:"glc", name:"Mercedes GLC", ref:"400 4MATIC, elektrisch", cls:"Mittelklasse",
+    priceFrom:79500, priceFromNote:"GLC 300 4MATIC ab 74'000 (421 PS, 85 kWh) · Heckantrieb GLC 250 ab 70'500",
+    priceFull:80662, priceFullNote:"+ Head-up 1'162, Massage vorne ohne Aufpreis, Panoramadach Serie (Mercedes Schweiz). Deine Händlerofferte: voll ausgestattet Liste 104'527, mit Rabatten 88'500",
+    batt:94, battNote:"netto · 800 V", wltp:673, wltpNote:"Merbag · ADAC mit AMG Line 654", real:530, realNote:"geschätzt",
+    dc:330, ac:11, acNote:"22 kW Option", t1080:22, acc:4.3,
+    ps:489,
+    len:4845, wid:1913, widNote:"2'089 mit Spiegeln", hei:1644, wb:2972, turn:12.1, turnNote:"ADAC, mit Hinterachslenkung (Option) kleiner",
+    boot:570, bootMax:1740, bootNote:"+ 128 l vorne", weight:2535, weightNote:"ADAC",
+    screen:14, screenNote:"Superscreen Serie, Hyperscreen 39,1\" Option",
+    massage:"opt", massageNote:"vorne, ohne Aufpreis wählbar", hud:"opt", hudNote:"AR-Head-up CHF 1'162", roof:"yes", roofNote:"Serie, SKY CONTROL im Paket", tail:"yes", tailNote:"EASY-PACK Serie" },
+  { id:"glb", name:"Mercedes GLB", ref:"350 4MATIC, elektrisch", cls:"Kompakt-SUV",
+    priceFrom:63500, priceFromNote:"Heckantrieb 250+ ab 59'900 · Merbag-Barpreis mit Rabatten 54'515",
+    priceFull:64500, priceFullNote:"ca., + Head-up (in DE 893 €), Panoramadach Serie", priceFullEst:true, priceFullMiss:"Massage (nicht bestätigt)",
+    batt:85, battNote:"netto · 800 V", wltp:615, real:470, realNote:"geschätzt, firmenauto beim 250+: ca. 400 auf der Autobahn",
+    dc:320, ac:11, acNote:"22 kW Option", t1080:22, acc:5.5,
+    ps:354,
+    len:4732, wid:1861, widNote:"2'029 mit Spiegeln", hei:1687, wb:2889, turn:11.8, turnNote:"ADAC",
+    boot:540, bootMax:1715, bootNote:"+ 127 l vorne · 7 Sitze optional", weight:2280, weightNote:"ADAC",
+    screen:14, screenNote:"+ 10,25\" Cockpit, Superscreen Option",
+    massage:"open", massageNote:"nicht bestätigt, beim Händler fragen", hud:"opt", hudNote:"in DE 893 €", roof:"yes", roofNote:"Serie", tail:"yes", tailNote:"Serie (firmenauto)" }
 ];
 const AIR = {
   polestar:["no","Stahlfedern, adaptive Dämpfer mit Performance-Paket"],
@@ -652,10 +674,12 @@ const AIR = {
   xpengl03:["no","Stahlfedern, weich abgestimmt"],
   zeekr001:["yes","im Privilege, zum Beladen absenkbar"],
   zeekrx:["no","Stahlfedern"],
+  glc:["opt","AIRMATIC im Paket Agilität & Komfort, CHF 2'645, mit Hinterachslenkung"],
+  glb:["no","adaptive Dämpfer mit 20-Zoll-Rädern"],
   idtiguan:["no",""]
 };
 CARS.forEach(c => { const a = AIR[c.id] || ["open",""]; c.air = a[0]; c.airNote = a[1]; });
-const VOLT = { polestar:400, zeekr:800, volvo:800, xpengg9:800, leapmotor:800, zeekr7gt:800, idtiguan:400, tesla:400, xpeng:800, enyaq:400, elroq:400, idcross:400, smart5:800, q4:400, sealion7:800, geely5:400, xpengl03:400, zeekr001:400, zeekrx:400 };
+const VOLT = { polestar:400, zeekr:800, volvo:800, xpengg9:800, leapmotor:800, zeekr7gt:800, idtiguan:400, tesla:400, xpeng:800, enyaq:400, elroq:400, idcross:400, smart5:800, q4:400, sealion7:800, geely5:400, xpengl03:400, zeekr001:400, zeekrx:400, glc:800, glb:800 };
 CARS.forEach(c => { c.volt = VOLT[c.id] ?? null; });
 CARS.forEach(c => { c.park = Math.round(c.weight * 0.35); });
 // Leasing: [Zins in %, Anzeige, Details]. Stand 11.11.2026, Aktionen für Privatkunden, Firmenleasing kann abweichen.
@@ -678,6 +702,8 @@ const LEASE = {
   xpengl03:[null, "Offen", "Keine Schweizer Leasingaktion gefunden (in Deutschland 0 % Finanzierung). Beim XPeng-Partner nachfragen"],
   zeekr001:[1.49, "1,49 %", "Zeekr Schweiz über multilease: eff. 1,50 %, 48 Mt, 10'000 km/J., 20 % Anzahlung. Privilege CHF 654/Mt. Immatrikulation bis 31.12.2026"],
   zeekrx:[1.49, "1,49 %", "Zeekr Schweiz über multilease: eff. 1,50 %, 48 Mt, 15'000 km/J., 20 % Anzahlung. Privilege CHF 563/Mt. Immatrikulation bis 31.12.2026"],
+  glc:[0, "0 % mit Vers.", "Mercedes-Aktion für 4MATIC bis 30.11.2026: 0 % nur mit Mercedes-Versicherungspaket (Zürich, Vollkasko Pflicht), sonst 0,5 %. GLC 300 4MATIC ab CHF 381/Mt. Deine Händlerofferte (Januar 2026, damals 10 Tage gültig): voll ausgestattet Liste CHF 104'527, nach 13 % Flottenrabatt und 3,5 % Sondernachlass CHF 88'500 inkl. Ablieferung. Leasingrate dafür beim Händler anfragen"],
+  glb:[0, "0 % mit Vers.", "Mercedes-Aktion bis 30.11.2026: 48 Mt, 10'000 km/J., erste grosse Rate CHF 10'903, danach ab CHF 289/Mt. 0 % nur mit Mercedes-Versicherungspaket (Zürich, Vollkasko Pflicht), sonst 0,5 %"],
   idcross:[1.9, "1,9 %", "VW-Aktion für Verträge 01.11. bis 31.12.2026, 48 Mt, 10'000 km/J., 20 % Anzahlung"],
 };
 // Alltag & Technik: [360-Kamera, Rücksitze flach, CarPlay, elektr. Sitze, adaptives Fahrwerk, Werkstatt] je [Status, Hinweis]
@@ -700,6 +726,8 @@ const TECH = {
   xpengl03:{cam360:["yes","mit transparenter Motorhaube"], flat:["open","umklappbar, Ebenheit nicht bestätigt"], carplay:["yes","kabellos, auch Android Auto"], eseat:["yes","mit Memory, belüftet"], adapt:["no","nicht verstellbar, Sport-Modus ändert nur Lenkung und Ansprechen"], service:["open","Partnernetz noch dünn, nächsten Partner beim Händler prüfen"]},
   zeekr001:{cam360:["yes",""], flat:["open","nicht bestätigt, Lehnen hinten elektrisch"], carplay:["yes","laut ADAC Serie"], eseat:["yes",""], adapt:["yes","im Privilege Luftfederung mit adaptiven Dämpfern"], service:["yes","Emil Frey Zürich Nord"]},
   zeekrx:{cam360:["yes","Rundumsicht"], flat:["open","nicht bestätigt"], carplay:["yes","kabellos"], eseat:["yes","mit Memory"], adapt:["no","nicht verstellbar"], service:["yes","Emil Frey Zürich Nord"]},
+  glc:{cam360:["opt","Parking Assist 360, CHF 642"], flat:["open","Lehnen umklappbar, Ebenheit nicht bestätigt"], carplay:["yes","Serie"], eseat:["yes","Memory im Paket"], adapt:["opt","AIRMATIC im Paket Agilität & Komfort"], service:["yes","sehr dichtes Mercedes-Netz, Merbag Zürich"]},
+  glb:{cam360:["opt","Parking Assist 360 als Digital Extra"], flat:["open","40:20:40, verschiebbar, Ebenheit nicht bestätigt"], carplay:["opt","in DE Aufpreis 357 €, in CH prüfen"], eseat:["open","nicht bestätigt"], adapt:["opt","adaptive Dämpfer nur mit 20-Zoll-Rädern"], service:["yes","sehr dichtes Mercedes-Netz, Merbag Zürich"]},
   smart5:{cam360:["yes",""], flat:["no","bucklige Liegefläche (ADAC)"], carplay:["yes","kabellos"], eseat:["yes",""], adapt:["no","Stahlfedern, nicht verstellbar"], service:["yes","Merbag und Mercedes-Partner"]},
 };
 // Doppel- bzw. Akustikverglasung der Seitenscheiben
@@ -723,6 +751,8 @@ const GLASS = {
   xpengl03:["open","nicht angegeben. Tests loben die Ruhe trotz rahmenloser Scheiben, Ultra mit aktiver Geräuschunterdrückung"],
   zeekr001:["open","nicht angegeben, Tests loben die Dämmung"],
   zeekrx:["open","nicht angegeben"],
+  glc:["yes","Akustikglas Serie (Offerte)"],
+  glb:["opt","Akustikglas vorne als Option"],
 };
 CARS.forEach(c => { const g = GLASS[c.id] || ["open",""]; c.glass = g[0]; c.glassNote = g[1]; });
 CARS.forEach(c => {
@@ -741,7 +771,7 @@ const dec = n => String(n).replace(".", ",");
 // key, label, unit, group, better: 'low'|'high'|null, render
 const COLS = [
   {key:"priceFrom", label:"Preis 4x4 ab", unit:"CHF", grp:"Preis", better:"low", fmt:c=>(c.priceFromEst?"ca. ":"")+chf(c.priceFrom), note:"priceFromNote"},
-  {key:"priceFull", label:"Mit HUD, Massage, Panorama", unit:"CHF", grp:"Preis", better:"low", fmt:c=>c.priceFull==null?"Nicht möglich":(c.priceFullEst?"ca. ":"")+chf(c.priceFull), note:"priceFullNote"},
+  {key:"priceFull", label:"Mit 4x4, HUD, Massage, Panorama", unit:"CHF", grp:"Preis", better:"low", fmt:c=>(c.priceFull==null?"k. A.":(c.priceFullEst?"ca. ":"")+chf(c.priceFull))+(c.priceFullMiss?`<small class="pmiss">ohne ${c.priceFullMiss}</small>`:""), note:"priceFullNote"},
   {key:"lease", label:"Leasingzins", unit:"Aktion, %", grp:"Preis", better:"low", fmt:c=>c.leaseLabel, note:"leaseNote"},
   {key:"park", label:"Parkkarte ZH 2027", unit:"CHF/Jahr", grp:"Preis", better:"low", fmt:c=>chf(c.park)},
   {key:"batt", label:"Batterie", unit:"kWh netto", grp:"Akku & Laden", better:"high", fmt:c=>dec(c.batt), note:"battNote"},
@@ -792,7 +822,7 @@ const PHOTOS = {"geely5":[["Front","https://thumb.wikimedia.org/wikipedia/common
 const photos = c => PHOTOS[c.id] || [];
 // Weitere Fotos: Testberichte von CarExpert (Australien) mit grossen Bildergalerien, nur verlinkt
 const CX_BASE = "https://www.carexpert.com.au/";
-const CX = {polestar:"car-reviews/2027-polestar-4-suv-review", zeekr:"car-reviews/2025-zeekr-7x-review", zeekr7gt:"car-reviews/2027-zeekr-7gt-review-quick-drive", volvo:"car-reviews/2027-volvo-ex60-review-quick-drive", xpengg9:"xpeng", xpeng:"car-reviews/2026-xpeng-g6-awd-performance-review-quick-drive", leapmotor:"car-reviews/2025-leapmotor-c10-review", tesla:"car-reviews/2025-tesla-model-y-review", enyaq:"car-reviews/2026-skoda-enyaq-review", elroq:"car-reviews/2025-skoda-elroq-review-quick-drive", idtiguan:"car-news/2027-volkswagen-id-tiguan-to-replace-id4-and-id5", idcross:"car-news/volkswagen-id-cross-t-cross-size-electric-suv-unveiled", smart5:"car-reviews/2025-smart-5-review-quick-drive", q4:"car-reviews/2027-audi-q4-e-tron-review-quick-drive", sealion7:"car-reviews/2026-byd-sealion-7-review", geely5:"car-reviews/2026-geely-ex5-review-1", xpengl03:"xpeng/l03", zeekr001:"zeekr", zeekrx:"car-reviews/2025-zeekr-x-awd-review"};
+const CX = {polestar:"car-reviews/2027-polestar-4-suv-review", zeekr:"car-reviews/2025-zeekr-7x-review", zeekr7gt:"car-reviews/2027-zeekr-7gt-review-quick-drive", volvo:"car-reviews/2027-volvo-ex60-review-quick-drive", xpengg9:"xpeng", xpeng:"car-reviews/2026-xpeng-g6-awd-performance-review-quick-drive", leapmotor:"car-reviews/2025-leapmotor-c10-review", tesla:"car-reviews/2025-tesla-model-y-review", enyaq:"car-reviews/2026-skoda-enyaq-review", elroq:"car-reviews/2025-skoda-elroq-review-quick-drive", idtiguan:"car-news/2027-volkswagen-id-tiguan-to-replace-id4-and-id5", idcross:"car-news/volkswagen-id-cross-t-cross-size-electric-suv-unveiled", smart5:"car-reviews/2025-smart-5-review-quick-drive", q4:"car-reviews/2027-audi-q4-e-tron-review-quick-drive", sealion7:"car-reviews/2026-byd-sealion-7-review", geely5:"car-reviews/2026-geely-ex5-review-1", xpengl03:"xpeng/l03", zeekr001:"zeekr", zeekrx:"car-reviews/2025-zeekr-x-awd-review", glc:"car-reviews/2026-mercedes-benz-glc-with-eq-technology-prototype-drive", glb:"car-reviews/2026-mercedes-benz-glb-electric-review-quick-drive"};
 const moreUrl = c => CX[c.id] ? CX_BASE + CX[c.id] : "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(c.name);
 const px = (u, w) => u.includes("Special:FilePath") ? u.replace(/width=\d+/, "width=" + w) : u.replace("/1280px-", "/" + w + "px-");
 const coverImg = c => { const p = photos(c)[0]; return p ? `<img src="${px(p[1], 330)}" alt="" loading="lazy" onerror="this.remove()">` : ""; };
@@ -908,7 +938,7 @@ const mState = {on:new Set(MUST_DEFAULT)};
 const QUALITY = {
   roof:{polestar:[3,"grösstes Glasdach, reicht bis über die Rücksitze"], tesla:[2.5,"durchgehendes Glasdach"], volvo:[2.5,"elektrochrom (Ultra)"], enyaq:[2.5,"zum Öffnen"]},
   massage:{polestar:[3,"beste Massage im Vergleich, mehrere Programme und Stufen"], zeekr001:[2.5,"vorne, mit Belüftung"], xpengg9:[2.5,"vorne und hinten"], zeekr:[2.5,"vorne, gut bewertet"], zeekr7gt:[2.5,"vorne, hinten auf Wunsch"], enyaq:[1,"einfache Massage"], elroq:[1,"einfache Massage"], idcross:[1,"einfache Massage"], idtiguan:[1.5,"Massage mit Belüftung"]},
-  hud:{zeekr:[3,"sehr grosses AR-Head-up"], zeekrx:[3,"sehr grosses AR-Head-up"], xpengl03:[2.5,"grosses Head-up, 26,8 Zoll"], zeekr7gt:[3,"sehr grosses AR-Head-up"], enyaq:[2.5,"AR-Head-up"], elroq:[2.5,"AR-Head-up"], q4:[2.5,"AR-Head-up"], smart5:[2.5,"AR-Head-up"]},
+  hud:{zeekr:[3,"sehr grosses AR-Head-up"], zeekrx:[3,"sehr grosses AR-Head-up"], xpengl03:[2.5,"grosses Head-up, 26,8 Zoll"], glc:[2.5,"AR-Head-up"], zeekr7gt:[3,"sehr grosses AR-Head-up"], enyaq:[2.5,"AR-Head-up"], elroq:[2.5,"AR-Head-up"], q4:[2.5,"AR-Head-up"], smart5:[2.5,"AR-Head-up"]},
   adapt:{zeekr:[3,"Luftfederung und adaptive Dämpfer"], zeekr001:[3,"Luftfederung und adaptive Dämpfer"], zeekr7gt:[3,"Luftfederung und adaptive Dämpfer"], xpengg9:[3,"Luftfederung und adaptive Dämpfer"]},
   air:{zeekr:[3,"höhenverstellbar"], zeekr001:[3,"absenkbar"], xpengg9:[3,"Zweikammer-Luftfederung"]},
   carplay:{}, cam360:{}, eseat:{}, tail:{}, flat:{tesla:[3,"fast eben"], sealion7:[2.5,"ohne Stufe"]},
@@ -945,6 +975,7 @@ function initMust(){
 
 function bestIds(col, list = CARS){
   if (!col.better) return new Set();
+  if (col.key === "priceFull") list = list.filter(c => !c.priceFullMiss);
   const vals = list.map(c => c[col.key]).filter(v => v != null);
   if (!vals.length) return new Set();
   const target = col.better === "low" ? Math.min(...vals) : Math.max(...vals);
