@@ -671,7 +671,17 @@ const CARS = [
     len:4782, wid:1895, widNote:"2'093 mit Spiegeln", hei:1635, wb:2897, turn:12.1, turnNote:"ADAC · autoscout24-Test: 11,9",
     boot:520, bootMax:1750, bootNote:"+ 58 l vorne · ADAC gemessen 440 l", weight:2360, weightNote:"ADAC",
     screen:17.9, screenNote:"+ Panoramic Vision über die ganze Frontscheibe",
-    massage:"open", massageNote:"nicht bestätigt", hud:"opt", hudNote:"im Innovationspaket, Panoramic Vision Serie", roof:"opt", roofNote:"Panorama-Glasdach, nicht zu öffnen", tail:"open", tailNote:"nicht bestätigt" }
+    massage:"open", massageNote:"nicht bestätigt", hud:"opt", hudNote:"im Innovationspaket, Panoramic Vision Serie", roof:"opt", roofNote:"Panorama-Glasdach, nicht zu öffnen", tail:"open", tailNote:"nicht bestätigt" },
+  { id:"gla", name:"Mercedes GLA", ref:"350 4MATIC, elektrisch", cls:"Kompakt-SUV",
+    priceFrom:60500, priceFromNote:"Heckantrieb 250+ ab 56'300 · Marktstart November 2026",
+    priceFull:61500, priceFullNote:"ca., + Head-up (Preis wie beim GLB geschätzt), Panoramadach Serie", priceFullEst:true, priceFullMiss:"Massage (nicht bestätigt)",
+    batt:85, battNote:"netto · NMC · 800 V", wltp:643, real:480, realNote:"EV Database (Modellwert), noch kein Test", realEst:true,
+    dc:320, ac:11, acNote:"22 kW Option", t1080:22, acc:5.4,
+    ps:354,
+    len:4565, wid:1873, hei:1604, wb:2790, turn:11.5, turnNote:"EV Database",
+    boot:410, bootMax:1400, bootNote:"+ 107 l vorne", weight:2235, weightNote:"EV Database",
+    screen:14, screenNote:"+ 10,25\" Cockpit, zweiter 14\"-Screen Option",
+    massage:"open", massageNote:"nicht bestätigt", hud:"open", hudNote:"nicht bestätigt, beim GLB als Option", roof:"yes", roofNote:"Serie, SKY CONTROL später", tail:"open", tailNote:"nicht bestätigt" }
 ];
 const AIR = {
   polestar:["no","Stahlfedern, adaptive Dämpfer mit Performance-Paket"],
@@ -695,10 +705,11 @@ const AIR = {
   glc:["opt","AIRMATIC im Paket Agilität & Komfort, CHF 2'645, mit Hinterachslenkung"],
   glb:["no","adaptive Dämpfer mit 20-Zoll-Rädern"],
   ix3:["no","Stahlfedern, keine Fahrwerksoptionen (ADAC)"],
+  gla:["no",""],
   idtiguan:["no",""]
 };
 CARS.forEach(c => { const a = AIR[c.id] || ["open",""]; c.air = a[0]; c.airNote = a[1]; });
-const VOLT = { polestar:400, zeekr:800, volvo:800, xpengg9:800, leapmotor:800, zeekr7gt:800, idtiguan:400, tesla:400, xpeng:800, enyaq:400, elroq:400, idcross:400, smart5:800, q4:400, sealion7:800, geely5:400, xpengl03:400, zeekr001:400, zeekrx:400, glc:800, glb:800, ix3:800 };
+const VOLT = { polestar:400, zeekr:800, volvo:800, xpengg9:800, leapmotor:800, zeekr7gt:800, idtiguan:400, tesla:400, xpeng:800, enyaq:400, elroq:400, idcross:400, smart5:800, q4:400, sealion7:800, geely5:400, xpengl03:400, zeekr001:400, zeekrx:400, glc:800, glb:800, ix3:800, gla:800 };
 CARS.forEach(c => { c.volt = VOLT[c.id] ?? null; });
 CARS.forEach(c => { c.park = Math.round(c.weight * 0.35); });
 // Leasing: [Zins in %, Anzeige, Details]. Stand 11.11.2026, Aktionen für Privatkunden, Firmenleasing kann abweichen.
@@ -723,6 +734,7 @@ const LEASE = {
   zeekrx:[1.49, "1,49 %", "Zeekr Schweiz über multilease: eff. 1,50 %, 48 Mt, 15'000 km/J., 20 % Anzahlung. Privilege CHF 563/Mt. Immatrikulation bis 31.12.2026"],
   glc:[0, "0 % mit Vers.", "Mercedes-Aktion für 4MATIC bis 30.11.2026: 0 % nur mit Mercedes-Versicherungspaket (Zürich, Vollkasko Pflicht), sonst 0,5 %. GLC 300 4MATIC ab CHF 381/Mt. Deine Händlerofferte (Januar 2026, damals 10 Tage gültig): voll ausgestattet Liste CHF 104'527, nach 13 % Flottenrabatt und 3,5 % Sondernachlass CHF 88'500 inkl. Ablieferung. Leasingrate dafür beim Händler anfragen"],
   glb:[0, "0 % mit Vers.", "Mercedes-Aktion bis 30.11.2026: 48 Mt, 10'000 km/J., erste grosse Rate CHF 10'903, danach ab CHF 289/Mt. 0 % nur mit Mercedes-Versicherungspaket (Zürich, Vollkasko Pflicht), sonst 0,5 %"],
+  gla:[0, "0 % mit Vers.", "Mercedes-Aktion bis 30.11.2026: 48 Mt, 10'000 km/J., erste grosse Rate CHF 10'770, danach ab CHF 309/Mt. 0 % nur mit Mercedes-Versicherungspaket (Zürich, Vollkasko Pflicht), sonst 0,5 %"],
   ix3:[null, "Offen", "Keine Schweizer Leasingaktion gefunden, beim BMW-Händler anfragen"],
   idcross:[1.9, "1,9 %", "VW-Aktion für Verträge 01.11. bis 31.12.2026, 48 Mt, 10'000 km/J., 20 % Anzahlung"],
 };
@@ -748,6 +760,7 @@ const TECH = {
   zeekrx:{cam360:["yes","Rundumsicht"], flat:["open","nicht bestätigt"], carplay:["yes","kabellos"], eseat:["yes","mit Memory"], adapt:["no","nicht verstellbar"], service:["yes","Emil Frey Zürich Nord"]},
   glc:{cam360:["opt","Parking Assist 360, CHF 642"], flat:["open","Lehnen umklappbar, Ebenheit nicht bestätigt"], carplay:["yes","Serie"], eseat:["yes","Memory im Paket"], adapt:["opt","AIRMATIC im Paket Agilität & Komfort"], service:["yes","sehr dichtes Mercedes-Netz, Merbag Zürich"]},
   glb:{cam360:["opt","Parking Assist 360 als Digital Extra"], flat:["open","40:20:40, verschiebbar, Ebenheit nicht bestätigt"], carplay:["opt","in DE Aufpreis 357 €, in CH prüfen"], eseat:["open","nicht bestätigt"], adapt:["opt","adaptive Dämpfer nur mit 20-Zoll-Rädern"], service:["yes","sehr dichtes Mercedes-Netz, Merbag Zürich"]},
+  gla:{cam360:["opt","Parking Assist 360"], flat:["open","nicht bestätigt"], carplay:["opt","wie GLB, in CH prüfen"], eseat:["open","nicht bestätigt"], adapt:["open","nicht bestätigt"], service:["yes","sehr dichtes Mercedes-Netz, Merbag Zürich"]},
   ix3:{cam360:["open","nicht bestätigt"], flat:["open","nicht bestätigt"], carplay:["yes","Serie"], eseat:["open","nicht bestätigt"], adapt:["no","nicht erhältlich, straffes Stahlfahrwerk"], service:["yes","dichtes BMW-Netz im Raum Zürich"]},
   smart5:{cam360:["yes",""], flat:["no","bucklige Liegefläche (ADAC)"], carplay:["yes","kabellos"], eseat:["yes",""], adapt:["no","Stahlfedern, nicht verstellbar"], service:["yes","Merbag und Mercedes-Partner"]},
 };
@@ -775,6 +788,7 @@ const GLASS = {
   glc:["yes","Akustikglas Serie (Offerte)"],
   glb:["opt","Akustikglas vorne als Option"],
   ix3:["open","nicht angegeben"],
+  gla:["opt","Akustikglas vorne als Option"],
 };
 CARS.forEach(c => { const g = GLASS[c.id] || ["open",""]; c.glass = g[0]; c.glassNote = g[1]; });
 CARS.forEach(c => {
@@ -844,7 +858,7 @@ const PHOTOS = {"geely5":[["Front","https://thumb.wikimedia.org/wikipedia/common
 const photos = c => PHOTOS[c.id] || [];
 // Weitere Fotos: Testberichte von CarExpert (Australien) mit grossen Bildergalerien, nur verlinkt
 const CX_BASE = "https://www.carexpert.com.au/";
-const CX = {polestar:"car-reviews/2027-polestar-4-suv-review", zeekr:"car-reviews/2025-zeekr-7x-review", zeekr7gt:"car-reviews/2027-zeekr-7gt-review-quick-drive", volvo:"car-reviews/2027-volvo-ex60-review-quick-drive", xpengg9:"xpeng", xpeng:"car-reviews/2026-xpeng-g6-awd-performance-review-quick-drive", leapmotor:"car-reviews/2025-leapmotor-c10-review", tesla:"car-reviews/2025-tesla-model-y-review", enyaq:"car-reviews/2026-skoda-enyaq-review", elroq:"car-reviews/2025-skoda-elroq-review-quick-drive", idtiguan:"car-news/2027-volkswagen-id-tiguan-to-replace-id4-and-id5", idcross:"car-news/volkswagen-id-cross-t-cross-size-electric-suv-unveiled", smart5:"car-reviews/2025-smart-5-review-quick-drive", q4:"car-reviews/2027-audi-q4-e-tron-review-quick-drive", sealion7:"car-reviews/2026-byd-sealion-7-review", geely5:"car-reviews/2026-geely-ex5-review-1", xpengl03:"xpeng/l03", zeekr001:"zeekr", zeekrx:"car-reviews/2025-zeekr-x-awd-review", glc:"car-reviews/2026-mercedes-benz-glc-with-eq-technology-prototype-drive", glb:"car-reviews/2026-mercedes-benz-glb-electric-review-quick-drive", ix3:"car-reviews/2026-bmw-ix3-review-quick-drive"};
+const CX = {polestar:"car-reviews/2027-polestar-4-suv-review", zeekr:"car-reviews/2025-zeekr-7x-review", zeekr7gt:"car-reviews/2027-zeekr-7gt-review-quick-drive", volvo:"car-reviews/2027-volvo-ex60-review-quick-drive", xpengg9:"xpeng", xpeng:"car-reviews/2026-xpeng-g6-awd-performance-review-quick-drive", leapmotor:"car-reviews/2025-leapmotor-c10-review", tesla:"car-reviews/2025-tesla-model-y-review", enyaq:"car-reviews/2026-skoda-enyaq-review", elroq:"car-reviews/2025-skoda-elroq-review-quick-drive", idtiguan:"car-news/2027-volkswagen-id-tiguan-to-replace-id4-and-id5", idcross:"car-news/volkswagen-id-cross-t-cross-size-electric-suv-unveiled", smart5:"car-reviews/2025-smart-5-review-quick-drive", q4:"car-reviews/2027-audi-q4-e-tron-review-quick-drive", sealion7:"car-reviews/2026-byd-sealion-7-review", geely5:"car-reviews/2026-geely-ex5-review-1", xpengl03:"xpeng/l03", zeekr001:"zeekr", zeekrx:"car-reviews/2025-zeekr-x-awd-review", glc:"car-reviews/2026-mercedes-benz-glc-with-eq-technology-prototype-drive", glb:"car-reviews/2026-mercedes-benz-glb-electric-review-quick-drive", ix3:"car-reviews/2026-bmw-ix3-review-quick-drive", gla:"car-news/2027-mercedes-benz-gla-new-small-suv-revealed-with-electric-and-mild-hybrid-power"};
 const moreUrl = c => CX[c.id] ? CX_BASE + CX[c.id] : "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(c.name);
 const px = (u, w) => u.includes("Special:FilePath") ? u.replace(/width=\d+/, "width=" + w) : u.replace("/1280px-", "/" + w + "px-");
 const coverImg = c => { const p = photos(c)[0]; return p ? `<img src="${px(p[1], 330)}" alt="" loading="lazy" onerror="this.remove()">` : ""; };
