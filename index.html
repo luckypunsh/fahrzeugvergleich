@@ -448,6 +448,16 @@ dialog{background:var(--solid)}
       <p>Geschätzte Werte sind mit ca. markiert, meist weil Schweizer Paketpreise fehlen. Beim Mercedes GLC ist das Massagepaket laut Mercedes Schweiz ohne Aufpreis wählbar.</p>
     </div>
     <div class="note">
+      <h2>Kindersitz vorne</h2>
+      <p>In der Schweiz dürfen Kinder mit passendem Kindersitz auch auf dem Beifahrersitz mitfahren (Art. 3a VRV, Kindersitz bis 12 Jahre oder 150 cm). Eine Babyschale rückwärts gerichtet ist vorne nur erlaubt, wenn der Beifahrerairbag ausgeschaltet ist. Am sichersten ist der Rücksitz.</p>
+      <p>«Vorn + hinten» heisst: Isofix auch auf dem Beifahrersitz. Bei «Nur hinten» geht vorne nur ein Sitz mit Gurtbefestigung, sofern der Airbag abschaltbar ist.</p>
+    </div>
+    <div class="note">
+      <h2>Winter</h2>
+      <p>Bis auf Elroq, ID. Cross und Audi Q4 haben alle eine Wärmepumpe serienmässig, bei diesen drei kostet sie extra. Im Winter auf der Autobahn sinkt die Reichweite um 25 bis 45 %. Im ADAC-Wintertest (0 °C, Autobahn) kam der Tesla 406 km weit, der BYD Sealion 7 nicht einmal 300. Im norwegischen Kältetest (bis −31 °C) schaffte der Zeekr 7X 307 km bis 20 % Akku.</p>
+      <p>Für den Winter zählen ausserdem Allrad, schnelles Laden bei Kälte (Akku vorwärmen, das können alle hier) und eine Vorklimatisierung per App.</p>
+    </div>
+    <div class="note">
       <h2>Leasing</h2>
       <p>Nur Polestar bietet für den 4x4 echtes 0 % ohne Anzahlung. Mercedes hat bis 30.11.2026 ebenfalls 0 % für alle 4MATIC, aber nur mit dem Mercedes-Versicherungspaket und mit einer grossen ersten Rate, sonst 0,5 %. Škoda hat 0 %, aber nur für die Heckantriebsversionen und gekoppelt an das AMAG-Versicherungspaket. Bei Tesla gelten die 0 % nur für einen Kredit, nicht fürs Leasing.</p>
       <p>Die meisten Aktionen gelten für Privatkunden. Läuft der Vertrag über die Firma, beim Händler nach den Konditionen für Geschäftskunden fragen. Vollkasko ist überall Pflicht und nicht in der Rate enthalten.</p>
@@ -897,6 +907,37 @@ const OTA = {
   ix3:[["2026-10","Operating System X","ota","Neue 3D-Ansicht mit Spur, Fahrzeugen in der Umgebung und Status der Assistenz (Highway Assistant 2)","elektroquatsch","https://www.elektroquatsch.de/artikel/bmw-maps-3d-navigation-fahrassistenz"]],
   ix1:[["2026-07","Upgrade 26/07","ota","Neuer ConnectedDrive Store, einzelne Ladepunkte mit Status in der Navigation, persönlicher Assistent, YouTube Music. «Hey Alexa» entfällt. Stand der US-Notizen für Operating System 9","BMW","https://www.bmwusa.com/content/dam/bmw/marketUS/common/connected-drive/pdf/2026/ReleaseNotes_2607_US_BMW.pdf"]],
 };
+
+// Isofix laut ADAC: yes = vorn und hinten, no = nur hinten. Zweiter Wert: Hinweis
+const ISO = {
+  polestar:["no","nur hinten · Beifahrerairbag abschaltbar"], zeekr:["yes","vorn und hinten"], volvo:["no","nur hinten · Airbag-Schalter Serie"],
+  xpengg9:["no","nur hinten"], leapmotor:["open","Isofix Serie, Position nicht angegeben"], zeekr7gt:["yes","vorn und hinten"],
+  idtiguan:["open","noch nicht publiziert"], tesla:["no","nur hinten, mit Top-Tether"], xpeng:["no","nur hinten (Vorfacelift laut ADAC)"],
+  enyaq:["yes","vorn und hinten mit Top-Tether · Airbag-Schlüsselschalter"], elroq:["yes","vorn und hinten mit Top-Tether · Airbag abschaltbar"],
+  idcross:["yes","vorn und hinten · Airbag abschaltbar"], smart5:["open","Isofix Serie, Position nicht angegeben · Airbag abschaltbar"],
+  q4:["yes","vorn und hinten mit Top-Tether · Airbag abschaltbar"], sealion7:["yes","vorn und hinten mit Top-Tether · Airbag abschaltbar"],
+  geely5:["yes","vorn und hinten · Airbag-Schalter"], xpengl03:["no","nur hinten"], zeekr001:["open","nicht angegeben"],
+  zeekrx:["yes","vorn und hinten"], glc:["open","Isofix Serie, Position nicht angegeben · Airbag abschaltbar"], glb:["no","nur hinten · Airbag abschaltbar"],
+  gla:["open","noch nicht publiziert"], ix3:["no","nur hinten · Airbag abschaltbar"], q6:["yes","vorn und hinten mit Top-Tether · Airbag abschaltbar"],
+  ix1:["no","nur hinten mit Top-Tether · Airbag abschaltbar"],
+};
+// Wärmepumpe laut ADAC
+const HEAT = {elroq:["opt","Option, in DE 1'110 €"], idcross:["opt","Option, in DE 990 €"], q4:["opt","Option, in DE 990 €"], idtiguan:["open","noch nicht publiziert"], gla:["open","noch nicht publiziert"]};
+// Wintertests: [km, Text]
+const WINT = {
+  tesla:[406, "ADAC-Wintertest bei 0 °C auf der Autobahn: 406 km (22,2 kWh)"],
+  zeekr:[307, "NAF El Prix bei bis zu −31 °C: 307 km bis 20 % Akku (58 % von WLTP)"],
+  sealion7:[290, "ADAC-Wintertest bei 0 °C auf der Autobahn: unter 300 km (35,3 kWh), schlechtester Wert im Test"],
+  elroq:[300, "ADAC-Wintertest Elroq 85 (Heckantrieb) bei 0 °C: etwas über 300 km"],
+  smart5:[292, "NAF El Prix bei bis zu −31 °C: 292 km bis 20 % Akku · ADAC 0 °C (Premium): 28,9 kWh"],
+  polestar:[null, "Getestet wurde nur der Polestar 4 Single Motor (TCS/ADAC 0 °C), kein km-Wert publiziert"],
+};
+CARS.forEach(c => {
+  const i = ISO[c.id] || ["open",""]; c.isofix = i[0]; c.isofixNote = i[1];
+  const h = HEAT[c.id] || ["yes",""]; c.heat = h[0]; c.heatNote = h[1];
+  const w = WINT[c.id]; c.wint = w ? w[0] : null; c.wintNote = w ? w[1] : "noch kein Wintertest gefunden";
+});
+
 const OTA_EMPTY = {zeekr7gt:"Neu seit 2026, noch kein Update publiziert", xpengl03:"Marktstart September 2026, noch kein Update", idtiguan:"Auslieferung ab Anfang 2027", idcross:"Marktstart Ende 2026", q4:"Facelift 2026, kein Software-Update dokumentiert", geely5:"Marktstart September 2026, noch kein Update", gla:"Marktstart November 2026, noch kein Update"};
 const OTA_KIND = {ota:"Per Funk", werk:"Werkstatt", mp:"Modellpflege", neg:"Verschlechterung", info:"Hinweis"};
 const MON = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
@@ -965,6 +1006,9 @@ const COLS = [
   {key:"flat", label:"Rücksitze flach", unit:"Liegefläche", grp:"Alltag", feat:true, labels:{yes:"Eben", opt:"Fast eben", open:"Offen", no:"Uneben"}, note:"flatNote"},
   {key:"app", label:"App Vorklimatisieren", unit:"heizen/kühlen", grp:"Alltag", feat:true, note:"appNote"},
   {key:"service", label:"Werkstatt", unit:"max. 1 h von 8049", grp:"Alltag", feat:true, labels:{yes:"Ja", opt:"Ja", open:"Prüfen", no:"Nein"}, note:"serviceNote"},
+  {key:"isofix", label:"Isofix", unit:"Kindersitz", grp:"Alltag", feat:true, labels:{yes:"Vorn + hinten", opt:"Vorn + hinten", open:"Offen", no:"Nur hinten"}, note:"isofixNote"},
+  {key:"heat", label:"Wärmepumpe", unit:"Winter", grp:"Alltag", feat:true, note:"heatNote"},
+  {key:"wint", label:"Wintertest", unit:"km im Kältetest", grp:"Alltag", better:"high", fmt:c=>c.wint==null?"k. A.":(c.id==="sealion7"?"unter 300":c.id==="elroq"?"über 300":c.wint), note:"wintNote"},
   {key:"ota", label:"Letztes Update", unit:"Software, Anzahl 2026", grp:"Alltag", better:"high", fmt:c=>c.otaLabel+(c.otaN?`<small class="pmiss">${c.otaN} ${c.otaN===1?"Update":"Updates"} 2026</small>`:""), note:"otaNote"},
 ];
 
@@ -1104,7 +1148,7 @@ function initChart(){
 }
 
 // Muss-Kriterien: frei wählbar, Rangliste rechnet sich neu
-const MUST_ALL = [["hud","Head-up"],["massage","Massagesitze"],["cam360","360°-Kamera"],["flat","Rücksitze flach"],["roof","Panoramadach"],["carplay","CarPlay"],["awd","Allrad"],["v800","800 Volt"],["eseat","El. Sitze"],["adapt","Adaptives Fahrwerk"],["air","Luftfederung"],["glass","Akustikglas"],["tail","El. Heckklappe"],["app","App"],["service","Werkstatt"],["lease2","Leasing bis 2 %"]];
+const MUST_ALL = [["hud","Head-up"],["massage","Massagesitze"],["cam360","360°-Kamera"],["flat","Rücksitze flach"],["roof","Panoramadach"],["carplay","CarPlay"],["awd","Allrad"],["v800","800 Volt"],["eseat","El. Sitze"],["adapt","Adaptives Fahrwerk"],["air","Luftfederung"],["glass","Akustikglas"],["tail","El. Heckklappe"],["app","App"],["service","Werkstatt"],["lease2","Leasing bis 2 %"],["isofix","Isofix vorne"],["heat","Wärmepumpe"]];
 const MUST_DEFAULT = ["hud","cam360","flat","roof","carplay","awd","v800","eseat","adapt","app","service","tail"];
 const mState = {on:new Set(MUST_DEFAULT)};
 // Qualität je Kriterium: 3 = besonders gut, 2 = vorhanden (Standard), 1 = einfache Ausführung. Gilt für Serie und Option.
@@ -1162,6 +1206,7 @@ const FILTERS = [
   {k:"carplay", l:"CarPlay"}, {k:"roof", l:"Panoramadach"}, {k:"glass", l:"Akustikglas"},
   {k:"flat", l:"Rücksitze flach"}, {k:"tail", l:"El. Heckklappe"}, {k:"awd", l:"Allrad", strict:true},
   {k:"lease2", l:"Leasing bis 2 %", test:c => c.lease != null && c.lease <= 2},
+  {k:"isofix", l:"Isofix vorne", strict:true}, {k:"heat", l:"Wärmepumpe Serie", strict:true},
 ];
 const fState = {on:new Set(), price:"", opt:true};
 function passes(c){
