@@ -1040,7 +1040,8 @@ function renderStats(list = CARS){
 const gross = c => { const m = /([\d]+(?:,\d)?) brutto/.exec(c.battNote || ""); return m ? parseFloat(m[1].replace(",", ".")) : null; };
 const n1 = v => String(Math.round(v*10)/10).replace(".", ",");
 const VIEWS2 = [
-  {k:"real", l:"Reichweite", sub:"Real (dunkel) und WLTP (hell)", type:"bullet", hdr:["", "real / WLTP"], v:c=>c.real, ghost:c=>c.wltp, low:false, f:c=>`${c.real} / ${c.wltp} km`},
+  {k:"real", l:"Reichweite", sub:"Real (dunkel) und WLTP (hell)", type:"bullet", hdr:["", "real / WLTP"], v:c=>c.real, ghost:c=>c.wltp, by:["Real","WLTP"], low:false, f:c=>`${c.real} / ${c.wltp} km`},
+  {k:"boot", l:"Kofferraum", sub:"Normal (dunkel) und mit umgeklappten Sitzen (hell), ohne Frunk", type:"bullet", hdr:["", "normal / umgeklappt"], v:c=>c.boot, ghost:c=>c.bootMax, by:["Normal","Umgeklappt"], low:false, f:c=>c.bootMax ? `${chf(c.boot)} / ${chf(c.bootMax)} l` : `${chf(c.boot)} l / k. A.`, tip:c=>`Kofferraum ${chf(c.boot)} l${c.bootMax ? ", umgeklappt " + chf(c.bootMax) + " l" : ", umgeklappt nicht publiziert"}${c.bootNote ? "<br>" + c.bootNote : ""}`},
   {k:"batt", l:"Akku", sub:"Netto nutzbar (dunkel) und brutto (hell)", type:"bullet", hdr:["", "netto / brutto"], v:c=>c.batt, ghost:c=>gross(c), low:false, f:c=>gross(c) ? `${n1(c.batt)} / ${n1(gross(c))} kWh` : `${n1(c.batt)} kWh`},
   {k:"dc", l:"Laden DC", sub:"Maximale Ladeleistung am Schnelllader", type:"bar", v:c=>c.dc, low:false, f:c=>c.dc+" kW"},
   {k:"t1080", l:"10–80 %", sub:"Ladezeit von 10 auf 80 %", type:"bar", v:c=>c.t1080, low:true, f:c=>c.t1080+" min"},
@@ -1052,7 +1053,7 @@ const VIEWS2 = [
   {k:"weight", l:"Gewicht", sub:"Leergewicht nach EU-Norm. Rechts daneben die Kosten der Parkkarte blaue Zone Zürich ab 2027 (35 Rp. pro kg und Jahr).", type:"bar", v:c=>c.weight, low:true, hdr:["", "Leergewicht · Parkkarte blaue Zone ZH pro Jahr"], f:c=>`${chf(c.weight)} kg · ${chf(c.park)} CHF`, tip:c=>`Leergewicht (EU): ${chf(c.weight)} kg<br>Parkkarte blaue Zone Zürich ab 2027: CHF ${chf(c.park)} pro Jahr`},
   {k:"turn", l:"Wendekreis", sub:"Balken = wie viel grösser als der kleinste Wendekreis", type:"bar", diff:true, v:c=>c.turn, low:true, f:(c,d)=>n1(c.turn)+" m"+(d > 0.04 ? ` (+${n1(d)})` : "")+(c.turnAlt ? ` · ${n1(c.turnAlt)} m mit Hinterachslenkung` : "")},
 ];
-let ccMetric = "real", ccDir = "best", ccBy = "real";
+let ccMetric = "real", ccDir = "best", ccBy = "main";
 function bindTips(box, fmt){
   const tip = document.getElementById("ccTip"), card = box.closest(".chartcard");
   box.querySelectorAll("[data-id]").forEach(r => {
@@ -1069,7 +1070,7 @@ function renderChart(list){
   box.className = "bars v-" + m.type;
   if (!list.length) { box.innerHTML = `<p class="cc-empty">Keine Autos in der Auswahl</p>`; return; }
   if (m.type === "bar" || m.type === "bullet") {
-    const key = (m.k === "real" && ccBy === "wltp") ? m.ghost : m.v;
+    const key = (m.by && ccBy === "alt") ? (c => m.ghost(c) ?? -1) : m.v;
     const L = [...list].filter(c => m.v(c) != null).sort((a,b) => ccDir === "az" ? a.name.localeCompare(b.name, "de") : (m.low ? key(a)-key(b) : key(b)-key(a)) * (ccDir === "rev" ? -1 : 1));
     const base = m.diff ? Math.min(...L.map(m.v)) : 0, val = c => m.v(c) - base;
     const max = Math.max(...L.map(c => Math.max(val(c), m.ghost ? (m.ghost(c) || 0) : 0)), m.diff ? 1e-9 : 1);
@@ -1089,10 +1090,10 @@ function renderChart(list){
 }
 function renderSortBar(m){
   const bar = document.getElementById("ccSort"); if (!bar) return;
-  const best = {real:"Grösste zuerst", batt:"Grösste zuerst", dc:"Stärkste zuerst", t1080:"Schnellste zuerst", ac:"Stärkste zuerst", ps:"Stärkste zuerst", priceFrom:"Günstigste zuerst", len:"Kürzeste zuerst", wid:"Schmalste zuerst", weight:"Leichteste zuerst", turn:"Kleinster zuerst"}[m.k] || "Beste zuerst";
-  const worst = {real:"Kleinste zuerst", batt:"Kleinste zuerst", dc:"Schwächste zuerst", t1080:"Langsamste zuerst", ac:"Schwächste zuerst", ps:"Schwächste zuerst", priceFrom:"Teuerste zuerst", len:"Längste zuerst", wid:"Breiteste zuerst", weight:"Schwerste zuerst", turn:"Grösster zuerst"}[m.k] || "Umgekehrt";
+  const best = {boot:"Grösster zuerst", real:"Grösste zuerst", batt:"Grösste zuerst", dc:"Stärkste zuerst", t1080:"Schnellste zuerst", ac:"Stärkste zuerst", ps:"Stärkste zuerst", priceFrom:"Günstigste zuerst", len:"Kürzeste zuerst", wid:"Schmalste zuerst", weight:"Leichteste zuerst", turn:"Kleinster zuerst"}[m.k] || "Beste zuerst";
+  const worst = {boot:"Kleinster zuerst", real:"Kleinste zuerst", batt:"Kleinste zuerst", dc:"Schwächste zuerst", t1080:"Langsamste zuerst", ac:"Schwächste zuerst", ps:"Schwächste zuerst", priceFrom:"Teuerste zuerst", len:"Längste zuerst", wid:"Breiteste zuerst", weight:"Schwerste zuerst", turn:"Grösster zuerst"}[m.k] || "Umgekehrt";
   const b = (grp, val, lbl, cur) => `<button type="button" data-grp="${grp}" data-v="${val}" aria-pressed="${cur===val}">${lbl}</button>`;
-  bar.innerHTML = (m.k === "real" ? `<span class="sl">Sortieren nach</span><span class="sg">${b("by","real","Real",ccBy)}${b("by","wltp","WLTP",ccBy)}</span>` : `<span class="sl">Sortieren</span>`) +
+  bar.innerHTML = (m.by ? `<span class="sl">Sortieren nach</span><span class="sg">${b("by","main",m.by[0],ccBy)}${b("by","alt",m.by[1],ccBy)}</span>` : `<span class="sl">Sortieren</span>`) +
     `<span class="sg">${b("dir","best",best,ccDir)}${b("dir","rev",worst,ccDir)}${b("dir","az","Name A–Z",ccDir)}</span>`;
   bar.querySelectorAll("button").forEach(x => x.addEventListener("click", () => { if (x.dataset.grp === "by") { ccBy = x.dataset.v; if (ccDir === "az") ccDir = "best"; } else ccDir = x.dataset.v; renderChart(CARS.filter(passes)); }));
 }
